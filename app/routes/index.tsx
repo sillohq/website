@@ -806,13 +806,13 @@ async def list_projects(
     file: 'routes/applications.py',
     code: `from sillo.auth import useAuth
 from sillo.core.routing import Route
-from sillo_intertia import Intertia
+from sillo_inertia import Inertia
 
 
 async def applications_page(request, response):
-    intertia: Intertia = request.base_app.state["intertia"]
+    inertia: Inertia = request.base_app.state["inertia"]
     props = await applications_props(request)
-    return await intertia.render(
+    return await inertia.render(
         request,
         response,
         "Applications",
@@ -884,23 +884,23 @@ async def weekday_digest():
     desc: 'Shared props, Vite React assets, and server-side page props in one response.',
     file: 'app.py',
     code: `from sillo import silloApp
-from sillo_intertia import Intertia, lazy, vite_react
+from sillo_inertia import Inertia, lazy, vite_react
 
 app = silloApp(title="Sillo Monitor")
 
-intertia = Intertia(
+inertia = Inertia(
     app,
     root_view=BASE_DIR / "resources" / "views" / "app.html",
     base_dir=BASE_DIR,
     version=lambda: "monitor-db",
     vite=vite_react(dev=IS_DEV, dev_server=DEV_SERVER),
 )
-intertia.share(shared=lazy(shared_props))
-app.state["intertia"] = intertia
+inertia.share(shared=lazy(shared_props))
+app.state["inertia"] = inertia
 
 
 async def login_page(request, response):
-    return await intertia.render(
+    return await inertia.render(
         request,
         response,
         "Login",
