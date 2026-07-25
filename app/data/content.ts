@@ -1,3 +1,6 @@
+const DOCS = import.meta.env.VITE_DOCS_URL ?? 'https://sillo.build'
+const GITHUB = import.meta.env.VITE_GITHUB_URL ?? 'https://github.com/sillohq/core'
+
 export const BRAND = {
   name: 'Sillo',
   tagline: 'The productive Python framework',
@@ -163,15 +166,15 @@ export const BATTERIES = [
 
 export const FOOTER_LINKS = {
   framework: [
-    { label: 'Documentation', href: '#' },
-    { label: 'GitHub', href: '#' },
-    { label: 'Getting Started', href: '#' },
-    { label: 'API Reference', href: '#' },
+    { label: 'Documentation', href: DOCS },
+    { label: 'GitHub', href: GITHUB },
+    { label: 'Getting Started', href: `${DOCS}/guides/installation/` },
+    { label: 'API Reference', href: `${DOCS}/reference/plugin-api/` },
   ],
   community: [
-    { label: 'GitHub', href: '#' },
+    { label: 'GitHub', href: GITHUB },
     { label: 'Discord', href: '#' },
-    { label: 'Contributing', href: '#' },
+    { label: 'Contributing', href: `${DOCS}/community/contribution-guide/` },
   ],
   legal: [
     { label: 'Privacy Policy', href: '#' },

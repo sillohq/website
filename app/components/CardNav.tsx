@@ -186,7 +186,7 @@ export default function CardNav({
           </a>
 
           <a
-            href="#"
+            href={import.meta.env.VITE_DOCS_URL ? `${import.meta.env.VITE_DOCS_URL}/guides/installation/` : '#'}
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >

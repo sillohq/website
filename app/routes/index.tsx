@@ -14,6 +14,9 @@ import { SiteNav } from '../components/SiteNav'
 import Plasma from '../components/Plasma'
 import ScrollStack, { ScrollStackItem } from '../components/ScrollStack'
 
+const DOCS = import.meta.env.VITE_DOCS_URL ?? 'https://sillo.build'
+const GITHUB = import.meta.env.VITE_GITHUB_URL ?? 'https://github.com/sillohq/core'
+
 export const Route = createFileRoute('/')({
   component: HomePage,
 })
@@ -331,7 +334,7 @@ function Hero() {
 
             {/* CTA */}
             <div className="mb-9">
-              <a href="#" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
+              <a href={DOCS} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
                 Read the docs
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3l4 4-4 4"/></svg>
               </a>
@@ -1109,7 +1112,7 @@ function ArchitectureSection() {
     <section className="border-b border-border py-20 md:py-28">
       <div className="max-w-[1360px] mx-auto px-8 md:px-12">
         <a
-          href="#"
+          href={`${DOCS}/guides/installation/`}
           onMouseMove={(event) => {
             const rect = event.currentTarget.getBoundingClientRect()
             setGlowPosition({
@@ -1329,11 +1332,11 @@ function FinalCta() {
                 Python 3.11+ &middot; MIT licensed &middot; Open source on GitHub
               </p>
               <div className="flex flex-wrap gap-3">
-                <a href="#" className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
+                <a href={`${DOCS}/guides/installation/`} className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
                   Get started
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3l4 4-4 4"/></svg>
                 </a>
-                <a href="#" className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-7 py-3.5 text-sm font-semibold text-text transition-all leading-none hover:bg-elevated hover:shadow-[0_16px_46px_rgba(0,0,0,0.24)]">
+                <a href={DOCS} className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-7 py-3.5 text-sm font-semibold text-text transition-all leading-none hover:bg-elevated hover:shadow-[0_16px_46px_rgba(0,0,0,0.24)]">
                   Read the documentation
                 </a>
               </div>
@@ -1402,17 +1405,37 @@ function FooterSection() {
 
         <div className="grid grid-cols-2 gap-10 py-16 md:grid-cols-4 md:pl-16">
           {[
-            { title: 'Resources', links: ['Documentation', 'Guides', 'Examples', 'Enterprise support'] },
-            { title: 'Tools', links: ['Devtools', 'Deploy', 'Admin', 'CLI'] },
-            { title: 'Socials', links: ['GitHub', 'LinkedIn', 'X (Twitter)', 'Discord'] },
-            { title: 'About', links: ['Releases', 'Contributing', 'Code of Conduct', 'License'] },
+            { title: 'Resources', links: [
+              { label: 'Documentation', href: DOCS },
+              { label: 'Guides', href: `${DOCS}/guides/introduction/` },
+              { label: 'Examples', href: `${DOCS}/community/` },
+              { label: 'Enterprise support', href: '#' },
+            ]},
+            { title: 'Tools', links: [
+              { label: 'Devtools', href: '#' },
+              { label: 'Deploy', href: '#' },
+              { label: 'Admin', href: '#' },
+              { label: 'CLI', href: `${DOCS}/guides/cli/` },
+            ]},
+            { title: 'Socials', links: [
+              { label: 'GitHub', href: GITHUB },
+              { label: 'LinkedIn', href: '#' },
+              { label: 'X (Twitter)', href: '#' },
+              { label: 'Discord', href: '#' },
+            ]},
+            { title: 'About', links: [
+              { label: 'Releases', href: `${GITHUB}/releases` },
+              { label: 'Contributing', href: `${DOCS}/community/contribution-guide/` },
+              { label: 'Code of Conduct', href: `${GITHUB}/blob/main/CODE_OF_CONDUCT.md` },
+              { label: 'License', href: `${GITHUB}/blob/main/LICENSE` },
+            ]},
           ].map(group => (
             <div key={group.title}>
               <h5 className="mb-8 font-mono text-[10px] uppercase tracking-[0.14em] text-dimmed">{group.title}</h5>
               <ul className="flex flex-col gap-5">
                 {group.links.map(link => (
-                  <li key={link}>
-                    <a href="#" className="text-sm font-semibold text-text/90 transition-colors hover:text-primary">{link}</a>
+                  <li key={link.label}>
+                    <a href={link.href} className="text-sm font-semibold text-text/90 transition-colors hover:text-primary">{link.label}</a>
                   </li>
                 ))}
               </ul>
@@ -1426,7 +1449,7 @@ function FooterSection() {
         <div className="flex gap-5">
           <a href="#" className="hover:text-text transition-colors">Privacy</a>
           <a href="#" className="hover:text-text transition-colors">Terms</a>
-          <a href="#" className="hover:text-text transition-colors">GitHub</a>
+          <a href={GITHUB} className="hover:text-text transition-colors">GitHub</a>
         </div>
       </div>
     </footer>
