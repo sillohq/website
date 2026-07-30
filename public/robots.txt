@@ -1,0 +1,27 @@
+# Robots.txt for sillolabs.com
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /search
+
+# Crawl-delay (be respectful to servers)
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Point to sitemap
+Sitemap: https://sillolabs.com/sitemap.xml
+Sitemap: https://sillolabs.com/sitemap-blog.xml
