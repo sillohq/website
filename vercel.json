@@ -9,7 +9,7 @@
 
     "rewrites": [
         {
-            "source": "/about",
+            "source": "/((?!.*\\.).*)",
             "destination": "/index.html"
         }
     ]
