@@ -7,27 +7,9 @@
 
     "trailingSlash": false,
 
-    "redirects": [
-        {
-            "source": "/docs",
-            "destination": "https://docs.sillo.build/guides/introduction/",
-            "permanent": true
-        },
-        {
-            "source": "/docs/:path*",
-            "destination": "https://docs.sillo.build/guides/introduction/",
-            "permanent": true
-        },
-        {
-            "source": "/guides/:path*",
-            "destination": "https://docs.sillo.build/guides/:path*",
-            "permanent": true
-        }
-    ],
-
     "rewrites": [
         {
-            "source": "/((?!.*\\.).*)",
+            "source": "/about",
             "destination": "/index.html"
         }
     ]
