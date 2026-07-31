@@ -1,109 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">
+<!--
+  Only routes this site actually serves belong here. An entry for a page that
+  does not exist is a 404 advertised to search engines, and a sitemap may only
+  list URLs on its own host — the documentation has its own sitemap at
+  https://docs.sillo.build/sitemap-index.xml.
 
-  <!-- Homepage -->
+  The routes come from app/routes/. Add an entry when you add a route.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://sillolabs.com/</loc>
-    <lastmod>2026-07-30</lastmod>
+    <loc>https://sillo.build/</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Documentation -->
   <url>
-    <loc>https://sillolabs.com/docs</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Getting Started -->
-  <url>
-    <loc>https://sillolabs.com/docs/getting-started</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Features -->
-  <url>
-    <loc>https://sillolabs.com/features</loc>
-    <lastmod>2026-07-30</lastmod>
+    <loc>https://sillo.build/about</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-
-  <!-- API Reference -->
-  <url>
-    <loc>https://sillolabs.com/docs/api</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Guides -->
-  <url>
-    <loc>https://sillolabs.com/guides</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Blog -->
-  <url>
-    <loc>https://sillolabs.com/blog</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- GitHub -->
-  <url>
-    <loc>https://github.com/sillohq/core</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Community -->
-  <url>
-    <loc>https://sillolabs.com/community</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- About -->
-  <url>
-    <loc>https://sillolabs.com/about</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Contact -->
-  <url>
-    <loc>https://sillolabs.com/contact</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Legal -->
-  <url>
-    <loc>https://sillolabs.com/privacy</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <url>
-    <loc>https://sillolabs.com/terms</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
   </url>
 
 </urlset>
