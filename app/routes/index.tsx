@@ -14,8 +14,7 @@ import { SiteNav } from '../components/SiteNav'
 import Plasma from '../components/Plasma'
 import ScrollStack, { ScrollStackItem } from '../components/ScrollStack'
 
-const DOCS = import.meta.env.VITE_DOCS_URL ?? 'https://sillo.build'
-const GITHUB = import.meta.env.VITE_GITHUB_URL ?? 'https://github.com/sillohq/core'
+import { DOCS_URL as DOCS, GITHUB_URL as GITHUB } from '../data/links'
 
 export const Route = createFileRoute('/')({
   component: HomePage,

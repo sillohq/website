@@ -19,6 +19,9 @@ type CardNavProps = {
   logo: ReactNode
   logoAlt?: string
   items: CardNavItem[]
+  /** Where the "Get started" button points. */
+  ctaHref: string
+  ctaLabel?: string
   className?: string
   ease?: string
   baseColor?: string
@@ -40,6 +43,8 @@ export default function CardNav({
   logo,
   logoAlt = 'Logo',
   items,
+  ctaHref,
+  ctaLabel = 'Get started',
   className = '',
   ease = 'power3.out',
   baseColor = 'rgba(17,17,18,0.84)',
@@ -186,11 +191,11 @@ export default function CardNav({
           </a>
 
           <a
-            href={import.meta.env.VITE_DOCS_URL ? `${import.meta.env.VITE_DOCS_URL}/guides/installation/` : '#'}
+            href={ctaHref}
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
-            Get started
+            {ctaLabel}
           </a>
         </div>
 

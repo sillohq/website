@@ -1,5 +1,4 @@
-const DOCS = import.meta.env.VITE_DOCS_URL ?? 'https://sillo.build'
-const GITHUB = import.meta.env.VITE_GITHUB_URL ?? 'https://github.com/sillohq/core'
+import { DOCS_LINKS, DOCS_URL as DOCS, GITHUB_URL as GITHUB } from './links'
 
 export const BRAND = {
   name: 'Sillo',
@@ -168,13 +167,13 @@ export const FOOTER_LINKS = {
   framework: [
     { label: 'Documentation', href: DOCS },
     { label: 'GitHub', href: GITHUB },
-    { label: 'Getting Started', href: `${DOCS}/guides/installation/` },
-    { label: 'API Reference', href: `${DOCS}/reference/plugin-api/` },
+    { label: 'Getting Started', href: DOCS_LINKS.installation },
+    { label: 'API Reference', href: DOCS_LINKS.apiReference },
   ],
   community: [
     { label: 'GitHub', href: GITHUB },
     { label: 'Discord', href: '#' },
-    { label: 'Contributing', href: `${DOCS}/community/contribution-guide/` },
+    { label: 'Contributing', href: DOCS_LINKS.contributing },
   ],
   legal: [
     { label: 'Privacy Policy', href: '#' },

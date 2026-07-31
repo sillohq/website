@@ -1,7 +1,5 @@
 import CardNav from './CardNav'
-
-const docsUrl = import.meta.env.VITE_DOCS_URL ?? 'https://sillo.build'
-const githubUrl = import.meta.env.VITE_GITHUB_URL ?? 'https://github.com/sillohq/core'
+import { DOCS_LINKS, DOCS_URL, GITHUB_URL } from '../data/links'
 
 const aboutLinks = [
   { label: 'Company Thesis', href: '/about#philosophy' },
@@ -27,9 +25,9 @@ const navItems = [
     bgColor: '#171719',
     textColor: '#f7f7f5',
     links: [
-      { label: 'Documentation', href: docsUrl, ariaLabel: 'Open documentation' },
-      { label: 'GitHub', href: githubUrl, ariaLabel: 'Open Sillo on GitHub' },
-      { label: 'Get started', href: `${docsUrl}/guides/installation/`, ariaLabel: 'Get started with Sillo' },
+      { label: 'Documentation', href: DOCS_URL, ariaLabel: 'Open documentation' },
+      { label: 'GitHub', href: GITHUB_URL, ariaLabel: 'Open Sillo on GitHub' },
+      { label: 'Get started', href: DOCS_LINKS.installation, ariaLabel: 'Get started with Sillo' },
     ],
   },
   {
@@ -52,6 +50,7 @@ export function SiteNav() {
         )}
         logoAlt="Sillo home"
         items={navItems}
+        ctaHref={DOCS_LINKS.installation}
         baseColor="rgba(17,17,18,0.84)"
         menuColor="#f7f7f5"
         buttonBgColor="#ffffff"
