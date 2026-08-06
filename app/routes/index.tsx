@@ -264,12 +264,12 @@ function HomePage() {
 /* ─── Hero ─── */
 
 const CAPABILITIES = [
-  { name: 'Typed routing with path parameters', icon: RouteIcon },
-  { name: 'Dependency injection for clean handlers', icon: DependencyIcon },
-  { name: 'Request validation with Pydantic models', icon: ValidationIcon },
-  { name: 'Authentication guards and user sessions', icon: AuthIcon },
-  { name: 'Background queues for async work', icon: QueueIcon },
-  { name: 'Record ORM for application data', icon: OrmIcon },
+  { name: 'Typed path parameters into handler arguments', icon: RouteIcon },
+  { name: 'Dependencies resolved in the signature', icon: DependencyIcon },
+  { name: 'Pydantic validation at the route boundary', icon: ValidationIcon },
+  { name: 'One auth= declaration gates and documents', icon: AuthIcon },
+  { name: 'Queues and scheduler in the app lifecycle', icon: QueueIcon },
+  { name: 'Record models and migrations', icon: OrmIcon },
 ]
 
 function Hero() {
@@ -319,7 +319,7 @@ function Hero() {
             {/* Eyebrow */}
             <div className="font-mono text-[11px] text-muted tracking-[0.15em] mb-5 flex items-center gap-1.5">
               <span className="text-dimmed">&lt;</span>
-              <span>PRODUCTIVE PYTHON</span>
+              <span>ONE PRODUCT LANGUAGE</span>
               <span className="text-dimmed">&gt;</span>
               <span className="text-primary">_</span>
               <span className="w-[2px] h-3.5 bg-primary cursor-blink" />
@@ -327,9 +327,16 @@ function Hero() {
 
             {/* Headline */}
             <h2 className="text-text text-3xl md:text-4xl mb-7 max-w-[520px] font-medium leading-tight tracking-tight">
-              Python,<br />
-              batteries included.
+              Batteries included.<br />
+              One design.
             </h2>
+
+            {/* Subhead */}
+            <p className="text-muted text-base leading-relaxed mb-8 max-w-[460px]">
+              The ORM, auth, background work and websockets ship as one framework and
+              share one config model. Declare auth once — it gates the route and writes
+              the OpenAPI spec.
+            </p>
 
             {/* CTA */}
             <div className="mb-9">
@@ -804,7 +811,7 @@ async def list_projects(
   {
     eyebrow: 'SECURED ROUTES',
     title: 'Put the gate on the route.',
-    desc: 'useAuth handles session/JWT scope checks and permissions before the handler runs.',
+    desc: 'One auth= gates the route on permissions and writes its securityScheme into the OpenAPI spec.',
     file: 'routes/applications.py',
     code: `from sillo.auth import useAuth
 from sillo.core.routing import Route
@@ -929,11 +936,11 @@ function OneFramework() {
             <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4">02 / CAPABILITIES</div>
             <h2 className="mb-4">
               One framework.<br />
-              Every foundation.
+              One config model.
             </h2>
             <p className="text-muted text-base leading-relaxed mb-10 max-w-[420px]">
               Every capability is a first-party module with shared configuration,
-              consistent APIs, and common testing utilities. No assembly required.
+              consistent APIs, and one set of testing utilities. Nothing to assemble.
             </p>
             <div className="space-y-1 border-l border-border/70 pl-3">
               {CAPABILITY_KEYS_V2.map((key, i) => {
@@ -1027,11 +1034,11 @@ function SilloMagicSection() {
           <div className="lg:sticky lg:top-24 lg:h-fit lg:self-start">
             <div className="mb-4 font-mono text-[11px] tracking-[0.15em] text-primary">03 / SILLO SYSTEMS</div>
             <h2 className="mb-5 max-w-[440px]">
-              The parts<br />
-              in real code.
+              One idiom,<br />
+              every subsystem.
             </h2>
             <p className="max-w-[420px] text-base leading-relaxed text-muted">
-              Dependency injection, queues, scheduler, Sillo-Inertia, and protected routes with useAuth.
+              Dependency injection, queues, the scheduler, Inertia, and route gates all follow the same shape.
             </p>
             <div className="mt-9 hidden border-l border-border/70 pl-4 font-mono text-[11px] leading-relaxed text-dimmed lg:block">
               Scroll the stack. Read the code.
@@ -1132,9 +1139,9 @@ function ArchitectureSection() {
           <div className="pointer-events-none absolute -bottom-32 left-1/2 h-72 w-3/4 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl transition-all duration-500 group-hover:scale-125 group-hover:bg-primary/20" />
           <div className="relative flex min-h-[288px] flex-col items-center justify-center text-center md:min-h-[360px]">
             <div className="max-w-[960px]">
-              <div className="font-mono text-[11px] text-primary tracking-[0.18em] mb-5">04 / BUILD CLEANER</div>
+              <div className="font-mono text-[11px] text-primary tracking-[0.18em] mb-5">04 / ONE FOUNDATION</div>
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold leading-[0.96] tracking-[-0.06em] text-text">
-                Stop stitching tech together when Sillo can ship the foundation.
+                The whole foundation is one product, not eleven packages.
               </h2>
             </div>
             <div className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
@@ -1160,7 +1167,7 @@ const ENTERPRISE_ITEMS = [
   },
   {
     title: 'Authentication',
-    desc: 'Session and token auth with role hierarchies.',
+    desc: 'JWT, session, and API-key backends, one contract.',
   },
   {
     title: 'Background work',
@@ -1168,24 +1175,24 @@ const ENTERPRISE_ITEMS = [
   },
   {
     title: 'Data access',
-    desc: 'Async ORM with migrations, seeders, and query builder.',
+    desc: 'Record models, migrations, transactions, and factories.',
   },
   {
     title: 'Security',
-    desc: 'CORS, CSRF, rate limiting, input validation.',
+    desc: 'CORS, CSRF, rate limiting, and Shield.',
   },
   {
-    title: 'Observability',
-    desc: 'Structured logging, metrics, request tracing.',
+    title: 'HTTP correctness',
+    desc: 'Full RFC 9110 Range support — single, multi-range, suffix, and 416 — with ETags, conditional requests, and content negotiation as middleware.',
     span: 'row-span-2',
   },
   {
     title: 'Testing',
-    desc: 'Test client, factories, database transactions.',
+    desc: 'Sync and async test clients, factories, transactions.',
   },
   {
-    title: 'Deployment',
-    desc: 'Production-ready defaults, env configuration.',
+    title: 'Admin panel',
+    desc: 'A model admin at /admin/ on your own user model.',
   },
 ]
 
@@ -1195,8 +1202,8 @@ function EnterpriseSection() {
       <div className="max-w-[1520px] mx-auto px-8 md:px-12">
         <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4">05 / FOUNDATIONS</div>
         <h2 className="mb-12">
-          Built for applications<br />
-          that become products.
+          Built for the parts<br />
+          that are hard to add later.
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[minmax(170px,auto)] overflow-hidden rounded-2xl border border-border bg-bg/45">
           {ENTERPRISE_ITEMS.map((item, i) => (
@@ -1268,7 +1275,7 @@ function FinalCta() {
   const [copiedInstall, setCopiedInstall] = useState(false)
 
   const copyInstallCommand = () => {
-    void navigator.clipboard.writeText('uv add sillo')
+    void navigator.clipboard.writeText('uv add sillo-framework')
     setCopiedInstall(true)
     window.setTimeout(() => setCopiedInstall(false), 1600)
   }
@@ -1305,7 +1312,7 @@ function FinalCta() {
               </div>
               <div className="relative p-8 md:p-12 font-mono">
                 <div className="flex items-center justify-between gap-4 text-base md:text-lg text-text">
-                  <span><span className="text-primary">$</span> uv add sillo</span>
+                  <span><span className="text-primary">$</span> uv add sillo-framework</span>
                   <button
                     type="button"
                     onClick={(event) => {
@@ -1328,7 +1335,7 @@ function FinalCta() {
                 Sillo handles the foundation.
               </h2>
               <p className="text-muted text-base leading-relaxed mb-9 max-w-[520px]">
-                Python 3.11+ &middot; MIT licensed &middot; Open source on GitHub
+                Python 3.10+ &middot; BSD 3-Clause &middot; Open source on GitHub
               </p>
               <div className="flex flex-wrap gap-3">
                 <a href={`${DOCS}/guides/installation/`} className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
@@ -1353,7 +1360,7 @@ function FooterSection() {
   const [copiedFooterCommand, setCopiedFooterCommand] = useState(false)
 
   const copyFooterCommand = () => {
-    void navigator.clipboard.writeText('uv add sillo')
+    void navigator.clipboard.writeText('uv add sillo-framework')
     setCopiedFooterCommand(true)
     window.setTimeout(() => setCopiedFooterCommand(false), 1600)
   }
@@ -1376,7 +1383,7 @@ function FooterSection() {
       >
         <div className="mx-auto max-w-[1520px]">
           <div className="font-mono text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.9] tracking-[-0.08em] text-white/10 transition-colors duration-300 group-hover:text-white/42">
-            <span className="text-white/28 group-hover:text-white/80">$</span> uv add sillo
+            <span className="text-white/28 group-hover:text-white/80">$</span> uv add sillo-framework
           </div>
           <div className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-dimmed transition-colors group-hover:text-muted">
             {'{ '} {copiedFooterCommand ? 'Copied' : 'Click. Copy. Build'} {' }'}
@@ -1388,7 +1395,7 @@ function FooterSection() {
         <div className="border-b border-border py-16 md:border-b-0 md:border-r md:pr-16">
           <h3 className="mb-6 text-2xl font-semibold tracking-[-0.04em] text-text">Want to stay in touch?</h3>
           <p className="mb-9 max-w-[380px] font-mono text-sm leading-relaxed text-muted">
-            Join our newsletter for release notes, framework updates and product news.
+            Release notes and framework updates, sent when a version ships.
           </p>
           <form className="flex max-w-[420px] overflow-hidden rounded-full border border-border-strong bg-white/10 p-1">
             <input
@@ -1408,24 +1415,24 @@ function FooterSection() {
               { label: 'Documentation', href: DOCS },
               { label: 'Guides', href: `${DOCS}/guides/introduction/` },
               { label: 'Examples', href: `${DOCS}/community/` },
-              { label: 'Enterprise support', href: '#' },
+              { label: 'API reference', href: `${DOCS}/reference/plugin-api/` },
             ]},
             { title: 'Tools', links: [
-              { label: 'Devtools', href: '#' },
-              { label: 'Deploy', href: '#' },
-              { label: 'Admin', href: '#' },
-              { label: 'CLI', href: `${DOCS}/guides/cli/` },
+              { label: 'Admin panel', href: `${DOCS}/guides/start/admin/` },
+              { label: 'Console', href: `${DOCS}/guides/start/console/` },
+              { label: 'Test clients', href: `${DOCS}/guides/start/testing/` },
+              { label: 'OpenAPI', href: `${DOCS}/guides/openapi/` },
             ]},
-            { title: 'Socials', links: [
+            { title: 'Project', links: [
               { label: 'GitHub', href: GITHUB },
-              { label: 'LinkedIn', href: '#' },
-              { label: 'X (Twitter)', href: '#' },
-              { label: 'Discord', href: '#' },
+              { label: 'Issues', href: `${GITHUB}/issues` },
+              { label: 'Discussions', href: `${GITHUB}/discussions` },
+              { label: 'Releases', href: `${GITHUB}/releases` },
             ]},
             { title: 'About', links: [
-              { label: 'Releases', href: `${GITHUB}/releases` },
+              { label: 'Installation', href: `${DOCS}/guides/installation/` },
               { label: 'Contributing', href: `${DOCS}/community/contribution-guide/` },
-              { label: 'Code of Conduct', href: `${GITHUB}/blob/main/CODE_OF_CONDUCT.md` },
+              { label: 'Sillo', href: '/about' },
               { label: 'License', href: `${GITHUB}/blob/main/LICENSE` },
             ]},
           ].map(group => (
@@ -1444,10 +1451,10 @@ function FooterSection() {
       </div>
 
       <div className="relative mx-auto flex max-w-[1520px] flex-col gap-4 px-8 py-8 font-mono text-[10px] uppercase tracking-[0.08em] text-dimmed md:flex-row md:items-center md:justify-between md:px-12">
-        <div>Released under the MIT License / Copyright &copy; {new Date().getFullYear()} Sillo</div>
+        <div>Released under the BSD 3-Clause License / Copyright &copy; {new Date().getFullYear()} Sillo</div>
         <div className="flex gap-5">
-          <a href="#" className="hover:text-text transition-colors">Privacy</a>
-          <a href="#" className="hover:text-text transition-colors">Terms</a>
+          <a href={DOCS} className="hover:text-text transition-colors">Docs</a>
+          <a href={`${GITHUB}/releases`} className="hover:text-text transition-colors">Releases</a>
           <a href={GITHUB} className="hover:text-text transition-colors">GitHub</a>
         </div>
       </div>

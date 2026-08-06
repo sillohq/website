@@ -9,48 +9,37 @@ export const Route = createFileRoute('/about')({
 const ABOUT_TABS = [
   {
     id: 'philosophy',
-    label: 'Company Thesis',
-    eyebrow: '01 / COMPANY THESIS',
-    title: 'Building the enterprise developer platform for serious software.',
-    intro: 'Sillo exists to make the complete path from first route to production operations coherent, productive, and enterprise-ready.',
+    label: 'What Sillo is',
+    eyebrow: '01 / WHAT SILLO IS',
+    title: 'One product language for the whole async Python stack.',
+    intro: 'Sillo is one framework where the ORM, auth, background work, websockets and HTTP layer are designed against each other and share one config model.',
     body: [
-      'Modern teams should not have to assemble a fragile collection of unrelated tools before they can build a reliable business application. A simple product quickly needs validation, migrations, permissions, background jobs, email, files, caching, events, WebSockets, audit trails, deployment, secrets, logs, health checks, alerting, billing, and team access. Each concern often arrives with a different package, dashboard, interface, failure mode, and upgrade cycle.',
-      'Sillo is a developer tooling company building an integrated platform for the full lifecycle of enterprise software. At the centre is Sillo Core: a productive Python foundation for web applications, APIs, real-time systems, workloads, and business platforms. Around that core, Sillo is designed to grow into first-party products for visual administration, managed deployment, server operations, identity, observability, templates, and integrations.',
-      'The ambition is larger than releasing another web framework. Sillo exists to reduce the operational tax teams repeatedly pay: choosing incompatible packages, rebuilding authentication and organisation models, wiring queues and schedulers, inventing deployment standards, assembling monitoring tools, and maintaining internal infrastructure that does not differentiate the business.',
-      'Our point of view is direct: the market does not need another thin wrapper around an HTTP server. It needs a framework company willing to own the boring but essential path from development to operations. Sillo should be opinionated at the defaults, extensible at the boundaries, and transparent underneath. Convenience must not mean mystery; enterprise readiness must not mean unnecessary ceremony.',
-      'The open framework is the trust foundation. A developer should be able to begin with Sillo Core, grow into a structured team architecture, deploy through Sillo-managed or self-managed infrastructure, add identity and observability, and purchase reusable templates or integrations without abandoning the ecosystem.',
-      'The product family is intentionally layered. Sillo Core establishes the programming model. Miko turns application records, workflows, permissions, and operational actions into governed interfaces. Nira supplies reusable identity, organisations, roles, permissions, and audit history. Zoro gives teams a managed path to production. Koda brings Sillo deployment conventions to customer-controlled servers. Piko connects logs, queues, jobs, releases, and application health to the Sillo application model.',
-      'These products should integrate deeply but remain valuable independently. A company may use Sillo Core with its existing infrastructure, run Koda without Zoro, connect Piko to a self-hosted application, or adopt Nira for identity. Integration should reward customers, not trap them. Strong defaults should make the common path fast; documented contracts should keep advanced teams in control.',
-      'Sillo’s operating principles are developer happiness, strong defaults with open boundaries, enterprise without theatre, operations as part of the product story, open source as a trust engine, compatibility as a promise, documentation as part of the interface, and an ecosystem that lets third-party creators, agencies, educators, and infrastructure partners build alongside Sillo.',
-      'What Sillo will not become matters as much as what it will become. It should not be a collection of products that share a logo but not an architecture. It should not be a closed cloud that requires teams to surrender control of applications or data. It should not optimise impressive demos while neglecting upgrades, debugging, security, and production failure modes.',
-      'The long-term promise is simple: help developers move from an idea to dependable enterprise software with fewer disconnected decisions, clearer systems, and tools that grow with their ambition. Sillo earns that promise through openness, excellent engineering, responsible operations, and a business model aligned with long-term developer success.',
+      'A product that starts as one route quickly needs validation, migrations, permissions, background jobs, mail, caching, events, WebSockets, and an admin. Assembled from separate packages, each of those arrives with its own interface, its own configuration style, its own failure mode, and its own upgrade cycle. The cost is rarely the install. It is the seams between them.',
+      'Sillo removes the seams. Record, auth, Work, and websockets are first-party modules built against one another: they share a configuration model, a testing story, and a set of naming conventions. Reading one subsystem teaches you how to read the next.',
+      'That coherence shows up in small places. One auth= declaration gates a route and writes its securityScheme into the OpenAPI spec, so the gate and the document cannot drift apart. The scheduler registers on app.state and starts with the application lifecycle. Range requests, ETags, and content negotiation are middleware rather than something each project rewrites.',
+      'Sillo is opinionated at the defaults and open at the boundaries. The common path is short: silloApp, a route, a request_model, a Record model. The advanced path is documented rather than hidden — auth backends, middleware, cache drivers, session stores, and hashing algorithms are all contracts you can implement yourself.',
+      'Trade-offs are decisions, not gaps. Sillo ships no command-line interface: the operations a CLI would expose are plain functions in sillo.record.commands and sillo.users.commands, so the argument parser belongs to whatever consumes them. A project brings its own console.py. The CLI is yours, not ours.',
+      'The admin panel follows the same rule. It registers your models and authenticates against your own user model instead of shipping a parallel user table, because a second identity system is exactly the kind of seam Sillo exists to remove.',
+      'Modules stay useful on their own. Point Record at SQLite or Postgres, swap the cache backend from memory to Redis, bring your own session store, serve a React or Vue frontend through Inertia, or add a Strawberry GraphQL endpoint. Strong defaults make the common path fast; documented contracts keep advanced teams in control.',
+      'The operating principles are short: strong defaults with open boundaries, convenience without mystery, documentation as part of the interface, and compatibility as a promise. Anything the framework does on your behalf is something you can read, override, or replace.',
+      'What Sillo avoids matters as much as what it ships. Not a set of modules that share a logo but not an architecture. Not convenience that turns into mystery the first time something breaks. Not impressive demos at the expense of upgrades, debugging, security, and production failure modes.',
+      'The result is fewer disconnected decisions. You learn one set of conventions and apply them across HTTP, data, auth, and background work, and the framework holds those pieces together instead of leaving the joins to you.',
     ],
   },
   {
-    id: 'roadmap',
-    label: 'Strategic Roadmap',
-    eyebrow: '02 / STRATEGIC ROADMAP',
-    title: 'A phase-based path from open framework to enterprise platform.',
-    intro: 'The roadmap advances by evidence, quality, adoption, and operational readiness rather than calendar theatre.',
-    body: [
-      'Phase 1 establishes the technical constitution: routing, request lifecycle, middleware, dependency injection, configuration, records, migrations, security foundations, testing, CLI, documentation architecture, release automation, adapter contracts, compatibility policy, contribution process, and security governance.',
-      'Phase 2 makes the core production-ready: queues, workers, scheduling, events, storage, mail, caching, real-time capabilities, health checks, structured logging, deployment specifications, reference applications, upgrade tooling, production guides, security review, and failure testing.',
-      'Phase 3 turns Sillo applications into operable business systems through Miko: schema-aware resources, forms, filters, actions, dashboards, permissions, extension points, audit events, organisation boundaries, accessibility, and customisation standards.',
-      'Phase 4 brings controlled infrastructure through Koda: server enrolment, environment preparation, release orchestration, domains, TLS, processes, workers, backups, health checks, rollback, policy, and audit foundations for customer-owned servers.',
-      'Phase 5 creates the managed cloud path through Zoro: build and release pipelines, application plans, managed resources, preview environments, scaling, billing, support operations, service objectives, incident procedures, and framework-aware deployment feedback.',
-      'Phase 6 productises reusable identity through Nira: framework SDKs, hosted identity, organisations, roles, permissions, invitations, audit records, security operations, and eventually enterprise federation after independent security review.',
-      'Phase 7 creates operational intelligence through Piko: logs, runtime events, queue and job views, errors, deployment correlation, health, alerts, retention, access policies, redaction, and cost controls.',
-      'Phase 8 opens the ecosystem through marketplaces: publisher tools, package verification, billing, licensing, compatibility testing, discovery, reviews, dispute handling, security response, official templates, and official integrations.',
-      'Phase 9 and beyond expand enterprise readiness: long-term support, enterprise contracts, SSO, advanced audit, dedicated environments, regional data controls, procurement documentation, partner delivery, customer success, certification, global events, and industry solution kits.',
-      'Every phase should be reviewed through four lenses: user evidence, technical quality, commercial viability, and organisational capacity. Public roadmap language should distinguish ideas, planned work, active development, and released commitments.',
-    ],
+    id: 'ships',
+    label: 'What ships',
+    eyebrow: '02 / WHAT SHIPS',
+    title: 'Every subsystem in the framework, and what each one covers.',
+    intro: 'Four groups, one set of conventions. Every module is first-party, configured the same way, and exercised by the same test clients.',
+    body: [],
   },
   {
     id: 'brand',
     label: 'Brand',
     eyebrow: '03 / BRAND',
-    title: 'A serious identity system for an enterprise developer platform.',
-    intro: 'Use the Sillo marks, colors, and type rules when writing about the framework, platform products, community assets, events, or partner materials.',
+    title: 'The marks, colours, and type rules Sillo is written in.',
+    intro: 'Use these when writing about Sillo in documentation, articles, community assets, conference talks, or integration materials.',
     body: [],
   },
 ]
@@ -78,47 +67,47 @@ const BRAND_FONTS = [
 ]
 
 const PHILOSOPHY_SECTIONS = [
-  { title: 'The Enterprise Tooling Gap', paragraphs: ABOUT_TABS[0].body.slice(0, 3) },
-  { title: 'The Sillo Platform', paragraphs: ABOUT_TABS[0].body.slice(3, 7) },
+  { title: 'The Seams', paragraphs: ABOUT_TABS[0].body.slice(0, 3) },
+  { title: 'How Sillo Is Built', paragraphs: ABOUT_TABS[0].body.slice(3, 7) },
   { title: 'Principles And Boundaries', paragraphs: ABOUT_TABS[0].body.slice(7) },
 ]
 
-const ROADMAP_COLUMNS = [
+const SUBSYSTEM_COLUMNS = [
   {
-    title: 'Planning',
-    tag: 'Designed next',
+    title: 'HTTP',
+    tag: 'Request and response',
     items: [
-      ['Technical constitution', 'Scope, extension contracts, compatibility, governance, security process, and open-source boundaries.'],
-      ['Design partners', 'A small set of real applications used to validate recurring production, identity, deployment, and observability problems.'],
-      ['Shared platform schemas', 'Common models for applications, environments, releases, identities, jobs, events, and operational metadata.'],
-      ['Evidence gates', 'Clear criteria for when a product moves from exploration to committed platform development.'],
+      ['Routing', 'Decorator and router-based routes, mountable subapps, typed path parameters, and lifecycle hooks on silloApp.'],
+      ['Responses', 'A fluent builder for JSON, text, HTML, files, streams, redirects, cookies, headers, and status codes.'],
+      ['HTTP correctness', 'Full RFC 9110 Range support — single, multi-range, suffix, and 416 — with ETags, conditional requests, and Accept-driven negotiation.'],
+      ['Middleware', 'CORS, CSRF, rate limiting, Shield, gzip, URL normalization, sessions, and ETags, plus a first-party outbound HTTP client.'],
     ],
   },
   {
-    title: 'In Progress',
-    tag: 'Being shaped',
+    title: 'Data',
+    tag: 'Record',
     items: [
-      ['Production-ready core', 'Hardening routing, lifecycle, middleware, DI, records, queues, scheduling, caching, security, testing, and docs.'],
-      ['Miko foundations', 'The admin and operations studio for records, workflows, permissions, dashboards, and governed internal actions.'],
-      ['Koda/Zoro contracts', 'Deployment metadata, release specifications, health checks, workers, scheduler topology, and rollback conventions.'],
-      ['Company narrative', 'Aligning website, documentation, launch content, partner materials, and contributor onboarding around the same thesis.'],
+      ['Models', 'Record on Tortoise ORM: fields, casting, collections, scopes, events, transactions, and factories.'],
+      ['Migrations', 'Schema migrations as built-in commands, driven by the functions in sillo.record.commands.'],
+      ['Serialization', 'Model-to-payload conversion with casting rules, and declared response models on routes.'],
+      ['Pagination', 'First-class paginated responses, from the query through to the generated OpenAPI schema.'],
     ],
   },
   {
-    title: 'Pending',
-    tag: 'Open queue',
+    title: 'Auth and security',
+    tag: 'Declared once',
     items: [
-      ['Nira identity', 'Reusable authentication, organisations, roles, permissions, invitations, audit history, and enterprise federation path.'],
-      ['Piko observability', 'Logs, queue health, failed jobs, deployments, alerts, retention controls, and framework-native operating views.'],
-      ['Marketplace rules', 'Publisher verification, compatibility checks, licensing, quality review, security response, and discovery fairness.'],
-      ['Enterprise package', 'Supported versions, security evidence, reliability practices, privacy controls, procurement docs, and support boundaries.'],
+      ['Backends', 'JWT, session, and API-key backends behind one contract, with a base user model, managers, and account commands.'],
+      ['useAuth', 'One auth= declaration gates the route and writes its securityScheme into the OpenAPI spec, with all-of, any-of, and optional modes.'],
+      ['Permissions', 'DB-backed named permissions with direct assignment, group inheritance, and one-call caching.'],
+      ['Sessions', 'Signed-cookie and file session backends with middleware, plus configurable password hashing.'],
     ],
   },
   {
-    title: 'Done',
+    title: 'Beyond the request',
     tag: 'Shipped in Sillo',
     items: [
-      ['Sillo Core foundation', 'Routing, request validation, dependency injection, authentication, Record ORM, queues, scheduling, caching, sessions, middleware, responses, OpenAPI, testing utilities, and WebSocket foundations are already part of the open framework.'],
+      ['Work, real-time, and tooling', 'Background tasks, job queues, and a scheduler as one subsystem. An event emitter with pluggable transports. WebSocket consumers, channels, groups, and connection history. Pluggable cache backends and a mail client. Alongside them: a model admin at /admin/ on your own user model, sync and async test clients, dependency injection through Depend, Inertia for React and Vue, Strawberry GraphQL, and server-side templating.'],
     ],
   },
 ]
@@ -162,7 +151,7 @@ function AboutPage() {
           <div className="mb-10">
             <div className="font-mono text-[11px] text-primary tracking-[0.18em] mb-4">ABOUT SILLO</div>
             <p className="text-sm leading-relaxed text-muted">
-              Principles and product direction for the framework.
+              Principles, subsystems, and brand assets for the framework.
             </p>
           </div>
           <div className="border-l border-border/70 pl-3">
@@ -192,7 +181,7 @@ function AboutPage() {
           </div>
 
           {activeTab === 'philosophy' && <PhilosophyContent />}
-          {activeTab === 'roadmap' && <RoadmapBoard />}
+          {activeTab === 'ships' && <SubsystemBoard />}
           {activeTab === 'brand' && <BrandSection copiedBrand={copiedBrand} copyText={copyText} copySvg={copySvg} />}
         </div>
       </section>
@@ -222,10 +211,10 @@ function PhilosophyContent() {
   )
 }
 
-function RoadmapBoard() {
+function SubsystemBoard() {
   return (
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
-      {ROADMAP_COLUMNS.map(column => (
+      {SUBSYSTEM_COLUMNS.map(column => (
         <section key={column.title} className="min-w-0 rounded-2xl bg-surface/55 p-4 shadow-[0_26px_90px_rgba(0,0,0,0.25)]">
           <div className="mb-4 flex items-center justify-between px-2 py-2">
             <div>

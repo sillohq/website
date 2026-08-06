@@ -2,11 +2,11 @@ import CardNav from './CardNav'
 import { DOCS_LINKS, DOCS_URL, GITHUB_URL } from '../data/links'
 
 const aboutLinks = [
-  { label: 'Company Thesis', href: '/about#philosophy' },
-  { label: 'Strategic Roadmap', href: '/about#roadmap' },
+  { label: 'What Sillo is', href: '/about#philosophy' },
+  { label: 'What ships', href: '/about#ships' },
   { label: 'Brand', href: '/about#brand' },
-  { label: 'Platform Vision', href: '/about#philosophy' },
-  { label: 'Ecosystem', href: '/about#roadmap' },
+  { label: 'Design principles', href: '/about#philosophy' },
+  { label: 'Subsystems', href: '/about#ships' },
 ]
 
 const navItems = [
@@ -15,9 +15,9 @@ const navItems = [
     bgColor: '#111112',
     textColor: '#f7f7f5',
     links: [
-      { label: 'Capabilities', href: '/#', ariaLabel: 'View framework capabilities' },
-      { label: 'Architecture', href: '/#', ariaLabel: 'View architecture section' },
-      { label: 'Enterprise', href: '/#', ariaLabel: 'View enterprise section' },
+      { label: 'Capabilities', href: `${DOCS_URL}/guides/introduction/`, ariaLabel: 'Read what Sillo ships' },
+      { label: 'Authentication', href: `${DOCS_URL}/guides/authentication/`, ariaLabel: 'Read the authentication guide' },
+      { label: 'Background work', href: `${DOCS_URL}/guides/work/`, ariaLabel: 'Read the background work guide' },
     ],
   },
   {

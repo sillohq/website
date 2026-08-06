@@ -1,7 +1,7 @@
 {
-  "name": "Sillo - The Productive Python Web Framework",
+  "name": "Sillo - The batteries-included async Python framework",
   "short_name": "Sillo",
-  "description": "An async Python web framework for serious APIs, web applications, real-time systems, and business backends.",
+  "description": "An async Python web framework where the ORM, auth, background work, websockets and HTTP layer are one product, sharing one config model.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
