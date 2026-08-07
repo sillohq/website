@@ -30,8 +30,8 @@ const ABOUT_TABS = [
     id: 'ships',
     label: 'What ships',
     eyebrow: '02 / WHAT SHIPS',
-    title: 'Every subsystem in the framework, and what each one covers.',
-    intro: 'Four groups, one set of conventions. Every module is first-party, configured the same way, and exercised by the same test clients.',
+    title: 'What is shipped, what is in flight, and what is next.',
+    intro: 'The working board for the framework — every subsystem tracked in the open, from planning to completed.',
     body: [],
   },
   {
@@ -72,42 +72,58 @@ const PHILOSOPHY_SECTIONS = [
   { title: 'Principles And Boundaries', paragraphs: ABOUT_TABS[0].body.slice(7) },
 ]
 
-const SUBSYSTEM_COLUMNS = [
+const KANBAN_COLUMNS = [
   {
-    title: 'HTTP',
-    tag: 'Request and response',
+    title: 'Planning',
+    tag: 'Scoped, not started',
+    dot: 'bg-dimmed',
+    pulse: false,
     items: [
-      ['Routing', 'Decorator and router-based routes, mountable subapps, typed path parameters, and lifecycle hooks on silloApp.'],
-      ['Responses', 'A fluent builder for JSON, text, HTML, files, streams, redirects, cookies, headers, and status codes.'],
-      ['HTTP correctness', 'Full RFC 9110 Range support — single, multi-range, suffix, and 416 — with ETags, conditional requests, and Accept-driven negotiation.'],
-      ['Middleware', 'CORS, CSRF, rate limiting, Shield, gzip, URL normalization, sessions, and ETags, plus a first-party outbound HTTP client.'],
+      ['Mail', 'Templated mail', 'A mail client with queued delivery, built on the Work subsystem.'],
+      ['Events', 'Redis event transport', 'A Redis transport for the emitter, alongside the in-memory default.'],
+      ['Sessions', 'More session stores', 'Backends beyond signed-cookie and file, behind the same contract.'],
+      ['Templating', 'Server-side templating', 'Rendering helpers for HTML responses, with escaping by default.'],
+      ['Testing', 'Streaming test coverage', 'Sync and async test clients covering websockets and streamed responses.'],
     ],
   },
   {
-    title: 'Data',
-    tag: 'Record',
+    title: 'In Progress',
+    tag: 'Being built',
+    dot: 'bg-primary',
+    pulse: true,
     items: [
-      ['Models', 'Record on Tortoise ORM: fields, casting, collections, scopes, events, transactions, and factories.'],
-      ['Migrations', 'Schema migrations as built-in commands, driven by the functions in sillo.record.commands.'],
-      ['Serialization', 'Model-to-payload conversion with casting rules, and declared response models on routes.'],
-      ['Pagination', 'First-class paginated responses, from the query through to the generated OpenAPI schema.'],
+      ['Work', 'Queues and workers', 'Durable background jobs as one subsystem with the scheduler.'],
+      ['Frontend', 'Inertia', 'Server-driven React and Vue frontends, served by the framework.'],
+      ['Cache', 'Cache backends', 'Pluggable drivers, from in-memory to Redis, behind one interface.'],
+      ['GraphQL', 'GraphQL endpoint', 'A Strawberry endpoint mounted beside the HTTP routes.'],
     ],
   },
   {
-    title: 'Auth and security',
-    tag: 'Declared once',
+    title: 'Review',
+    tag: 'Under review',
+    dot: 'bg-amber-400',
+    pulse: false,
     items: [
-      ['Backends', 'JWT, session, and API-key backends behind one contract, with a base user model, managers, and account commands.'],
-      ['useAuth', 'One auth= declaration gates the route and writes its securityScheme into the OpenAPI spec, with all-of, any-of, and optional modes.'],
-      ['Permissions', 'DB-backed named permissions with direct assignment, group inheritance, and one-call caching.'],
-      ['Sessions', 'Signed-cookie and file session backends with middleware, plus configurable password hashing.'],
+      ['Admin', 'Admin panel', 'A model admin at /admin/ that authenticates against your own user model.'],
+      ['Tooling', 'sillo-start', 'New projects scaffolded from the starter repository, personalised on fetch.'],
+      ['Work', 'Scheduler', 'Cron-style jobs registered on app.state and started by the app lifecycle.'],
     ],
   },
   {
-    title: 'Beyond the request',
-    tag: 'Shipped in Sillo',
+    title: 'Completed',
+    tag: 'Shipped',
+    dot: 'bg-emerald-400',
+    pulse: false,
     items: [
-      ['Work, real-time, and tooling', 'Background tasks, job queues, and a scheduler as one subsystem. An event emitter with pluggable transports. WebSocket consumers, channels, groups, and connection history. Pluggable cache backends and a mail client. Alongside them: a model admin at /admin/ on your own user model, sync and async test clients, dependency injection through Depend, Inertia for React and Vue, Strawberry GraphQL, and server-side templating.'],
+      ['HTTP', 'Routing and lifecycle', 'Decorator and router-based routes, mountable subapps, typed path parameters.'],
+      ['HTTP', 'Response builder', 'JSON, text, HTML, files, streams, redirects, and cookies in one fluent API.'],
+      ['HTTP', 'HTTP correctness', 'RFC 9110 ranges, ETags, conditional requests, and content negotiation.'],
+      ['Record', 'Record models', 'Active-record fields, casting, scopes, events, and transactions.'],
+      ['Record', 'Migrations', 'Schema migrations as built-in commands over sillo.record.commands.'],
+      ['Auth', 'Auth backends', 'JWT, session, and API-key behind one contract — auth= gates the route and writes its securityScheme.'],
+      ['Auth', 'Permissions', 'DB-backed named permissions with group inheritance and one-call caching.'],
+      ['OpenAPI', 'OpenAPI', 'The spec is generated from your routes and declared response models.'],
+      ['Real-time', 'WebSockets', 'Consumers, channels, groups, and connection history.'],
     ],
   },
 ]
@@ -181,7 +197,7 @@ function AboutPage() {
           </div>
 
           {activeTab === 'philosophy' && <PhilosophyContent />}
-          {activeTab === 'ships' && <SubsystemBoard />}
+          {activeTab === 'ships' && <KanbanBoard />}
           {activeTab === 'brand' && <BrandSection copiedBrand={copiedBrand} copyText={copyText} copySvg={copySvg} />}
         </div>
       </section>
@@ -211,23 +227,29 @@ function PhilosophyContent() {
   )
 }
 
-function SubsystemBoard() {
+function KanbanBoard() {
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
-      {SUBSYSTEM_COLUMNS.map(column => (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {KANBAN_COLUMNS.map(column => (
         <section key={column.title} className="min-w-0 rounded-2xl bg-surface/55 p-4 shadow-[0_26px_90px_rgba(0,0,0,0.25)]">
-          <div className="mb-4 flex items-center justify-between px-2 py-2">
+          <div className="mb-4 flex items-start justify-between px-2 py-2">
             <div>
-              <h2 className="text-xl font-semibold tracking-[-0.04em] text-text">{column.title}</h2>
+              <div className="flex items-center gap-2.5">
+                <span className={`h-2 w-2 rounded-full ${column.dot}${column.pulse ? ' motion-safe:animate-pulse' : ''}`} />
+                <h2 className="text-xl font-semibold tracking-[-0.04em] text-text">{column.title}</h2>
+              </div>
               <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-dimmed">{column.tag}</div>
             </div>
+            <span className="rounded-full border border-border/70 px-2.5 py-1 font-mono text-[10px] text-muted">
+              {column.items.length}
+            </span>
           </div>
           <div className="space-y-3">
-            {column.items.map(([title, description]) => (
+            {column.items.map(([tag, title, description]) => (
               <article key={title} className="group rounded-xl bg-bg/82 p-5 transition-colors hover:bg-elevated">
                 <div className="mb-5 flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">{column.title}</span>
-                  <span className="h-2 w-2 rounded-full bg-primary/70" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">{tag}</span>
+                  <span className={`h-1.5 w-1.5 rounded-full ${column.dot}`} />
                 </div>
                 <h3 className="mb-3 text-lg font-semibold tracking-[-0.04em] text-text">{title}</h3>
                 <p className="text-sm leading-relaxed text-muted">{description}</p>
