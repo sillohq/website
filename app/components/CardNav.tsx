@@ -1,4 +1,4 @@
-import { type KeyboardEvent as ReactKeyboardEvent, type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { type ComponentType, type KeyboardEvent as ReactKeyboardEvent, type ReactNode, type SVGProps, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import './CardNav.css'
 
@@ -6,14 +6,14 @@ type CardNavLink = {
   label: string
   href: string
   ariaLabel: string
-  /** Optional second line inside the box. */
+  /** One short line under the label, saying what is there. */
   description?: string
+  /** Line icon for the box, from code-icons. */
+  icon?: ComponentType<SVGProps<SVGSVGElement>>
 }
 
 type CardNavItem = {
   label: string
-  bgColor: string
-  textColor: string
   links: CardNavLink[]
 }
 
@@ -198,20 +198,29 @@ export default function CardNav({
         >
           {active && (
             <div className="card-nav-boxes">
-              {active.links.map((link) => (
-                <a
-                  key={link.label}
-                  className="nav-box"
-                  href={link.href}
-                  aria-label={link.ariaLabel}
-                  onClick={() => setOpenIndex(null)}
-                  style={{ backgroundColor: active.bgColor, color: active.textColor }}
-                >
-                  <span className="nav-box-label">{link.label}</span>
-                  {link.description && <span className="nav-box-description">{link.description}</span>}
-                  <ArrowIcon />
-                </a>
-              ))}
+              {active.links.map((link) => {
+                const Icon = link.icon
+                return (
+                  <a
+                    key={link.label}
+                    className="nav-box"
+                    href={link.href}
+                    aria-label={link.ariaLabel}
+                    onClick={() => setOpenIndex(null)}
+                  >
+                    <span className="nav-box-head">
+                      {Icon && (
+                        <span className="nav-box-tile">
+                          <Icon className="nav-box-glyph" />
+                        </span>
+                      )}
+                      <ArrowIcon />
+                    </span>
+                    <span className="nav-box-label">{link.label}</span>
+                    {link.description && <span className="nav-box-description">{link.description}</span>}
+                  </a>
+                )
+              })}
             </div>
           )}
         </div>

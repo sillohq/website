@@ -120,3 +120,87 @@ export function ObservabilityIcon(props: IconProps) {
     </svg>
   )
 }
+
+/* ─── Navigation ─── */
+
+export function LayersIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M12 3.5 3.5 8l8.5 4.5L20.5 8 12 3.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M3.5 12.5 12 17l8.5-4.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
+      <path d="M3.5 16.5 12 21l8.5-4.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" opacity="0.3" />
+    </svg>
+  )
+}
+
+export function BookIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M4 4.5h5a3 3 0 0 1 3 3V20a2.5 2.5 0 0 0-2.5-2.5H4v-13Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M20 4.5h-5a3 3 0 0 0-3 3V20a2.5 2.5 0 0 1 2.5-2.5H20v-13Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" opacity="0.5" />
+    </svg>
+  )
+}
+
+export function GithubIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M9.5 20.2c-4 1.2-4-2.1-5.5-2.5m11 4.3v-3.4c0-1 .1-1.4-.5-2 2.3-.25 4.5-1.15 4.5-5a3.9 3.9 0 0 0-1.1-2.7 3.6 3.6 0 0 0-.1-2.7s-.9-.25-2.9 1.1a10 10 0 0 0-5 0C7.9 5.6 7 5.85 7 5.85a3.6 3.6 0 0 0-.1 2.7A3.9 3.9 0 0 0 5.8 11.3c0 3.8 2.2 4.7 4.5 5-.6.6-.6 1.2-.5 2V22"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export function SparkIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5 10.1 12.8 4.5 10.9 10.1 9 12 3.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M18.5 16.5 19.2 18.6l2.3.8-2.3.8-.7 2.1-.7-2.1-2.3-.8 2.3-.8.7-2.1Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" opacity="0.45" />
+    </svg>
+  )
+}
+
+export function CompassIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.7" />
+      <path d="m15 9-1.7 4.3L9 15l1.7-4.3L15 9Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+export function BoxIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M20.5 7.8v8.4a1.6 1.6 0 0 1-.85 1.4l-6.8 3.7a1.7 1.7 0 0 1-1.7 0l-6.8-3.7a1.6 1.6 0 0 1-.85-1.4V7.8a1.6 1.6 0 0 1 .85-1.4l6.8-3.7a1.7 1.7 0 0 1 1.7 0l6.8 3.7a1.6 1.6 0 0 1 .85 1.4Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="m3.7 7.3 8.3 4.5 8.3-4.5M12 21v-9.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
+    </svg>
+  )
+}
+
+export function BrandIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M12 3.5a8.5 8.5 0 0 0 0 17c1.4 0 2.2-.9 2.2-2 0-.6-.2-1-.6-1.4-.4-.4-.6-.8-.6-1.3 0-1 .8-1.8 1.9-1.8h1.3a4.3 4.3 0 0 0 4.3-4.3c0-3.4-3.6-6.2-8.5-6.2Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <circle cx="8" cy="11" r="1.2" fill="currentColor" opacity="0.6" />
+      <circle cx="12" cy="8" r="1.2" fill="currentColor" opacity="0.45" />
+      <circle cx="16" cy="10.5" r="1.2" fill="currentColor" opacity="0.3" />
+    </svg>
+  )
+}
+
+export function GridIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.7" opacity="0.55" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.7" opacity="0.55" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.7" opacity="0.3" />
+    </svg>
+  )
+}
