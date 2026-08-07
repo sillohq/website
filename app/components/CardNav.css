@@ -32,48 +32,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding: 8px 9px 8px 18px;
   z-index: 2;
-}
-
-.hamburger-menu {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  gap: 6px;
-  padding: 0 2px;
-}
-
-.hamburger-menu:hover .hamburger-line {
-  opacity: 0.75;
-}
-
-.hamburger-line {
-  width: 28px;
-  height: 2px;
-  background-color: currentColor;
-  transition: transform 0.25s ease, opacity 0.2s ease;
-  transform-origin: 50% 50%;
-}
-
-.hamburger-menu.open .hamburger-line:first-child {
-  transform: translateY(4px) rotate(45deg);
-}
-
-.hamburger-menu.open .hamburger-line:last-child {
-  transform: translateY(-4px) rotate(-45deg);
 }
 
 .card-nav-logo-container {
   display: flex;
   align-items: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  flex: 0 0 auto;
 }
 
 .card-nav-logo {
@@ -84,6 +51,60 @@
   font-weight: 600;
   letter-spacing: -0.03em;
   color: var(--color-text);
+}
+
+/* -- the three group triggers ----------------------------------------- */
+
+.card-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.card-nav-trigger {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.72;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.card-nav-trigger:hover,
+.card-nav-trigger:focus-visible {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.card-nav-trigger.active {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-nav-trigger-caret {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor;
+  opacity: 0.6;
+  transition: transform 0.24s ease;
+}
+
+.card-nav-trigger.active .card-nav-trigger-caret {
+  transform: rotate(180deg);
 }
 
 .card-nav-cta-button {
@@ -98,6 +119,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .card-nav-cta-button:hover {
@@ -105,87 +128,95 @@
   box-shadow: 0 12px 36px rgba(255, 255, 255, 0.14);
 }
 
-.card-nav-content {
+/* -- the panel of link boxes ------------------------------------------ */
+
+/*
+ * Positioned but not stretched to the bar: its height is its content's, which
+ * is what the open animation measures while the bar is still clipped to 60px.
+ */
+.card-nav-panel {
   position: absolute;
+  top: 60px;
   left: 0;
   right: 0;
-  top: 60px;
-  bottom: 0;
-  padding: 8px;
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
+  padding: 0 8px 8px;
+  z-index: 1;
   visibility: hidden;
   pointer-events: none;
-  z-index: 1;
 }
 
-.card-nav.open .card-nav-content {
+.card-nav.open .card-nav-panel {
   visibility: visible;
   pointer-events: auto;
 }
 
-.nav-card {
-  height: 100%;
-  flex: 1 1 0;
-  min-width: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  position: relative;
+.card-nav-boxes {
   display: flex;
-  flex-direction: column;
-  padding: 16px;
+  align-items: stretch;
   gap: 8px;
-  user-select: none;
-  overflow: hidden;
 }
 
-.nav-card::before {
+.nav-box {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 104px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.nav-box::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 18% 0%, rgba(252, 3, 69, 0.22), transparent 46%), linear-gradient(135deg, rgba(255,255,255,0.06), transparent 40%);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(252, 3, 69, 0.22), transparent 46%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 40%);
   pointer-events: none;
 }
 
-.nav-card-label,
-.nav-card-links {
+.nav-box:hover,
+.nav-box:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.nav-box-label {
   position: relative;
-}
-
-.nav-card-label {
+  font-size: 15px;
   font-weight: 600;
-  font-size: 22px;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
-.nav-card-links {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+.nav-box-description {
+  position: relative;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.66;
 }
 
-.nav-card-link {
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: inherit;
-}
-
-.nav-card-link:hover {
-  opacity: 0.78;
-  transform: translateX(2px);
-}
-
-.nav-card-link-icon {
+.nav-box-icon {
+  position: relative;
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
+  margin-top: auto;
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .card-nav-trigger {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -194,40 +225,39 @@
   }
 
   .card-nav-top {
-    padding: 8px 14px;
+    padding: 8px 12px;
+    gap: 8px;
   }
 
-  .hamburger-menu {
-    order: 2;
-  }
-
-  .card-nav-logo-container {
-    position: static;
-    transform: none;
-    order: 1;
+  /* The logo mark carries the brand on its own once space is tight, and the
+     three triggers are the point of the bar. */
+  .card-nav-logo span:not(.card-nav-logo) {
+    display: none;
   }
 
   .card-nav-cta-button {
     display: none;
   }
 
-  .card-nav-content {
+  .card-nav-trigger {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  /* One column, so five links do not become five slivers. */
+  .card-nav-boxes {
     flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    justify-content: flex-start;
   }
 
-  .nav-card {
-    min-height: 92px;
-    flex: 1 1 auto;
+  .nav-box {
+    min-height: 0;
+    flex: 0 0 auto;
   }
 
-  .nav-card-label {
-    font-size: 19px;
-  }
-
-  .nav-card-link {
-    font-size: 14px;
+  .nav-box-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    margin-top: 0;
   }
 }

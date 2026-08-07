@@ -1,4 +1,4 @@
-import { type KeyboardEvent, type ReactNode, useLayoutEffect, useRef, useState } from 'react'
+import { type KeyboardEvent as ReactKeyboardEvent, type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import './CardNav.css'
 
@@ -6,6 +6,8 @@ type CardNavLink = {
   label: string
   href: string
   ariaLabel: string
+  /** Optional second line inside the box. */
+  description?: string
 }
 
 type CardNavItem = {
@@ -30,9 +32,12 @@ type CardNavProps = {
   buttonTextColor?: string
 }
 
+/** Height of the bar itself, matching --card-nav-bar-height in the stylesheet. */
+const BAR_HEIGHT = 60
+
 function ArrowIcon() {
   return (
-    <svg className="nav-card-link-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className="nav-box-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M5 11 11 5" />
       <path d="M6 5h5v5" />
     </svg>
@@ -52,143 +57,129 @@ export default function CardNav({
   buttonBgColor = '#fff',
   buttonTextColor = '#050505',
 }: CardNavProps) {
-  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false)
-  const [isExpanded, setIsExpanded] = useState(false)
+  const groups = items.slice(0, 3)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  const containerRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
-  const cardsRef = useRef<HTMLDivElement[]>([])
-  const tlRef = useRef<gsap.core.Timeline | null>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const triggersRef = useRef<(HTMLButtonElement | null)[]>([])
 
-  const calculateHeight = () => {
-    const navEl = navRef.current
-    if (!navEl) return 260
+  const isOpen = openIndex !== null
 
-    const isMobile = window.matchMedia('(max-width: 768px)').matches
-    if (isMobile) {
-      const contentEl = navEl.querySelector<HTMLElement>('.card-nav-content')
-      if (contentEl) {
-        const wasVisible = contentEl.style.visibility
-        const wasPointerEvents = contentEl.style.pointerEvents
-        const wasPosition = contentEl.style.position
-        const wasHeight = contentEl.style.height
+  const close = useCallback((restoreFocusTo?: number) => {
+    setOpenIndex((current) => {
+      if (current === null) return current
+      const target = restoreFocusTo ?? current
+      triggersRef.current[target]?.focus()
+      return null
+    })
+  }, [])
 
-        contentEl.style.visibility = 'visible'
-        contentEl.style.pointerEvents = 'auto'
-        contentEl.style.position = 'static'
-        contentEl.style.height = 'auto'
-
-        const topBar = 60
-        const padding = 16
-        const contentHeight = contentEl.scrollHeight
-
-        contentEl.style.visibility = wasVisible
-        contentEl.style.pointerEvents = wasPointerEvents
-        contentEl.style.position = wasPosition
-        contentEl.style.height = wasHeight
-
-        return topBar + contentHeight + padding
-      }
-    }
-
-    return 276
+  const toggle = (index: number) => {
+    setOpenIndex((current) => (current === index ? null : index))
   }
 
-  const createTimeline = () => {
-    const navEl = navRef.current
-    if (!navEl) return null
+  // Animate the bar open or shut whenever the active group changes. Driven off
+  // the rendered state rather than a paused timeline, so switching straight
+  // from one group to another animates to the new height instead of replaying
+  // the old one.
+  useLayoutEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
 
-    gsap.set(navEl, { height: 60, overflow: 'hidden' })
-    gsap.set(cardsRef.current, { y: 42, opacity: 0 })
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    const boxes = panelRef.current
+      ? Array.from(panelRef.current.querySelectorAll<HTMLElement>('.nav-box'))
+      : []
 
-    const tl = gsap.timeline({ paused: true })
-    tl.to(navEl, {
-      height: calculateHeight,
-      duration: 0.42,
+    if (openIndex === null) {
+      gsap.to(nav, { height: BAR_HEIGHT, duration: reduced ? 0 : 0.34, ease })
+      return
+    }
+
+    // The panel is positioned but unconstrained in height, so its own height is
+    // the real content height even while the bar is still clipped to 60px.
+    const panelHeight = panelRef.current?.offsetHeight ?? 0
+
+    gsap.to(nav, {
+      height: BAR_HEIGHT + panelHeight,
+      duration: reduced ? 0 : 0.42,
       ease,
     })
-    tl.to(cardsRef.current, { y: 0, opacity: 1, duration: 0.38, ease, stagger: 0.07 }, '-=0.12')
+    gsap.fromTo(
+      boxes,
+      { y: 14, opacity: 0 },
+      { y: 0, opacity: 1, duration: reduced ? 0 : 0.36, ease, stagger: reduced ? 0 : 0.05 }
+    )
+  }, [openIndex, ease])
 
-    return tl
-  }
+  // A menu that stays open when you click past it or press Escape is a menu in
+  // the way of the page behind it.
+  useEffect(() => {
+    if (!isOpen) return
 
-  useLayoutEffect(() => {
-    const tl = createTimeline()
-    tlRef.current = tl
-
-    return () => {
-      tl?.kill()
-      tlRef.current = null
-    }
-  }, [ease, items])
-
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (!tlRef.current) return
-
-      if (isExpanded) {
-        gsap.set(navRef.current, { height: calculateHeight() })
-        tlRef.current.kill()
-        const newTl = createTimeline()
-        if (newTl) {
-          newTl.progress(1)
-          tlRef.current = newTl
-        }
-      } else {
-        tlRef.current.kill()
-        tlRef.current = createTimeline()
+    const onPointerDown = (event: PointerEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpenIndex(null)
       }
     }
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [isExpanded])
-
-  const toggleMenu = () => {
-    const tl = tlRef.current
-    if (!tl) return
-
-    if (!isExpanded) {
-      setIsHamburgerOpen(true)
-      setIsExpanded(true)
-      tl.play(0)
-    } else {
-      setIsHamburgerOpen(false)
-      tl.eventCallback('onReverseComplete', () => setIsExpanded(false))
-      tl.reverse()
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close()
     }
-  }
 
-  const handleMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      toggleMenu()
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
     }
+  }, [isOpen, close])
+
+  // Left and right move between the three triggers, which is what a menubar is
+  // expected to do once one of them has focus.
+  const onTriggerKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return
+    event.preventDefault()
+    const step = event.key === 'ArrowRight' ? 1 : -1
+    const next = (index + step + groups.length) % groups.length
+    triggersRef.current[next]?.focus()
+    if (isOpen) setOpenIndex(next)
   }
 
-  const setCardRef = (index: number) => (el: HTMLDivElement | null) => {
-    if (el) cardsRef.current[index] = el
-  }
+  const active = openIndex === null ? null : groups[openIndex]
 
   return (
-    <div className={`card-nav-container ${className}`.trim()}>
-      <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`} style={{ backgroundColor: baseColor }}>
+    <div ref={containerRef} className={`card-nav-container ${className}`.trim()}>
+      <nav
+        ref={navRef}
+        className={`card-nav ${isOpen ? 'open' : ''}`}
+        style={{ backgroundColor: baseColor }}
+        aria-label="Main"
+      >
         <div className="card-nav-top">
-          <div
-            className={`hamburger-menu ${isHamburgerOpen ? 'open' : ''}`}
-            onClick={toggleMenu}
-            onKeyDown={handleMenuKeyDown}
-            role="button"
-            aria-label={isExpanded ? 'Close menu' : 'Open menu'}
-            aria-expanded={isExpanded}
-            tabIndex={0}
-            style={{ color: menuColor || 'var(--color-text)' }}
-          >
-            <div className="hamburger-line" />
-            <div className="hamburger-line" />
-          </div>
-
           <a href="/" className="card-nav-logo-container" aria-label={logoAlt}>
             <span className="card-nav-logo">{logo}</span>
           </a>
+
+          <div className="card-nav-links" style={{ color: menuColor || 'var(--color-text)' }}>
+            {groups.map((group, index) => (
+              <button
+                key={group.label}
+                type="button"
+                ref={(el) => { triggersRef.current[index] = el }}
+                className={`card-nav-trigger ${openIndex === index ? 'active' : ''}`}
+                onClick={() => toggle(index)}
+                onKeyDown={(event) => onTriggerKeyDown(event, index)}
+                aria-expanded={openIndex === index}
+                aria-controls="card-nav-panel"
+              >
+                {group.label}
+                <span className="card-nav-trigger-caret" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
 
           <a
             href={ctaHref}
@@ -199,25 +190,30 @@ export default function CardNav({
           </a>
         </div>
 
-        <div className="card-nav-content" aria-hidden={!isExpanded}>
-          {items.slice(0, 3).map((item, index) => (
-            <div
-              key={`${item.label}-${index}`}
-              className="nav-card"
-              ref={setCardRef(index)}
-              style={{ backgroundColor: item.bgColor, color: item.textColor }}
-            >
-              <div className="nav-card-label">{item.label}</div>
-              <div className="nav-card-links">
-                {item.links.map((link, linkIndex) => (
-                  <a key={`${link.label}-${linkIndex}`} className="nav-card-link" href={link.href} aria-label={link.ariaLabel}>
-                    <ArrowIcon />
-                    {link.label}
-                  </a>
-                ))}
-              </div>
+        <div
+          id="card-nav-panel"
+          ref={panelRef}
+          className="card-nav-panel"
+          aria-hidden={!isOpen}
+        >
+          {active && (
+            <div className="card-nav-boxes">
+              {active.links.map((link) => (
+                <a
+                  key={link.label}
+                  className="nav-box"
+                  href={link.href}
+                  aria-label={link.ariaLabel}
+                  onClick={() => setOpenIndex(null)}
+                  style={{ backgroundColor: active.bgColor, color: active.textColor }}
+                >
+                  <span className="nav-box-label">{link.label}</span>
+                  {link.description && <span className="nav-box-description">{link.description}</span>}
+                  <ArrowIcon />
+                </a>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       </nav>
     </div>
