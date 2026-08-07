@@ -247,7 +247,7 @@ function CodeBlock({ code }: { code: string }) {
 
 function HomePage() {
   return (
-    <main className="bg-bg min-h-screen noise-overlay">
+    <main className="bg-bg min-h-screen">
       <SiteNav />
       <Hero />
       <CapabilityStrip />

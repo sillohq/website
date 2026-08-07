@@ -159,7 +159,7 @@ function AboutPage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-bg text-text noise-overlay">
+    <main className="min-h-screen bg-bg text-text">
       <SiteNav />
       <section className="relative mx-auto grid max-w-[1520px] grid-cols-1 gap-12 px-8 py-16 md:px-12 lg:grid-cols-[260px_1fr] lg:py-24">
         <div className="pointer-events-none absolute right-0 top-0 h-[420px] w-2/3 bg-[radial-gradient(ellipse_50%_55%_at_80%_20%,rgba(252,3,69,0.06),transparent_65%)]" />
