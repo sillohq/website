@@ -7,6 +7,8 @@
 
   --font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* Annotations only — the marker layer. Never used for UI copy. */
+  --font-hand: 'Caveat', 'Bradley Hand', 'Segoe Print', cursive;
 
   --color-bg: #050505;
   --color-elevated: #0b0b0c;
@@ -123,6 +125,11 @@
   }
 }
 
+@keyframes marker-stroke {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
 @layer utilities {
   .font-sans {
     font-family: var(--font-sans);
@@ -130,6 +137,19 @@
 
   .font-mono {
     font-family: var(--font-mono);
+  }
+
+  .font-hand {
+    font-family: var(--font-hand);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  /* Strokes are emitted with pathLength="1", so one dash covers any length. */
+  .marker-draw path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: marker-stroke 0.65s ease-out forwards;
   }
 
   .cursor-blink {
@@ -248,6 +268,11 @@
   .cursor-blink {
     animation: none;
     opacity: 1;
+  }
+
+  .marker-draw path {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }
 

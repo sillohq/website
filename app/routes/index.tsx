@@ -13,6 +13,16 @@ import {
 import { SiteNav } from '../components/SiteNav'
 import Plasma from '../components/Plasma'
 import ScrollStack, { ScrollStackItem } from '../components/ScrollStack'
+import {
+  BrushStroke,
+  Doodle,
+  DoodleArrow,
+  HandwrittenNote,
+  MarkerAside,
+  MarkerCircle,
+  MarkerUnderline,
+  NoteWithArrow,
+} from '../components/marker'
 
 import { DOCS_URL as DOCS, GITHUB_URL as GITHUB } from '../data/links'
 
@@ -328,7 +338,9 @@ function Hero() {
             {/* Headline */}
             <h2 className="text-text text-3xl md:text-4xl mb-7 max-w-[520px] font-medium leading-tight tracking-tight">
               Batteries included.<br />
-              One design.
+              <MarkerUnderline seed={23} weight={2.6} draw delay={0.45}>
+                One design.
+              </MarkerUnderline>
             </h2>
 
             {/* Subhead */}
@@ -344,6 +356,20 @@ function Hero() {
                 Read the docs
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3l4 4-4 4"/></svg>
               </a>
+              <NoteWithArrow
+                flip
+                curve="left"
+                seed={31}
+                show="desktop"
+                tone="chalk"
+                rotate={-6}
+                arrowRotate={4}
+                arrowWidth={46}
+                arrowHeight={30}
+                className="ml-3 align-middle"
+              >
+                start here
+              </NoteWithArrow>
             </div>
 
             {/* 01 / FOUNDATION */}
@@ -351,6 +377,7 @@ function Hero() {
               <span className="text-primary">01</span>
               <span className="w-px h-3 bg-border" />
               <span>FOUNDATION</span>
+              <Doodle name="star" tone="red" seed={44} size={13} rotate={-14} show="tablet" className="ml-1 opacity-75" />
             </div>
           </div>
         </div>
@@ -363,6 +390,19 @@ function Hero() {
         className="absolute right-0 bottom-0 z-20 overflow-visible hidden lg:block"
         style={{ left: 'calc(42% + 3rem)', top: '17%' }}
       >
+        <NoteWithArrow
+          curve="hook"
+          seed={13}
+          show="desktop"
+          rotate={-4}
+          arrowRotate={-6}
+          arrowWidth={40}
+          arrowHeight={30}
+          className="absolute -top-7 left-4 z-30"
+        >
+          all six are live
+        </NoteWithArrow>
+
         {/* Fade: right edge → bottom edge → corner blend */}
         <div
           className="absolute inset-0 z-20 pointer-events-none"
@@ -465,6 +505,17 @@ function CapabilityStrip() {
               } ${i < 3 ? 'border-b' : ''}`}
             >
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_18%_20%,rgba(252,3,69,0.09),transparent_34%)]" />
+              {i === 0 && (
+                <HandwrittenNote rotate={6} show="tablet" size="1.25rem" className="absolute right-8 top-7 opacity-70">
+                  typed, obviously
+                </HandwrittenNote>
+              )}
+              {i === 3 && (
+                <Doodle name="tick" tone="red" seed={57} size={28} rotate={-9} show="tablet" className="absolute right-8 top-8" />
+              )}
+              {i === 4 && (
+                <Doodle name="bolt" seed={71} size={24} rotate={11} show="tablet" className="absolute right-9 top-9 opacity-55" />
+              )}
               <div className="relative flex h-full flex-col items-start justify-center gap-9">
                 <cap.icon className="h-8 w-8 text-white" />
                 <p className="max-w-[280px] text-xl md:text-[22px] font-semibold leading-[1.35] tracking-[-0.04em] text-text">
@@ -933,7 +984,10 @@ function OneFramework() {
         <div className="grid grid-cols-1 lg:grid-cols-[34%_66%] gap-10 lg:gap-0 items-start">
           {/* Left */}
           <div>
-            <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4">02 / CAPABILITIES</div>
+            <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4 flex items-center gap-2">
+              02 / CAPABILITIES
+              <Doodle name="sparkle" tone="red" seed={19} size={15} rotate={12} show="tablet" className="opacity-80" />
+            </div>
             <h2 className="mb-4">
               One framework.<br />
               One config model.
@@ -975,6 +1029,12 @@ function OneFramework() {
                 )
               })}
             </div>
+            <MarkerAside show="desktop" offset="0.75rem" className="gap-2">
+              <DoodleArrow curve="up" seed={27} rotate={-14} width={38} height={50} className="opacity-70" />
+              <HandwrittenNote rotate={-4} size="1.3rem" className="mt-4 opacity-85">
+                same shape, all eight
+              </HandwrittenNote>
+            </MarkerAside>
           </div>
 
           {/* Right */}
@@ -1032,7 +1092,10 @@ function SilloMagicSection() {
       <div className="relative z-10 mx-auto max-w-[1520px] px-8 md:px-12">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[32%_68%] lg:items-start lg:gap-12">
           <div className="lg:sticky lg:top-24 lg:h-fit lg:self-start">
-            <div className="mb-4 font-mono text-[11px] tracking-[0.15em] text-primary">03 / SILLO SYSTEMS</div>
+            <div className="mb-4 flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-primary">
+              03 / SILLO SYSTEMS
+              <Doodle name="star" tone="red" seed={83} size={14} rotate={-14} show="tablet" className="opacity-75" />
+            </div>
             <h2 className="mb-5 max-w-[440px]">
               One idiom,<br />
               every subsystem.
@@ -1043,6 +1106,9 @@ function SilloMagicSection() {
             <div className="mt-9 hidden border-l border-border/70 pl-4 font-mono text-[11px] leading-relaxed text-dimmed lg:block">
               Scroll the stack. Read the code.
             </div>
+            <MarkerAside show="desktop" offset="1rem" className="ml-3">
+              <DoodleArrow curve="down" seed={91} rotate={-9} width={46} height={62} className="opacity-55" />
+            </MarkerAside>
           </div>
 
           <ScrollStack
@@ -1074,6 +1140,20 @@ function SilloMagicSection() {
                       <p className="max-w-[390px] text-sm leading-relaxed text-muted md:text-base">
                         {item.desc}
                       </p>
+                      {index === 0 && (
+                        <NoteWithArrow
+                          curve="right"
+                          seed={47}
+                          show="desktop"
+                          rotate={-5}
+                          arrowRotate={-12}
+                          arrowWidth={50}
+                          arrowHeight={32}
+                          className="mt-8 opacity-85"
+                        >
+                          no wiring, just the signature
+                        </NoteWithArrow>
+                      )}
                     </div>
                   </div>
 
@@ -1139,18 +1219,31 @@ function ArchitectureSection() {
           <div className="pointer-events-none absolute -bottom-32 left-1/2 h-72 w-3/4 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl transition-all duration-500 group-hover:scale-125 group-hover:bg-primary/20" />
           <div className="relative flex min-h-[288px] flex-col items-center justify-center text-center md:min-h-[360px]">
             <div className="max-w-[960px]">
-              <div className="font-mono text-[11px] text-primary tracking-[0.18em] mb-5">04 / ONE FOUNDATION</div>
+              <div className="mb-5 flex items-center justify-center gap-2 font-mono text-[11px] text-primary tracking-[0.18em]">
+                04 / ONE FOUNDATION
+                <Doodle name="sparkle" tone="red" seed={61} size={14} rotate={-11} show="tablet" className="opacity-80" />
+              </div>
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold leading-[0.96] tracking-[-0.06em] text-text">
                 The whole foundation is one product, not eleven packages.
               </h2>
             </div>
-            <div className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
-              Start building
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 3.5 10.5 8 6 12.5" />
-              </svg>
-            </div>
+            <MarkerCircle seed={67} weight={2.2} padX={28} padY={36} rotate={-1} className="mt-10">
+              <div className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
+                Start building
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 3.5 10.5 8 6 12.5" />
+                </svg>
+              </div>
+            </MarkerCircle>
           </div>
+          <Doodle
+            name="squiggle"
+            seed={73}
+            size={86}
+            rotate={-6}
+            show="desktop"
+            className="pointer-events-none absolute bottom-8 right-10 opacity-25"
+          />
         </a>
       </div>
     </section>
@@ -1203,16 +1296,27 @@ function EnterpriseSection() {
         <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4">05 / FOUNDATIONS</div>
         <h2 className="mb-12">
           Built for the parts<br />
-          that are hard to add later.
+          that are{' '}
+          <MarkerUnderline seed={53} tone="chalk" weight={2.2} show="tablet">
+            hard to add later.
+          </MarkerUnderline>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[minmax(170px,auto)] overflow-hidden rounded-2xl border border-border bg-bg/45">
           {ENTERPRISE_ITEMS.map((item, i) => (
             <div
               key={item.title}
-              className={`border border-border -m-px p-8 md:p-10 flex flex-col gap-3 justify-end min-h-[170px] ${
+              className={`relative border border-border -m-px p-8 md:p-10 flex flex-col gap-3 justify-end min-h-[170px] ${
                 i === 0 ? 'md:col-span-2 md:row-span-2 bg-elevated' : ''
               } ${i === 5 ? 'md:col-span-2 md:row-span-2 bg-elevated' : ''}`}
             >
+              {i === 0 && (
+                <Doodle name="squiggle" seed={29} size={110} rotate={-4} show="desktop" className="absolute right-10 top-9 opacity-20" />
+              )}
+              {i === 5 && (
+                <HandwrittenNote rotate={-6} show="desktop" size="1.3rem" className="absolute right-10 top-9 opacity-70">
+                  the boring parts, done
+                </HandwrittenNote>
+              )}
               <span className="font-mono text-[10px] text-dimmed">{String(i + 1).padStart(2, '0')}</span>
               <h4 className="text-base md:text-lg font-medium text-text tracking-[-0.03em]">{item.title}</h4>
               <p className="text-sm text-muted leading-relaxed max-w-[320px]">{item.desc}</p>
@@ -1312,7 +1416,10 @@ function FinalCta() {
               </div>
               <div className="relative p-8 md:p-12 font-mono">
                 <div className="flex items-center justify-between gap-4 text-base md:text-lg text-text">
-                  <span><span className="text-primary">$</span> uv add sillo-framework</span>
+                  <span>
+                    <span className="text-primary">$</span>{' '}
+                    <MarkerUnderline seed={101} weight={2.2}>uv add sillo-framework</MarkerUnderline>
+                  </span>
                   <button
                     type="button"
                     onClick={(event) => {
@@ -1325,13 +1432,24 @@ function FinalCta() {
                     {copiedInstall ? 'Copied' : 'Copy'}
                   </button>
                 </div>
+                <MarkerAside show="tablet" offset="1.25rem" className="gap-2">
+                  <DoodleArrow curve="up" seed={103} rotate={16} width={38} height={40} className="opacity-70" />
+                  <HandwrittenNote rotate={-4} size="1.35rem" className="mt-3 opacity-90">
+                    that&rsquo;s the whole install
+                  </HandwrittenNote>
+                </MarkerAside>
               </div>
             </div>
 
             <div className="p-8 md:p-14 lg:p-16">
-              <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-5">06 / START BUILDING</div>
+              <div className="mb-5 flex items-center gap-2 font-mono text-[11px] text-primary tracking-[0.15em]">
+                06 / START BUILDING
+                <Doodle name="bolt" tone="red" seed={97} size={15} rotate={9} show="tablet" className="opacity-80" />
+              </div>
               <h2 className="text-4xl md:text-6xl font-semibold leading-[0.98] tracking-[-0.06em] mb-6">
-                Build the product.<br />
+                <BrushStroke tone="red" seed={109} rotate={-1.4} opacity={0.92}>
+                  Build the product.
+                </BrushStroke><br />
                 Sillo handles the foundation.
               </h2>
               <p className="text-muted text-base leading-relaxed mb-9 max-w-[520px]">
@@ -1385,8 +1503,18 @@ function FooterSection() {
           <div className="font-mono text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.9] tracking-[-0.08em] text-white/10 transition-colors duration-300 group-hover:text-white/42">
             <span className="text-white/28 group-hover:text-white/80">$</span> uv add sillo-framework
           </div>
-          <div className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-dimmed transition-colors group-hover:text-muted">
+          <div className="mt-10 flex items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-dimmed transition-colors group-hover:text-muted">
             {'{ '} {copiedFooterCommand ? 'Copied' : 'Click. Copy. Build'} {' }'}
+            <Doodle
+              name={copiedFooterCommand ? 'heart' : 'smile'}
+              tone={copiedFooterCommand ? 'red' : 'muted'}
+              seed={127}
+              size={17}
+              rotate={-7}
+              show="tablet"
+              /* -my-1 so a 17px mark cannot make a 10px row any taller. */
+              className="-my-1 opacity-80"
+            />
           </div>
         </div>
       </button>
@@ -1407,6 +1535,12 @@ function FooterSection() {
               Subscribe
             </button>
           </form>
+          <MarkerAside offset="1.1rem" className="items-center gap-2">
+            <Doodle name="tick" tone="red" seed={113} size={18} rotate={-6} className="opacity-80" />
+            <HandwrittenNote rotate={-2} size="1.25rem" className="opacity-75">
+              no spam. ever.
+            </HandwrittenNote>
+          </MarkerAside>
         </div>
 
         <div className="grid grid-cols-2 gap-10 py-16 md:grid-cols-4 md:pl-16">

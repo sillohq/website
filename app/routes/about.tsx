@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { SiteNav } from '../components/SiteNav'
+import { Doodle, DoodleArrow, HandwrittenNote, MarkerAside } from '../components/marker'
 
 export const Route = createFileRoute('/about')({
   component: AboutPage,
@@ -187,11 +188,20 @@ function AboutPage() {
               </button>
             ))}
           </div>
+          <MarkerAside show="desktop" offset="1rem" className="gap-2">
+            <DoodleArrow curve="up" seed={137} rotate={-28} width={40} height={32} className="opacity-60" />
+            <HandwrittenNote rotate={-4} size="1.25rem" className="mt-1 opacity-80">
+              start anywhere
+            </HandwrittenNote>
+          </MarkerAside>
         </aside>
 
         <div className="relative min-w-0">
           <div className="mb-14">
-            <div className="font-mono text-[11px] text-primary tracking-[0.16em] mb-4">{active.eyebrow}</div>
+            <div className="mb-4 flex items-center gap-2 font-mono text-[11px] text-primary tracking-[0.16em]">
+              {active.eyebrow}
+              <Doodle name="sparkle" tone="red" seed={139} size={14} rotate={13} show="tablet" className="opacity-80" />
+            </div>
             <h1 className="max-w-[1040px] text-5xl md:text-7xl font-semibold leading-[0.96] tracking-[-0.065em]">{active.title}</h1>
             <p className="mt-7 max-w-[760px] text-lg leading-relaxed text-muted">{active.intro}</p>
           </div>
@@ -240,8 +250,13 @@ function KanbanBoard() {
               </div>
               <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-dimmed">{column.tag}</div>
             </div>
-            <span className="rounded-full border border-border/70 px-2.5 py-1 font-mono text-[10px] text-muted">
-              {column.items.length}
+            <span className="flex items-center gap-2">
+              {column.title === 'Completed' && (
+                <Doodle name="tick" tone="red" seed={149} size={19} rotate={-8} show="tablet" className="opacity-85" />
+              )}
+              <span className="rounded-full border border-border/70 px-2.5 py-1 font-mono text-[10px] text-muted">
+                {column.items.length}
+              </span>
             </span>
           </div>
           <div className="space-y-3">
