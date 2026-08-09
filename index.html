@@ -20,8 +20,20 @@
     <meta property="og:url" content="https://sillo.build/" />
     <meta property="og:title" content="Sillo — The batteries-included async Python framework" />
     <meta property="og:description" content="An async Python web framework where the ORM, auth, background work, websockets and HTTP layer are one product, sharing one config model." />
-    <meta property="og:image" content="https://sillo.build/branding/brand-two.svg" />
-    <meta property="og:image:type" content="image/svg+xml" />
+    <!--
+      Must be a raster format. Every major scraper (Twitter, LinkedIn, WhatsApp,
+      Facebook, Slack, Discord) refuses SVG for og:image and falls back to no
+      preview at all, which is what a brand-two.svg here did — the URL served
+      fine, the format was simply never going to render.
+      Dimensions are declared so a scraper can lay the card out before it has
+      finished fetching the file.
+    -->
+    <meta property="og:image" content="https://sillo.build/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://sillo.build/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="800" />
+    <meta property="og:image:alt" content="Sillo — Batteries included. One design. A routing example showing a typed path parameter passed straight into the handler." />
     <meta property="og:site_name" content="Sillo" />
     <meta property="og:locale" content="en_US" />
 
@@ -30,7 +42,9 @@
     <meta name="twitter:url" content="https://sillo.build/" />
     <meta name="twitter:title" content="Sillo — The batteries-included async Python framework" />
     <meta name="twitter:description" content="An async Python web framework where the ORM, auth, background work, websockets and HTTP layer are one product, sharing one config model." />
-    <meta name="twitter:image" content="https://sillo.build/branding/brand-two.svg" />
+    <meta name="twitter:image" content="https://sillo.build/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Sillo — Batteries included. One design. A routing example showing a typed path parameter passed straight into the handler." />
+    <meta name="twitter:site" content="@sillohq" />
     <meta name="twitter:creator" content="@sillohq" />
 
     <!-- Mobile/App -->
