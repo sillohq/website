@@ -245,7 +245,11 @@ function CodeLine({ parts, num }: { parts: { text: string; color?: string }[]; n
 function CodeBlock({ code }: { code: string }) {
   const lines = shiki(code)
   return (
-    <div className="p-6 md:p-8">
+    // Scrollable only below `lg`. Every panel holding one of these clips with
+    // `overflow-hidden`, so on a narrow screen the right-hand half of each line
+    // was simply unreachable. On desktop the clipping is the intended bleed
+    // effect and is left alone.
+    <div className="p-6 md:p-8 max-lg:overflow-x-auto">
       {lines.map((parts, i) => (
         <CodeLine key={i} parts={parts} num={i} />
       ))}
@@ -324,7 +328,10 @@ function Hero() {
       <div className="flex-1 relative z-10">
         <div className="max-w-[1520px] mx-auto">
           {/* Left column */}
-          <div className="w-[42%] max-w-[638px] flex flex-col justify-start pl-8 md:pl-12 pr-8 md:pr-12 lg:pr-16"
+          {/* 42% only once the code panel is beside it (it is `hidden lg:block`).
+              Below that the panel is gone, so the column takes the full width
+              instead of leaving 58% of the screen empty. */}
+          <div className="w-full lg:w-[42%] max-w-[638px] flex flex-col justify-start pl-8 md:pl-12 pr-8 md:pr-12 lg:pr-16"
             style={{ paddingTop: 'calc(20dvh)' }}>
             {/* Eyebrow */}
             <div className="font-mono text-[11px] text-muted tracking-[0.15em] mb-5 flex items-center gap-1.5">
@@ -1301,13 +1308,17 @@ function EnterpriseSection() {
             hard to add later.
           </MarkerUnderline>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[minmax(170px,auto)] overflow-hidden rounded-2xl border border-border bg-bg/45">
+        {/* The bento is composed for four columns. At three it fell apart —
+            the 2x2 feature cells left holes and squeezed the rest to ~140px,
+            about four words a line. Two columns at `md`, with the feature
+            cells spanning the full width, and the original four from `lg`. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(170px,auto)] overflow-hidden rounded-2xl border border-border bg-bg/45">
           {ENTERPRISE_ITEMS.map((item, i) => (
             <div
               key={item.title}
               className={`relative border border-border -m-px p-8 md:p-10 flex flex-col gap-3 justify-end min-h-[170px] ${
-                i === 0 ? 'md:col-span-2 md:row-span-2 bg-elevated' : ''
-              } ${i === 5 ? 'md:col-span-2 md:row-span-2 bg-elevated' : ''}`}
+                i === 0 ? 'md:col-span-2 lg:row-span-2 bg-elevated' : ''
+              } ${i === 5 ? 'md:col-span-2 lg:row-span-2 bg-elevated' : ''}`}
             >
               {i === 0 && (
                 <Doodle name="squiggle" seed={29} size={110} rotate={-4} show="desktop" className="absolute right-10 top-9 opacity-20" />
