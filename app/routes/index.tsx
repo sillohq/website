@@ -33,10 +33,10 @@ export const Route = createFileRoute('/')({
 /* ─── Code examples ─── */
 
 const CODE_EXAMPLES: Record<string, string> = {
-  routing: `from sillo import silloApp
+  routing: `from sillo import SilloApp
 from sillo.core.http import Request, Response
 
-app = silloApp(title="Projects API")
+app = SilloApp(title="Projects API")
 
 
 @app.get("/projects/{project_id:int}")
@@ -51,12 +51,12 @@ async def show_project(
         "status": "active",
     })`,
 
-  auth: `from sillo import silloApp
+  auth: `from sillo import SilloApp
 from sillo.auth import JWTAuthBackend, create_jwt
 from sillo.auth.middleware import AuthenticationMiddleware
 from app.users import User
 
-app = silloApp()
+app = SilloApp()
 jwt_backend = JWTAuthBackend()
 
 app.add_middleware(
@@ -95,10 +95,10 @@ class SendWelcomeEmail(Job):
 SendWelcomeEmail.dispatch_after(300, "user-42")`,
 
   validation: `from pydantic import BaseModel, EmailStr
-from sillo import silloApp
+from sillo import SilloApp
 from sillo.core.http import Request, Response
 
-app = silloApp()
+app = SilloApp()
 
 
 class Signup(BaseModel):
@@ -114,10 +114,10 @@ async def signup(
 ) -> Response:
     return res.json({"user": data.model_dump()}, status_code=201)`,
 
-  dependency: `from sillo import Depend, silloApp
+  dependency: `from sillo import Depend, SilloApp
 from sillo.core.http import Request, Response
 
-app = silloApp()
+app = SilloApp()
 
 
 async def get_database():
@@ -139,11 +139,11 @@ async def list_projects(
     projects = await db.projects.for_user(user.id)
     return res.json({"projects": projects})`,
 
-  orm: `from sillo import silloApp
+  orm: `from sillo import SilloApp
 from sillo.record import DatabaseConfig, Model, setup_record
 from tortoise import fields
 
-app = silloApp(title="Projects API")
+app = SilloApp(title="Projects API")
 setup_record(app, DatabaseConfig.sqlite("app.db"), model_modules=[__name__])
 
 
@@ -838,9 +838,9 @@ const SILLO_MAGIC_STACK = [
     title: 'Ask for the pieces the handler needs.',
     desc: 'Nested dependencies, request access, and query params stay in the signature.',
     file: 'dependencies.py',
-    code: `from sillo import Depend, Query, silloApp
+    code: `from sillo import Depend, Query, SilloApp
 
-app = silloApp(title="Projects")
+app = SilloApp(title="Projects")
 
 
 async def get_settings():
@@ -928,10 +928,10 @@ SendReport.dispatch_after(3600, "user-42", "report-10")`,
     title: 'Register recurring work with the app.',
     desc: 'setup_scheduler stores the manager on app.state and starts it with the lifecycle.',
     file: 'scheduler.py',
-    code: `from sillo import silloApp
+    code: `from sillo import SilloApp
 from sillo.work.scheduler import setup_scheduler
 
-app = silloApp()
+app = SilloApp()
 scheduler = setup_scheduler(app)
 
 
@@ -950,10 +950,10 @@ async def weekday_digest():
     title: 'Render React pages from Sillo routes.',
     desc: 'Shared props, Vite React assets, and server-side page props in one response.',
     file: 'app.py',
-    code: `from sillo import silloApp
+    code: `from sillo import SilloApp
 from sillo_inertia import Inertia, lazy, vite_react
 
-app = silloApp(title="Sillo Monitor")
+app = SilloApp(title="Sillo Monitor")
 
 inertia = Inertia(
     app,
