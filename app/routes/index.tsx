@@ -51,15 +51,15 @@ async def show_project(
         "status": "active",
     })`,
 
-  auth: `from sillo import SilloApp
+  auth: `from sillo import SilloApp, useAuth
 from sillo.auth import JWTAuthBackend, create_jwt
 from sillo.auth.middleware import AuthenticationMiddleware
-from app.users import User
+from sillo.users import User
 
 app = SilloApp()
 jwt_backend = JWTAuthBackend()
 
-app.add_middleware(
+app.use(
     AuthenticationMiddleware(user_model=User, backend=jwt_backend)
 )
 
@@ -69,7 +69,7 @@ async def login(req, res):
     form = await req.form
 
     if form.get("username") == "admin":
-        token = create_jwt({"sub": "123"})
+        token = create_jwt({"sub": "123"}, secret="my-secret-key")
         return res.json({"token": token})
 
     return res.html("Invalid credentials", status_code=401)`,
@@ -543,81 +543,63 @@ const CAPABILITY_DETAILS: Record<string, { title: string; desc: string; code: st
   Authentication: {
     title: 'Authentication',
     desc: 'Session-based auth for web apps, token auth for APIs. Login, logout, password reset, role-based guards, and current-user resolution through a consistent interface.',
-    code: `from sillo.auth import auth
-from sillo.http import Request
+    code: `from sillo import SilloApp, useAuth
+from sillo.auth import JWTAuthBackend, SessionAuthBackend
+from sillo.auth.middleware import AuthenticationMiddleware
+from sillo.users import User
 
-
-@app.post("/auth/login")
-async def login(
-    request: Request,
-    email: str,
-    password: str,
-):
-    user = await auth.attempt(email, password)
-    await auth.login(user)
-
-    return {"token": user.to_token()}
+app = SilloApp(auth=[JWTAuthBackend(), SessionAuthBackend()], auth_user_model=User)
 
 
 @app.get("/dashboard")
-@auth.require("admin")
-async def dashboard(request: Request):
-    return {
+async def dashboard(request, response):
+    return response.json({
         "user": request.user.email,
         "role": request.user.role,
-    }`,
+    })`,
   },
   Queue: {
     title: 'Queue',
     desc: 'Background job dispatch with retry, backoff, and worker processes. Queue anything from email notifications to video processing.',
-    code: `from sillo.work import job
-from sillo.mail import Mail
+    code: `from sillo.work.queue.job import Job, Dispatchable
 
 
-@job(queue="mail", max_retries=3)
-async def send_invoice_email(
-    user_id: int,
-    invoice_id: int,
-):
-    user = await User.find_or_fail(user_id)
-    invoice = await Invoice.find_or_fail(invoice_id)
+class SendWelcomeEmail(Job, Dispatchable):
+    queue = "emails"
+    tries = 3
+    timeout = 30
 
-    await Mail("invoice", {
-        "user": user,
-        "invoice": invoice,
-    }).send_to(user.email)`,
+    def __init__(self, user_id: str):
+        self.user_id = user_id
+
+    async def handle(self):
+        user = await User.get(self.user_id)
+        await Mail.to(user.email).send("welcome")
+
+
+await SendWelcomeEmail.dispatch_after(300, "user-42")`,
   },
   'Record ORM': {
     title: 'Record ORM',
     desc: 'Async active-record ORM with typed fields, relationships, query builder, and migration support.',
-    code: `from sillo.record import Record
-from sillo.record.fields import (
-    String, Integer, BelongsTo, HasMany
-)
+    code: `from sillo.record import Model
+from tortoise import fields
 
 
-class Team(Record):
-    name = String()
-    slug = String(unique=True)
-
-    members = HasMany("Member")
+class Team(Model):
+    name = fields.CharField(max_length=255)
+    slug = fields.CharField(max_length=255, unique=True)
 
 
-class Member(Record):
-    name = String()
-    role = String(default="member")
-    team = BelongsTo("Team")
+class Member(Model):
+    name = fields.CharField(max_length=255)
+    role = fields.CharField(max_length=100, default="member")
+    team = fields.ForeignKeyField("models.Team", related_name="members")
 
 
 # Usage
-team = await Team.query() \\
-    .where(slug="acme") \\
-    .first_or_fail()
-
-members = await team.members \\
-    .where(role="admin") \\
-    .order_by("name") \\
-    .all()`,
+team = await Team.get_or_none(slug="acme")
+members = await team.members.filter(role="admin").order_by("name").all()`,
   },
   Mail: {
     title: 'Mail',
@@ -649,19 +631,22 @@ class InvoiceMail(Mail):
   'Rate limiting': {
     title: 'Rate Limiting',
     desc: 'Named limiters with per-route, per-user, or per-IP policies. Redis and in-memory backends.',
-    code: `from sillo.security import limiter
+    code: `from sillo import SilloApp
+from sillo.security.ratelimit import RateLimitMiddleware, RateLimitConfig
+
+app = SilloApp()
+app.use(RateLimitMiddleware(config=RateLimitConfig(
+    limit=100,
+    window=60,
+    namespace="api",
+)))
 
 
-api = limiter.namespace("api")
-
-
-@api.limit("100/minute")
 @app.get("/api/projects")
 async def list_projects(request):
     return await Project.all()
 
 
-@api.limit("20/minute")
 @app.post("/api/projects")
 async def create_project(request):
     data = await request.validate(CreateProject)
@@ -671,72 +656,87 @@ async def create_project(request):
   Routing: {
     title: 'Routing',
     desc: 'Typed route parameters, dependency injection, middleware pipelines, and automatic request parsing.',
-    code: `from sillo.http import Request, Response
-from sillo.routing import get, post
+    code: `from sillo import SilloApp, Depend
+from sillo.core.http import Request, Response
 
 
-@get("/projects/{project_id:int}")
+app = SilloApp()
+
+
+async def get_db(request: Request = Depend(get_request=True)):
+    return Database("postgres://localhost/app")
+
+
+@app.get("/projects/{project_id:int}")
 async def show_project(
     request: Request,
+    response: Response,
     project_id: int,
-    db: Database = Depends(get_db),
+    db = Depend(get_db),
 ):
     project = await db.projects.find(project_id)
 
     if not project:
         return Response.not_found()
 
-    return {
+    return response.json({
         "project": project.to_dict(),
         "viewer": request.user.to_dict(),
-    }
+    })
 
 
-@post("/projects")
+@app.post("/projects")
 async def create_project(
     request: Request,
-    db: Database = Depends(get_db),
+    response: Response,
+    db = Depend(get_db),
 ):
     data = await request.json()
     project = await db.projects.create(**data)
-    return Response.created(project)`,
+    return response.json(project.to_dict(), status_code=201)`,
   },
   Caching: {
     title: 'Caching',
-    desc: 'Pluggable cache backends with TTL, tags, versioning, and remember helper.',
-    code: `from sillo.cache import cache
+    desc: 'Pluggable cache backends with TTL, tags, versioning, and decorator support.',
+    code: `from sillo.cache import MemoryCache, configure_cache, cache
+
+configure_cache(MemoryCache(default_ttl=300))
+
+
+@cache(ttl=120, tags=["catalog"])
+async def get_product(product_id: int):
+    product = await Product.get(id=product_id)
+    return product.to_dict()
 
 
 @app.get("/stats")
 async def dashboard_stats(request):
-    stats = await cache.remember(
-        key=f"dashboard:stats",
-        ttl=300,  # 5 minutes
-        loader=lambda: compute_stats(),
-    )
-
+    stats = await get_product(1)
     return {"stats": stats}
 
 
 @app.post("/refresh")
 async def refresh_cache(request):
-    await cache.forget("dashboard:stats")
+    backend = get_default_backend()
+    await backend.delete("cache:get_product:1")
     return {"ok": True}`,
   },
   Scheduling: {
     title: 'Scheduling',
     desc: 'Cron-based recurring tasks managed within the framework. Schedule maintenance, reports, and periodic jobs.',
-    code: `from sillo.schedule import cron, every
+    code: `from sillo import SilloApp
+from sillo.work.scheduler import setup_scheduler
+
+app = SilloApp()
+scheduler = setup_scheduler(app)
 
 
-@cron("0 3 * * *")  # Daily at 3am
+@scheduler.cron("0 3 * * *", name="cleanup")
 async def cleanup_expired_sessions():
-    await Session.query() \\
-        .where("expires_at <", now()) \\
-        .delete()
+    await Session.filter(expired=True).delete()
 
 
-@every(hours=1)
+@scheduler.every(3600, name="sync")
 async def sync_external_data():
     data = await fetch_updates()
     await Record.bulk_upsert(data)`,
@@ -1342,11 +1342,11 @@ function EnterpriseSection() {
 /* ─── Ecosystem Section ─── */
 
 const ECOSYSTEM_ITEMS = [
-  { name: 'Miko', desc: 'Visual administration studio for Sillo applications.', tag: 'Admin' },
-  { name: 'Zoro', desc: 'Managed deployment platform with zero-config setup.', tag: 'Deploy' },
-  { name: 'Koda', desc: 'Server management and deployment orchestration.', tag: 'Infra' },
-  { name: 'Nira', desc: 'Authentication and organisation infrastructure.', tag: 'Auth' },
-  { name: 'Piko', desc: 'Logs, queues, and application monitoring console.', tag: 'Ops' },
+  { name: 'sillo-start', desc: 'Project scaffolding. Fetches the starter repo, generates secrets, initializes git.', tag: 'Tooling' },
+  { name: 'sillohq/starter', desc: 'Reference application with auth, admin, Record, and worker wired.', tag: 'Reference' },
+  { name: 'sillo-inertia', desc: 'Inertia.js adapter for React and Vue.', tag: 'Adapter' },
+  { name: 'sillo-oauth', desc: 'Router-free OAuth: two functions, no response object.', tag: 'Auth' },
+  { name: '@sillo/atlas', desc: 'OpenAPI reference and API client. 79 KB, zero runtime dependencies.', tag: 'Docs' },
 ]
 
 function EcosystemSection() {

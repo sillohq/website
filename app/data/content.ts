@@ -20,7 +20,7 @@ async def get_user(
     request: Request,
     response: Response,
     user_id: int,
-    db: Database = Depends(get_db),
+    db: Database = Depend(get_db),
 ):
     user = await db.users.find(user_id)
     return response.json(user.to_dict())`,
@@ -32,9 +32,8 @@ async def get_user(
     label: 'Authentication',
     description: 'Authenticated endpoints with guards and current user resolution.',
     code: `@app.get("/dashboard")
-@auth.require("admin")
 async def dashboard(request, response):
-    user = await request.current_user()
+    user = request.user
     return response.json({
         "user": user.email,
         "role": user.role,
@@ -46,15 +45,19 @@ async def dashboard(request, response):
     id: 'orm',
     label: 'ORM',
     description: 'Record models with typed queries and clean data access.',
-    code: `class Product(Record):
-    name: str
-    price: float
-    stock: int
-    category: str
+    code: `from tortoise import fields
+from sillo.record import Model
 
-products = await Product \\
-    .where(category="electronics") \\
-    .where("stock >", 0) \\
+
+class Product(Model):
+    name = fields.CharField(max_length=255)
+    price = fields.DecimalField(max_digits=10, decimal_places=2)
+    stock = fields.IntField(default=0)
+    category = fields.CharField(max_length=100)
+
+
+products = await Product.filter(category="electronics") \\
+    .filter(stock__gt=0) \\
     .order_by("-price") \\
     .limit(20) \\
     .all()`,
