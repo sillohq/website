@@ -336,25 +336,25 @@ function Hero() {
             {/* Eyebrow */}
             <div className="font-mono text-[11px] text-muted tracking-[0.15em] mb-5 flex items-center gap-1.5">
               <span className="text-dimmed">&lt;</span>
-              <span>ONE PRODUCT LANGUAGE</span>
+              <span>ALREADY IN PLACE</span>
               <span className="text-dimmed">&gt;</span>
               <span className="text-primary">_</span>
               <span className="w-[2px] h-3.5 bg-primary cursor-blink" />
             </div>
 
-            {/* Headline */}
-            <h2 className="text-text text-3xl md:text-4xl mb-7 max-w-[520px] font-medium leading-tight tracking-tight">
-              Batteries included.<br />
-              <MarkerUnderline seed={23} weight={2.6} draw delay={0.45}>
-                One design.
+            {/* Headline — the brand tagline, verbatim. */}
+            <h1 className="text-text text-3xl md:text-4xl mb-7 max-w-[520px] font-medium leading-tight tracking-tight">
+              Python With the Pieces<br />
+              <MarkerUnderline seed={63} weight={2.6} draw delay={0.45}>
+                Already in Place.
               </MarkerUnderline>
-            </h2>
+            </h1>
 
             {/* Subhead */}
             <p className="text-muted text-base leading-relaxed mb-8 max-w-[460px]">
-              The ORM, auth, background work and websockets ship as one framework and
-              share one config model. Declare auth once — it gates the route and writes
-              the OpenAPI spec.
+              The same Python you already write. The ORM, auth, admin, queues and
+              websockets arrive designed against each other, sharing one config model —
+              so the wiring between them is not your job.
             </p>
 
             {/* CTA */}
@@ -1001,7 +1001,8 @@ function OneFramework() {
             </h2>
             <p className="text-muted text-base leading-relaxed mb-10 max-w-[420px]">
               Every capability is a first-party module with shared configuration,
-              consistent APIs, and one set of testing utilities. Nothing to assemble.
+              consistent APIs, and one set of testing utilities. The pieces are
+              already in place — and already fitted to each other.
             </p>
             <div className="space-y-1 border-l border-border/70 pl-3">
               {CAPABILITY_KEYS_V2.map((key, i) => {
@@ -1231,7 +1232,7 @@ function ArchitectureSection() {
                 <Doodle name="sparkle" tone="red" seed={61} size={14} rotate={-11} show="tablet" className="opacity-80" />
               </div>
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold leading-[0.96] tracking-[-0.06em] text-text">
-                The whole foundation is one product, not eleven packages.
+                The foundation is already here, and it was designed as one thing.
               </h2>
             </div>
             <MarkerCircle seed={67} weight={2.2} padX={28} padY={36} rotate={-1} className="mt-10">
@@ -1357,12 +1358,12 @@ function EcosystemSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           <div>
             <h2 className="mb-4">
-              A framework is only<br />
-              the beginning.
+              The pieces around<br />
+              the framework.
             </h2>
             <p className="text-muted text-base leading-relaxed max-w-[420px]">
-              An ecosystem of tools being built around Sillo to handle administration,
-              deployment, monitoring, and authentication.
+              Scaffolding, a reference application, an Inertia adapter, OAuth, and an
+              OpenAPI reference — each one a package you install when you need it.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1461,7 +1462,7 @@ function FinalCta() {
                 <BrushStroke tone="red" seed={109} rotate={-1.4} opacity={0.92}>
                   Build the product.
                 </BrushStroke><br />
-                Sillo handles the foundation.
+                The pieces are already in place.
               </h2>
               <p className="text-muted text-base leading-relaxed mb-9 max-w-[520px]">
                 Python 3.10+ &middot; BSD 3-Clause &middot; Open source on GitHub

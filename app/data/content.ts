@@ -2,12 +2,12 @@ import { DOCS_LINKS, DOCS_URL as DOCS, GITHUB_URL as GITHUB } from './links'
 
 export const BRAND = {
   name: 'Sillo',
-  tagline: 'The productive Python framework',
+  tagline: 'Python With the Pieces Already in Place.',
   subtitle:
-    'Routing, auth, queues, ORM, mail, validation, scheduling, WebSockets and everything you need to build Python web applications.',
-  closing: 'Spend less time assembling. Spend more time building.',
+    'The same Python you already write, with routing, validation, the ORM, auth, the admin, queues, the scheduler, mail and WebSockets designed against each other and sharing one config model.',
+  closing: 'Build the product. The pieces are already in place.',
   closing_sub:
-    'Sillo gives your team the structure, tools and confidence to turn ambitious Python ideas into production software.',
+    'You learn one set of conventions and apply them across HTTP, data, auth and background work, instead of fitting a new interface to each one.',
 } as const
 
 export const CODE_TABS = [

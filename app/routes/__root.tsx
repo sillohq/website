@@ -7,11 +7,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Sillo: The batteries-included async Python framework' },
+      { title: 'Sillo — Async Python Web Framework with ORM, Auth and Queues' },
       {
         name: 'description',
         content:
-          'An async Python web framework where the ORM, auth, background work, websockets and HTTP layer are one product. Declare auth once: it gates the route and writes the OpenAPI spec.',
+          'Sillo is an async Python web framework for APIs, real-time apps and production backends. The ORM, authentication, admin, job queues, scheduler and WebSockets are already in place and share one configuration model.',
       },
     ],
     links: [

@@ -12,16 +12,18 @@ const ABOUT_TABS = [
     id: 'philosophy',
     label: 'What Sillo is',
     eyebrow: '01 / WHAT SILLO IS',
-    title: 'One product language for the whole async Python stack.',
-    intro: 'Sillo is one framework where the ORM, auth, background work, websockets and HTTP layer are designed against each other and share one config model.',
+    title: 'One framework, designed as one thing.',
+    intro: 'Sillo is the Python you already write, with the ORM, auth, background work, websockets and HTTP layer already in place — designed against each other and sharing one config model.',
     body: [
-      'A product that starts as one route quickly needs validation, migrations, permissions, background jobs, mail, caching, events, WebSockets, and an admin. Assembled from separate packages, each of those arrives with its own interface, its own configuration style, its own failure mode, and its own upgrade cycle. The cost is rarely the install. It is the seams between them.',
-      'Sillo removes the seams. Record, auth, Work, and websockets are first-party modules built against one another: they share a configuration model, a testing story, and a set of naming conventions. Reading one subsystem teaches you how to read the next.',
+      'The language does not change. You write the same Python, with the same type hints and the same async you already know. What changes is how much of the backend is waiting for you when you start.',
+      'A product that begins as one route quickly needs validation, migrations, permissions, background jobs, mail, caching, events, WebSockets, and an admin. Every one of those is a solved problem with good packages behind it. The work that remains is the fitting: each arrives with its own interface, its own configuration style, its own failure mode, and its own upgrade cycle. The cost is rarely the install. It is the seams between them.',
+      'Sillo puts those pieces in place with the seams already closed. Record, auth, Work, and websockets are first-party modules built against one another: they share a configuration model, a testing story, and a set of naming conventions. Reading one subsystem teaches you how to read the next.',
       'That coherence shows up in small places. One auth= declaration gates a route and writes its securityScheme into the OpenAPI spec, so the gate and the document cannot drift apart. The scheduler registers on app.state and starts with the application lifecycle. Range requests, ETags, and content negotiation are middleware rather than something each project rewrites.',
       'Sillo is opinionated at the defaults and open at the boundaries. The common path is short: SilloApp, a route, a request_model, a Record model. The advanced path is documented rather than hidden — auth backends, middleware, cache drivers, session stores, and hashing algorithms are all contracts you can implement yourself.',
       'Trade-offs are decisions, not gaps. The sillo command carries the framework-level operations, and inside a project it merges in whatever that project registers, so sillo db:migrate works without the framework owning the command set. Underneath, every operation stays a plain function in sillo.record.commands, sillo.users.commands and sillo.work.commands — the names are yours to choose.',
       'The admin panel follows the same rule. It registers your models and authenticates against your own user model instead of shipping a parallel user table, because a second identity system is exactly the kind of seam Sillo exists to remove.',
       'Modules stay useful on their own. Point Record at SQLite or Postgres, swap the cache backend from memory to Redis, bring your own session store, serve a React or Vue frontend through Inertia, or add a Strawberry GraphQL endpoint. Strong defaults make the common path fast; documented contracts keep advanced teams in control.',
+      'In place does not mean installed regardless. The base package is the HTTP layer, routing, validation, dependency injection, and the middleware stack. Record, JWT, templating, Redis and the rest are optional extras declared in pyproject.toml and pulled in when the product actually needs them, so the dependency tree stays proportional to what you build.',
       'The operating principles are short: strong defaults with open boundaries, convenience without mystery, documentation as part of the interface, and compatibility as a promise. Anything the framework does on your behalf is something you can read, override, or replace.',
       'What Sillo avoids matters as much as what it ships. Not a set of modules that share a logo but not an architecture. Not convenience that turns into mystery the first time something breaks. Not impressive demos at the expense of upgrades, debugging, security, and production failure modes.',
       'The result is fewer disconnected decisions. You learn one set of conventions and apply them across HTTP, data, auth, and background work, and the framework holds those pieces together instead of leaving the joins to you.',
@@ -31,8 +33,8 @@ const ABOUT_TABS = [
     id: 'ships',
     label: 'What ships',
     eyebrow: '02 / WHAT SHIPS',
-    title: 'What is shipped, what is in flight, and what is next.',
-    intro: 'The working board for the framework — every subsystem tracked in the open, from planning to completed.',
+    title: 'Every piece, and what each one covers.',
+    intro: 'The full inventory of first-party modules, grouped by the part of the application they belong to. Each one is in the framework and documented.',
     body: [],
   },
   {
@@ -67,64 +69,68 @@ const BRAND_FONTS = [
   { name: 'JetBrains Mono', usage: 'Code, labels, metadata, terminal UI' },
 ]
 
+// Index ranges, so they must be re-checked whenever a paragraph is added to
+// or removed from ABOUT_TABS[0].body.
 const PHILOSOPHY_SECTIONS = [
-  { title: 'The Seams', paragraphs: ABOUT_TABS[0].body.slice(0, 3) },
-  { title: 'How Sillo Is Built', paragraphs: ABOUT_TABS[0].body.slice(3, 7) },
-  { title: 'Principles And Boundaries', paragraphs: ABOUT_TABS[0].body.slice(7) },
+  { title: 'The Seams', paragraphs: ABOUT_TABS[0].body.slice(0, 4) },
+  { title: 'How Sillo Is Built', paragraphs: ABOUT_TABS[0].body.slice(4, 9) },
+  { title: 'Principles And Boundaries', paragraphs: ABOUT_TABS[0].body.slice(9) },
 ]
 
+// Grouped by the part of the application each module belongs to. Everything
+// listed here is in the framework and has a documentation page — this board is
+// an inventory, not a schedule.
 const KANBAN_COLUMNS = [
   {
-    title: 'Planning',
-    tag: 'Scoped, not started',
-    dot: 'bg-dimmed',
-    pulse: false,
-    items: [
-      ['Mail', 'Templated mail', 'A mail client with queued delivery, built on the Work subsystem.'],
-      ['Events', 'Redis event transport', 'A Redis transport for the emitter, alongside the in-memory default.'],
-      ['Sessions', 'More session stores', 'Backends beyond signed-cookie and file, behind the same contract.'],
-      ['Templating', 'Server-side templating', 'Rendering helpers for HTML responses, with escaping by default.'],
-      ['Testing', 'Streaming test coverage', 'Sync and async test clients covering websockets and streamed responses.'],
-    ],
-  },
-  {
-    title: 'In Progress',
-    tag: 'Being built',
+    title: 'The request',
+    tag: 'HTTP and routing',
     dot: 'bg-primary',
-    pulse: true,
-    items: [
-      ['Work', 'Queues and workers', 'Durable background jobs as one subsystem with the scheduler.'],
-      ['Frontend', 'Inertia', 'Server-driven React and Vue frontends, served by the framework.'],
-      ['Cache', 'Cache backends', 'Pluggable drivers, from in-memory to Redis, behind one interface.'],
-      ['GraphQL', 'GraphQL endpoint', 'A Strawberry endpoint mounted beside the HTTP routes.'],
-    ],
-  },
-  {
-    title: 'Review',
-    tag: 'Under review',
-    dot: 'bg-amber-400',
-    pulse: false,
-    items: [
-      ['Admin', 'Admin panel', 'A model admin at /admin/ that authenticates against your own user model.'],
-      ['Tooling', 'sillo-start', 'New projects scaffolded from the starter repository, personalised on fetch.'],
-      ['Work', 'Scheduler', 'Cron-style jobs registered on app.state and started by the app lifecycle.'],
-    ],
-  },
-  {
-    title: 'Completed',
-    tag: 'Shipped',
-    dot: 'bg-emerald-400',
-    pulse: false,
     items: [
       ['HTTP', 'Routing and lifecycle', 'Decorator and router-based routes, mountable subapps, typed path parameters.'],
       ['HTTP', 'Response builder', 'JSON, text, HTML, files, streams, redirects, and cookies in one fluent API.'],
       ['HTTP', 'HTTP correctness', 'RFC 9110 ranges, ETags, conditional requests, and content negotiation.'],
+      ['Validation', 'Request models', 'request_model turns untrusted bodies into validated Pydantic objects at the boundary.'],
+      ['DI', 'Dependency injection', 'Depend resolves services and request-aware providers in the handler signature.'],
+      ['OpenAPI', 'Generated spec', 'The document is generated from your routes, parameters, and declared response models.'],
+    ],
+  },
+  {
+    title: 'The data',
+    tag: 'Record and storage',
+    dot: 'bg-emerald-400',
+    items: [
       ['Record', 'Record models', 'Active-record fields, casting, scopes, events, and transactions.'],
       ['Record', 'Migrations', 'Schema migrations as built-in commands over sillo.record.commands.'],
+      ['Record', 'Pagination', 'Cursor and page-based pagination on the query builder.'],
+      ['Cache', 'Cache backends', 'Pluggable drivers, from in-memory to Redis, behind one interface.'],
+      ['Storage', 'File uploads', 'Streamed uploads with local and cloud-compatible drivers.'],
+    ],
+  },
+  {
+    title: 'The people',
+    tag: 'Auth and admin',
+    dot: 'bg-amber-400',
+    items: [
       ['Auth', 'Auth backends', 'JWT, session, and API-key behind one contract — auth= gates the route and writes its securityScheme.'],
       ['Auth', 'Permissions', 'DB-backed named permissions with group inheritance and one-call caching.'],
-      ['OpenAPI', 'OpenAPI', 'The spec is generated from your routes and declared response models.'],
+      ['Auth', 'OAuth2', 'Social login as two functions, with no router or response object of its own.'],
+      ['Admin', 'Admin panel', 'A model admin at /admin/ that authenticates against your own user model.'],
+      ['Security', 'CORS, CSRF, rate limits', 'Security headers, origin policy, token protection, and throttling as middleware.'],
+      ['Sessions', 'Session stores', 'Signed-cookie and file backends behind one interface.'],
+    ],
+  },
+  {
+    title: 'Beyond the request',
+    tag: 'Work and real-time',
+    dot: 'bg-sky-400',
+    items: [
+      ['Work', 'Queues and workers', 'Durable background jobs as one subsystem with the scheduler.'],
+      ['Work', 'Scheduler', 'Cron-style jobs registered on app.state and started by the app lifecycle.'],
+      ['Events', 'Event bus', 'An emitter with pluggable transports, alongside the in-memory default.'],
       ['Real-time', 'WebSockets', 'Consumers, channels, groups, and connection history.'],
+      ['Mail', 'Templated mail', 'A mail client with queued delivery, built on the Work subsystem.'],
+      ['Frontend', 'Inertia and templating', 'Server-driven React and Vue frontends, plus HTML rendering with escaping by default.'],
+      ['Testing', 'Test clients', 'Sync and async clients covering routes, auth, jobs, websockets, and streamed responses.'],
     ],
   },
 ]
@@ -245,13 +251,13 @@ function KanbanBoard() {
           <div className="mb-4 flex items-start justify-between px-2 py-2">
             <div>
               <div className="flex items-center gap-2.5">
-                <span className={`h-2 w-2 rounded-full ${column.dot}${column.pulse ? ' motion-safe:animate-pulse' : ''}`} />
+                <span className={`h-2 w-2 rounded-full ${column.dot}`} />
                 <h2 className="text-xl font-semibold tracking-[-0.04em] text-text">{column.title}</h2>
               </div>
               <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-dimmed">{column.tag}</div>
             </div>
             <span className="flex items-center gap-2">
-              {column.title === 'Completed' && (
+              {column.title === 'Beyond the request' && (
                 <Doodle name="tick" tone="red" seed={149} size={19} rotate={-8} show="tablet" className="opacity-85" />
               )}
               <span className="rounded-full border border-border/70 px-2.5 py-1 font-mono text-[10px] text-muted">
