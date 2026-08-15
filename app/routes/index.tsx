@@ -353,7 +353,7 @@ function Hero() {
             {/* Subhead */}
             <p className="text-muted text-base leading-relaxed mb-8 max-w-[460px]">
               The same Python you already write. The ORM, auth, admin, queues and
-              websockets arrive designed against each other, sharing one config model —
+              websockets arrive designed against each other, sharing one config model,
               so the wiring between them is not your job.
             </p>
 
@@ -1002,7 +1002,7 @@ function OneFramework() {
             <p className="text-muted text-base leading-relaxed mb-10 max-w-[420px]">
               Every capability is a first-party module with shared configuration,
               consistent APIs, and one set of testing utilities. The pieces are
-              already in place — and already fitted to each other.
+              already in place, and already fitted to each other.
             </p>
             <div className="space-y-1 border-l border-border/70 pl-3">
               {CAPABILITY_KEYS_V2.map((key, i) => {
@@ -1284,7 +1284,7 @@ const ENTERPRISE_ITEMS = [
   },
   {
     title: 'HTTP correctness',
-    desc: 'Full RFC 9110 Range support — single, multi-range, suffix, and 416 — with ETags, conditional requests, and content negotiation as middleware.',
+    desc: 'Full RFC 9110 Range support (single, multi-range, suffix, and 416) with ETags, conditional requests, and content negotiation as middleware.',
     span: 'row-span-2',
   },
   {
@@ -1363,7 +1363,7 @@ function EcosystemSection() {
             </h2>
             <p className="text-muted text-base leading-relaxed max-w-[420px]">
               Scaffolding, a reference application, an Inertia adapter, OAuth, and an
-              OpenAPI reference — each one a package you install when you need it.
+              OpenAPI reference. Each one is a package you install when you need it.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -7,7 +7,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Sillo — Async Python Web Framework with ORM, Auth and Queues' },
+      { title: 'Sillo: Async Python Web Framework with ORM, Auth and Queues' },
       {
         name: 'description',
         content:
