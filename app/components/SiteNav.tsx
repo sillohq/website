@@ -76,10 +76,10 @@ const navItems = [
         icon: CompassIcon,
       },
       {
-        label: 'What ships',
+        label: 'Roadmap',
         href: '/about#ships',
-        ariaLabel: 'What ships',
-        description: 'First-party modules',
+        ariaLabel: 'Roadmap',
+        description: 'Planned and shipped modules',
         icon: BoxIcon,
       },
       {

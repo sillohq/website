@@ -31,10 +31,10 @@ const ABOUT_TABS = [
   },
   {
     id: 'ships',
-    label: 'What ships',
-    eyebrow: '02 / WHAT SHIPS',
-    title: 'Every piece, and what each one covers.',
-    intro: 'The full inventory of first-party modules, grouped by the part of the application they belong to. Each one is in the framework and documented.',
+    label: 'Roadmap',
+    eyebrow: '02 / ROADMAP',
+    title: 'What we have built, and what is next.',
+    intro: 'Every subsystem, by the state it is actually in. There are no dates on this board: an item moves when the work is finished, not when a calendar says it should be.',
     body: [],
   },
   {
@@ -77,60 +77,136 @@ const PHILOSOPHY_SECTIONS = [
   { title: 'Principles And Boundaries', paragraphs: ABOUT_TABS[0].body.slice(9) },
 ]
 
-// Grouped by the part of the application each module belongs to. Everything
-// listed here is in the framework and has a documentation page — this board is
-// an inventory, not a schedule.
+// Grouped by state, not by subsystem, and deliberately not by date. The rules
+// for this board:
+//
+//   Completed  is in the released framework and has a documentation page.
+//   Testing    is written and merged, and is being proven before it is claimed.
+//   Building   has code in the tree and is not finished.
+//   Planning   is specified and not started. Nothing here may be described
+//              anywhere else on the site as though it ships today.
+//
+// An item moves left to right only. Before adding to Completed, grep for it.
+//
+// One state at a time, because the four are 40, 7, 6 and 30 items long. Side
+// by side, the only way to fit those in equal columns is to take the
+// descriptions away from the long ones, and an item reduced to two words is
+// not worth reading. A tab gives every item the same room whichever state it
+// is in.
 const KANBAN_COLUMNS = [
   {
-    title: 'The request',
-    tag: 'HTTP and routing',
+    title: 'Planning',
+    tag: 'Specified',
+    dot: 'bg-sky-400',
+    meaning: 'Specified and not started. Nothing here is described anywhere else on this site as though it ships today.',
+    items: [
+      ['Auth', 'Two-factor and passkeys', 'TOTP enrolment with single-use recovery codes, and WebAuthn passkeys behind the same auth= gate.'],
+      ['Plugins', 'Extension points', 'Packages that register routes, middleware, console commands and admin panels through one entry point.'],
+      ['Admin', 'Filters and search', 'Faceted filtering and search on any registered model, pushed into SQL rather than filtered in memory.'],
+      ['Work', 'Dead letters', 'Jobs that exhaust their retries kept with their payload and trace, listable and replayable from the CLI.'],
+      ['HTTP', 'Problem details', 'RFC 9457 application/problem+json as the error representation, negotiated against Accept.'],
+      ['Cache', 'Tag invalidation', 'Entries tagged on write and evicted by tag in one call, across both the memory and Redis backends.'],
+      ['Record', 'Migration autogeneration', 'Model diffs compiled into a migration, with destructive changes named before they run.'],
+      ['i18n', 'Locale negotiation', 'Message catalogues and pluralisation, selected by the Accept-Language negotiation already in the HTTP layer.'],
+      ['Auth', 'Password reset and verification', 'Single-use signed tokens, rate limits and mail templates, working across all three auth backends.'],
+      ['Real-time', 'Presence channels', 'Channel membership with join and leave events, including on connections that close without a close frame.'],
+      ['CLI', 'sillo doctor', 'One command that checks the interpreter, the installed extras, Redis, pending migrations, config and middleware order.'],
+      ['Work', 'Batches and chains', 'Batches with a completion callback, and chains that pass each result forward, both surviving a worker restart.'],
+      ['Security', 'Content Security Policy', 'Per-request nonces threaded into templates and Inertia, deployable in report-only mode first.'],
+      ['Record', 'Read replicas', 'Writes to the primary and reads to a replica pool, with a sticky window after a write.'],
+      ['Admin', 'Bulk actions', 'Declarative actions with a confirmation screen, a permission gate and an activity-log entry per affected row.'],
+      ['Auth', 'Object policies', 'Per-model policies that answer whether a user may act on one specific row, from routes, templates and the admin.'],
+      ['Cache', 'Two-tier caching', 'An in-process layer in front of Redis, invalidated across workers over the event bus.'],
+      ['Work', 'Scheduler leadership', 'A leader lock, misfire policies, overlap prevention and jitter, so several workers run one schedule.'],
+      ['Storage', 'Direct uploads', 'Signed URLs scoped by method, expiry, content type and size, so a browser uploads straight to the bucket.'],
+      ['HTTP', 'Response caching', 'RFC 9111 semantics, with Vary derived from the negotiation the response actually performed.'],
+      ['Sessions', 'Redis store', 'Sessions that survive a deploy and can be revoked, alongside the signed-cookie and file stores.'],
+      ['Ops', 'Health probes', 'Separate liveness and readiness endpoints that probe the database, Redis and the queue.'],
+      ['Events', 'Persistence and replay', 'A durable transport with per-stream sequencing, so a restarted consumer resumes where it stopped.'],
+      ['Record', 'Bulk operations', 'bulk_create, bulk_update and bulk_delete with batch sizes, plus cursor iteration over a large table.'],
+      ['Auth', 'Audit log', 'Sign-ins, failures, permission denials and privilege changes recorded with actor, target and outcome.'],
+      ['Testing', 'Pytest plugin', 'client, async_client, ws_client, mailbox and queue fixtures shipped with the framework.'],
+      ['Work', 'Rate-limited tasks', 'Per-task rate and concurrency limits enforced across every worker, not per process.'],
+      ['GraphQL', 'Subscriptions', 'Subscriptions over the same channels and groups the websocket consumers use.'],
+      ['Admin', 'JSON API', 'Every panel operation available as JSON under the same permissions, for scripts and external tools.'],
+      ['Frontend', 'Deferred props', 'Inertia props resolved in a follow-up request, merged props for infinite scroll, and prefetch hints.'],
+      ['Security', 'Trusted proxies', 'One place that decides which proxies may set Forwarded and X-Forwarded-For.'],
+      ['Record', 'Full-text search', 'One search scope compiled to tsvector, MATCH or FTS5 depending on the engine underneath.'],
+      ['CLI', 'Scriptable output', 'JSON output and colour control on every command, honouring NO_COLOR.'],
+      ['Observability', 'Trace continuity', 'One trace spanning the request, the job it queued, the mail that job sent and the event it emitted.'],
+      ['Auth', 'Step-up authentication', 'Routes that require recent or second-factor authentication, answering with a challenge rather than a refusal.'],
+      ['Storage', 'One filesystem contract', 'Sessions, uploads, attachments and inspector data behind a single driver.'],
+      ['Mail', 'Preview', 'Every message the application would have sent, rendered in the browser during development.'],
+      ['Work', 'Queue inspector', 'Depth, in-flight claims, recent failures and dead letters, with retry and delete.'],
+      ['Record', 'Locking', 'select_for_update, advisory locks and an explicit isolation-level API.'],
+      ['Docs', 'Generated reference', 'An API reference generated from the docstrings, alongside the written guides.'],
+    ],
+  },
+  {
+    title: 'Building',
+    tag: 'In progress',
     dot: 'bg-primary',
+    meaning: 'Code is in the tree and the work is not finished.',
+    items: [
+      ['Storage', 'File storage', 'One driver contract over local disk and S3-compatible object storage, with streamed writes that never buffer a whole upload.'],
+      ['Mail', 'Queued delivery', 'Messages sent through the Work queue, with retry, backoff and dead letters.'],
+      ['Record', 'Engine coverage', 'One record API across SQLite, Postgres and MySQL, proven by a matrix over all three.'],
+      ['Observability', 'Metrics and traces', 'Request, queue, cache and database timings as Prometheus metrics and OpenTelemetry spans.'],
+      ['Performance', 'Continuous benchmarks', 'The benchmark suite run on every merge against FastAPI, Starlette, Django and Flask, with a regression failing the build.'],
+      ['Frontend', 'Server-side rendering', 'Inertia pages rendered on the server, falling back to the client when it is unreachable.'],
+      ['Reference', 'OpenAPI 3.1 in Atlas', 'Webhooks, callbacks and the 3.1 schema dialect, in the reference and the client.'],
+    ],
+  },
+  {
+    title: 'Testing',
+    tag: 'Hardening',
+    dot: 'bg-amber-400',
+    meaning: 'Written and merged, and being proven before it is claimed.',
+    items: [
+      ['Real-time', 'Protocol conformance', 'The Autobahn suite for websockets, and an ASGI conformance suite for lifespan, disconnects and body streaming.'],
+      ['Work', 'Delivery guarantees', 'At-least-once claims held under killed workers, an expired claim deadline and three workers on one queue.'],
+      ['Security', 'Adversarial inputs', 'Fuzzed multipart, ranges, ETags, Accept headers and URLs, asserting 400 and never 500.'],
+      ['Record', 'Transaction semantics', 'Savepoints, rollback on exception and isolation levels asserted identically on SQLite, Postgres and MySQL.'],
+      ['Quality', 'Mutation coverage', 'Auth, sessions and security measured by mutation score, not by line count.'],
+      ['Platform', 'Version matrix', 'Python 3.10 through 3.14 and free-threaded builds, on Linux, macOS and Windows.'],
+    ],
+  },
+  {
+    title: 'Completed',
+    tag: 'Released',
+    dot: 'bg-emerald-400',
+    meaning: 'In the released framework, each with a documentation page.',
     items: [
       ['HTTP', 'Routing and lifecycle', 'Decorator and router-based routes, mountable subapps, typed path parameters.'],
       ['HTTP', 'Response builder', 'JSON, text, HTML, files, streams, redirects, and cookies in one fluent API.'],
       ['HTTP', 'HTTP correctness', 'RFC 9110 ranges, ETags, conditional requests, and content negotiation.'],
+      ['HTTP', 'Server-sent events', 'A one-way stream to the browser, with the wire format and reconnection hints handled for you.'],
       ['Validation', 'Request models', 'request_model turns untrusted bodies into validated Pydantic objects at the boundary.'],
       ['DI', 'Dependency injection', 'Depend resolves services and request-aware providers in the handler signature.'],
       ['OpenAPI', 'Generated spec', 'The document is generated from your routes, parameters, and declared response models.'],
-    ],
-  },
-  {
-    title: 'The data',
-    tag: 'Record and storage',
-    dot: 'bg-emerald-400',
-    items: [
       ['Record', 'Record models', 'Active-record fields, casting, scopes, events, and transactions.'],
       ['Record', 'Migrations', 'Schema migrations as built-in commands over sillo.record.commands.'],
       ['Record', 'Pagination', 'Cursor and page-based pagination on the query builder.'],
+      ['Record', 'Factories and seeding', 'Model factories and seeders for fixtures, tests, and demo data.'],
       ['Cache', 'Cache backends', 'Pluggable drivers, from in-memory to Redis, behind one interface.'],
-      ['Storage', 'File uploads', 'Streamed uploads with local and cloud-compatible drivers.'],
-    ],
-  },
-  {
-    title: 'The people',
-    tag: 'Auth and admin',
-    dot: 'bg-amber-400',
-    items: [
       ['Auth', 'Auth backends', 'JWT, session, and API-key behind one contract. Setting auth= gates the route and writes its securityScheme.'],
       ['Auth', 'Permissions', 'DB-backed named permissions with group inheritance and one-call caching.'],
       ['Auth', 'OAuth2', 'Social login as two functions, with no router or response object of its own.'],
+      ['Auth', 'Password hashing', 'bcrypt, argon2 and scrypt behind one interface, with a built-in scheme when none is installed.'],
       ['Admin', 'Admin panel', 'A model admin at /admin/ that authenticates against your own user model.'],
       ['Security', 'CORS, CSRF, rate limits', 'Security headers, origin policy, token protection, and throttling as middleware.'],
       ['Sessions', 'Session stores', 'Signed-cookie and file backends behind one interface.'],
-    ],
-  },
-  {
-    title: 'Beyond the request',
-    tag: 'Work and real-time',
-    dot: 'bg-sky-400',
-    items: [
       ['Work', 'Queues and workers', 'Durable background jobs as one subsystem with the scheduler.'],
       ['Work', 'Scheduler', 'Cron-style jobs registered on app.state and started by the app lifecycle.'],
       ['Events', 'Event bus', 'An emitter with pluggable transports, alongside the in-memory default.'],
       ['Real-time', 'WebSockets', 'Consumers, channels, groups, and connection history.'],
-      ['Mail', 'Templated mail', 'A mail client with queued delivery, built on the Work subsystem.'],
+      ['Mail', 'Templated mail', 'A mail client that renders templates, addresses, and attachments, and suppresses sending in development.'],
       ['Frontend', 'Inertia and templating', 'Server-driven React and Vue frontends, plus HTML rendering with escaping by default.'],
+      ['GraphQL', 'Strawberry endpoint', 'A GraphQL schema mounted on the application, sharing its context and lifecycle.'],
+      ['CLI', 'The sillo command', 'serve, routes and version, merging in whatever your project registers in its own console.py.'],
+      ['CLI', 'Request inspector', 'Every request the server handled, with its timing, at /__sillo/requests.'],
       ['Testing', 'Test clients', 'Sync and async clients covering routes, auth, jobs, websockets, and streamed responses.'],
+      ['Reference', 'Atlas', 'A three-pane OpenAPI reference and request client, with no runtime dependencies.'],
     ],
   },
 ]
@@ -244,41 +320,62 @@ function PhilosophyContent() {
 }
 
 function KanbanBoard() {
+  const [state, setState] = useState(KANBAN_COLUMNS[0].title)
+  const column = KANBAN_COLUMNS.find(c => c.title === state) ?? KANBAN_COLUMNS[0]
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {KANBAN_COLUMNS.map(column => (
-        <section key={column.title} className="min-w-0 rounded-2xl bg-surface/55 p-4 shadow-[0_26px_90px_rgba(0,0,0,0.25)]">
-          <div className="mb-4 flex items-start justify-between px-2 py-2">
-            <div>
-              <div className="flex items-center gap-2.5">
-                <span className={`h-2 w-2 rounded-full ${column.dot}`} />
-                <h2 className="text-xl font-semibold tracking-[-0.04em] text-text">{column.title}</h2>
-              </div>
-              <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-dimmed">{column.tag}</div>
-            </div>
-            <span className="flex items-center gap-2">
-              {column.title === 'Beyond the request' && (
-                <Doodle name="tick" tone="red" seed={149} size={19} rotate={-8} show="tablet" className="opacity-85" />
-              )}
-              <span className="rounded-full border border-border/70 px-2.5 py-1 font-mono text-[10px] text-muted">
-                {column.items.length}
-              </span>
+    <div>
+      <div className="flex flex-wrap items-center gap-x-1 gap-y-2 border-b border-border/60 pb-1">
+        {KANBAN_COLUMNS.map(tab => {
+          const isActive = tab.title === column.title
+          return (
+            <button
+              key={tab.title}
+              type="button"
+              onClick={() => setState(tab.title)}
+              aria-pressed={isActive}
+              className={`group relative flex items-center gap-2.5 px-3.5 py-2.5 transition-colors ${
+                isActive ? 'text-text' : 'text-muted hover:text-text'
+              }`}
+            >
+              <span
+                className={`h-1.5 w-1.5 rounded-full transition-opacity ${tab.dot} ${isActive ? 'opacity-100' : 'opacity-45 group-hover:opacity-80'}`}
+              />
+              <span className="text-sm font-semibold tracking-[-0.03em]">{tab.title}</span>
+              <span className="font-mono text-[10px] tabular-nums text-dimmed">{tab.items.length}</span>
+              {isActive && <span className="absolute inset-x-0 -bottom-px h-px bg-primary" />}
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="mt-6 mb-8 flex items-start gap-3">
+        <span className="mt-[7px] font-mono text-[10px] uppercase tracking-[0.16em] text-primary">{column.tag}</span>
+        <p className="max-w-[720px] text-sm leading-relaxed text-muted">{column.meaning}</p>
+        {column.title === 'Completed' && (
+          <Doodle name="tick" tone="red" seed={149} size={19} rotate={-8} show="tablet" className="mt-1 opacity-85" />
+        )}
+      </div>
+
+      <ul className="divide-y divide-border/40 border-t border-border/40">
+        {column.items.map(([tag, title, description]) => (
+          <li
+            key={title}
+            className="group relative grid grid-cols-1 gap-x-8 gap-y-1.5 py-4 pl-4 transition-colors sm:grid-cols-[112px_1fr] lg:grid-cols-[112px_300px_1fr]"
+          >
+            <span
+              className={`absolute inset-y-2 left-0 w-px ${column.dot} opacity-0 transition-opacity group-hover:opacity-80`}
+            />
+            <span className="font-mono text-[9.5px] uppercase leading-5 tracking-[0.16em] text-dimmed transition-colors group-hover:text-primary sm:pt-px">
+              {tag}
             </span>
-          </div>
-          <div className="space-y-3">
-            {column.items.map(([tag, title, description]) => (
-              <article key={title} className="group rounded-xl bg-bg/82 p-5 transition-colors hover:bg-elevated">
-                <div className="mb-5 flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">{tag}</span>
-                  <span className={`h-1.5 w-1.5 rounded-full ${column.dot}`} />
-                </div>
-                <h3 className="mb-3 text-lg font-semibold tracking-[-0.04em] text-text">{title}</h3>
-                <p className="text-sm leading-relaxed text-muted">{description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+            <h3 className="text-[15px] font-semibold leading-snug tracking-[-0.035em] text-text">{title}</h3>
+            <p className="max-w-[620px] text-[13.5px] leading-relaxed text-muted sm:col-start-2 lg:col-start-3">
+              {description}
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
