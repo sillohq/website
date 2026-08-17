@@ -118,6 +118,7 @@ const KANBAN_COLUMNS = [
       ['Auth', 'Object policies', 'Per-model policies that answer whether a user may act on one specific row, from routes, templates and the admin.'],
       ['Cache', 'Two-tier caching', 'An in-process layer in front of Redis, invalidated across workers over the event bus.'],
       ['Work', 'Scheduler leadership', 'A leader lock, misfire policies, overlap prevention and jitter, so several workers run one schedule.'],
+      ['HTTP', 'API versioning', 'One application serving several versions from the same route table, resolved by path, header or media type, with an OpenAPI document and Sunset headers per version.'],
       ['Storage', 'Direct uploads', 'Signed URLs scoped by method, expiry, content type and size, so a browser uploads straight to the bucket.'],
       ['HTTP', 'Response caching', 'RFC 9111 semantics, with Vary derived from the negotiation the response actually performed.'],
       ['Sessions', 'Redis store', 'Sessions that survive a deploy and can be revoked, alongside the signed-cookie and file stores.'],
