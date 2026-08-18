@@ -116,6 +116,7 @@ const KANBAN_COLUMNS = [
       ['Security', 'Content Security Policy', 'Per-request nonces threaded into templates and Inertia, deployable in report-only mode first.'],
       ['Record', 'Read replicas', 'Writes to the primary and reads to a replica pool, with a sticky window after a write.'],
       ['Admin', 'Bulk actions', 'Declarative actions with a confirmation screen, a permission gate and an activity-log entry per affected row.'],
+      ['Auth', 'Auth decorator', 'A decorator form of useAuth, so a handler declared away from its route carries its own gate and writes the same securityScheme the auth= keyword does.'],
       ['Auth', 'Object policies', 'Per-model policies that answer whether a user may act on one specific row, from routes, templates and the admin.'],
       ['Cache', 'Two-tier caching', 'An in-process layer in front of Redis, invalidated across workers over the event bus.'],
       ['Work', 'Scheduler leadership', 'A leader lock, misfire policies, overlap prevention and jitter, so several workers run one schedule.'],
