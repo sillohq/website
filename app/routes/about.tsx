@@ -142,6 +142,7 @@ const KANBAN_COLUMNS = [
       ['Storage', 'One filesystem contract', 'Sessions, uploads, attachments and inspector data behind a single driver.'],
       ['Mail', 'Preview', 'Every message the application would have sent, rendered in the browser during development.'],
       ['Record', 'Locking', 'select_for_update, advisory locks and an explicit isolation-level API.'],
+      ['Record', 'Pagination integration', 'Pagination tightly integrated with Record, so cursor and page modes share one interface and link headers are derived from the same query execution.'],
       ['Docs', 'Generated reference', 'An API reference generated from the docstrings, alongside the written guides.'],
     ],
   },
