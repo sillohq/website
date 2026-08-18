@@ -204,3 +204,44 @@ export function GridIcon(props: IconProps) {
     </svg>
   )
 }
+
+export function WorkerIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <rect x="3.5" y="4.5" width="17" height="6" rx="2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="3.5" y="13.5" width="17" height="6" rx="2" stroke="currentColor" strokeWidth="1.7" opacity="0.5" />
+      <path d="M7 7.5h.01M7 16.5h.01" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M11 7.5h5M11 16.5h5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" opacity="0.45" />
+    </svg>
+  )
+}
+
+export function AlertIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M12 4.2 21 19.5H3L12 4.2Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M12 10v3.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M12 16.6h.01" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function TerminalIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <rect x="3" y="4.5" width="18" height="15" rx="2.5" stroke="currentColor" strokeWidth="1.7" />
+      <path d="m7.5 10 2.5 2.2-2.5 2.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13 14.5h3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" opacity="0.5" />
+    </svg>
+  )
+}
+
+export function OutboundIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path d="M11 5H6.5A2.5 2.5 0 0 0 4 7.5v10A2.5 2.5 0 0 0 6.5 20h10a2.5 2.5 0 0 0 2.5-2.5V13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M14 4h6v6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m20 4-8.5 8.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  )
+}

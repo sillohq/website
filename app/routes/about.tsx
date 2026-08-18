@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { SiteNav } from '../components/SiteNav'
+import { SiteFooter } from '../components/SiteFooter'
 import { Doodle, DoodleArrow, HandwrittenNote, MarkerAside } from '../components/marker'
 
 export const Route = createFileRoute('/about')({
@@ -100,8 +101,9 @@ const KANBAN_COLUMNS = [
     dot: 'bg-sky-400',
     meaning: 'Specified and not started. Nothing here is described anywhere else on this site as though it ships today.',
     items: [
-      ['Auth', 'Two-factor and passkeys', 'TOTP enrolment with single-use recovery codes, and WebAuthn passkeys behind the same auth= gate.'],
       ['Plugins', 'Extension points', 'Packages that register routes, middleware, console commands and admin panels through one entry point.'],
+      ['Platform', 'Craftman', 'A layer over a Postgres or MySQL database you already run: a generated API, auth, policies, realtime, storage and background tasks, as one deployment you own.', '/craftman'],
+      ['Ops', 'Foreman', 'A web dashboard over queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs, with Atlas embedded so any route can be called from it.', '/foreman'],
       ['Admin', 'Filters and search', 'Faceted filtering and search on any registered model, pushed into SQL rather than filtered in memory.'],
       ['Work', 'Dead letters', 'Jobs that exhaust their retries kept with their payload and trace, listable and replayable from the CLI.'],
       ['HTTP', 'Problem details', 'RFC 9457 application/problem+json as the error representation, negotiated against Accept.'],
@@ -110,7 +112,6 @@ const KANBAN_COLUMNS = [
       ['i18n', 'Locale negotiation', 'Message catalogues and pluralisation, selected by the Accept-Language negotiation already in the HTTP layer.'],
       ['Auth', 'Password reset and verification', 'Single-use signed tokens, rate limits and mail templates, working across all three auth backends.'],
       ['Real-time', 'Presence channels', 'Channel membership with join and leave events, including on connections that close without a close frame.'],
-      ['CLI', 'sillo doctor', 'One command that checks the interpreter, the installed extras, Redis, pending migrations, config and middleware order.'],
       ['Work', 'Batches and chains', 'Batches with a completion callback, and chains that pass each result forward, both surviving a worker restart.'],
       ['Security', 'Content Security Policy', 'Per-request nonces threaded into templates and Inertia, deployable in report-only mode first.'],
       ['Record', 'Read replicas', 'Writes to the primary and reads to a replica pool, with a sticky window after a write.'],
@@ -139,7 +140,6 @@ const KANBAN_COLUMNS = [
       ['Auth', 'Step-up authentication', 'Routes that require recent or second-factor authentication, answering with a challenge rather than a refusal.'],
       ['Storage', 'One filesystem contract', 'Sessions, uploads, attachments and inspector data behind a single driver.'],
       ['Mail', 'Preview', 'Every message the application would have sent, rendered in the browser during development.'],
-      ['Work', 'Queue inspector', 'Depth, in-flight claims, recent failures and dead letters, with retry and delete.'],
       ['Record', 'Locking', 'select_for_update, advisory locks and an explicit isolation-level API.'],
       ['Docs', 'Generated reference', 'An API reference generated from the docstrings, alongside the written guides.'],
     ],
@@ -295,6 +295,8 @@ function AboutPage() {
           {activeTab === 'brand' && <BrandSection copiedBrand={copiedBrand} copyText={copyText} copySvg={copySvg} />}
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   )
 }
@@ -360,7 +362,7 @@ function KanbanBoard() {
       </div>
 
       <ul className="divide-y divide-border/40 border-t border-border/40">
-        {column.items.map(([tag, title, description]) => (
+        {column.items.map(([tag, title, description, href]) => (
           <li
             key={title}
             className="group relative grid grid-cols-1 gap-x-8 gap-y-1.5 py-4 pl-4 transition-colors sm:grid-cols-[112px_1fr] lg:grid-cols-[112px_300px_1fr]"
@@ -371,7 +373,15 @@ function KanbanBoard() {
             <span className="font-mono text-[9.5px] uppercase leading-5 tracking-[0.16em] text-dimmed transition-colors group-hover:text-primary sm:pt-px">
               {tag}
             </span>
-            <h3 className="text-[15px] font-semibold leading-snug tracking-[-0.035em] text-text">{title}</h3>
+            <h3 className="text-[15px] font-semibold leading-snug tracking-[-0.035em] text-text">
+              {href ? (
+                <Link to={href} className="underline decoration-border underline-offset-4 transition-colors hover:decoration-primary">
+                  {title}
+                </Link>
+              ) : (
+                title
+              )}
+            </h3>
             <p className="max-w-[620px] text-[13.5px] leading-relaxed text-muted sm:col-start-2 lg:col-start-3">
               {description}
             </p>

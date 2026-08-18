@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import {
   AuthIcon,
   CacheIcon,
@@ -12,7 +12,6 @@ import {
 } from '../components/code-icons'
 import { SiteNav } from '../components/SiteNav'
 import Plasma from '../components/Plasma'
-import ScrollStack, { ScrollStackItem } from '../components/ScrollStack'
 import {
   BrushStroke,
   Doodle,
@@ -25,6 +24,9 @@ import {
 } from '../components/marker'
 
 import { DOCS_URL as DOCS, GITHUB_URL as GITHUB } from '../data/links'
+import { SiteFooter } from '../components/SiteFooter'
+import { ProductShowcase } from '../components/ProductShowcase'
+import { CRAFTMAN, FOREMAN } from '../data/products'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -266,11 +268,13 @@ function HomePage() {
       <Hero />
       <CapabilityStrip />
       <OneFramework />
-      <SilloMagicSection />
       <ArchitectureSection />
       <EnterpriseSection />
+      <ProductsIntro />
+      <ProductSection product={CRAFTMAN} />
+      <ProductSection product={FOREMAN} />
       <FinalCta />
-      <FooterSection />
+      <SiteFooter />
     </main>
   )
 }
@@ -1085,120 +1089,6 @@ function OneFramework() {
   )
 }
 
-function SilloMagicSection() {
-  return (
-    <section className="relative border-b border-border py-20 md:py-28">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-80"
-        style={{
-          background: `
-            radial-gradient(ellipse 52% 42% at 12% 8%, rgba(252,3,69,0.09), transparent 64%),
-            radial-gradient(ellipse 52% 50% at 92% 45%, rgba(255,255,255,0.055), transparent 68%)
-          `,
-        }}
-      />
-      <div className="relative z-10 mx-auto max-w-[1520px] px-8 md:px-12">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[32%_68%] lg:items-start lg:gap-12">
-          <div className="lg:sticky lg:top-24 lg:h-fit lg:self-start">
-            <div className="mb-4 flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] text-primary">
-              03 / SILLO SYSTEMS
-              <Doodle name="star" tone="red" seed={83} size={14} rotate={-14} show="tablet" className="opacity-75" />
-            </div>
-            <h2 className="mb-5 max-w-[440px]">
-              One idiom,<br />
-              every subsystem.
-            </h2>
-            <p className="max-w-[420px] text-base leading-relaxed text-muted">
-              Dependency injection, queues, the scheduler, Inertia, and route gates all follow the same shape.
-            </p>
-            <div className="mt-9 hidden border-l border-border/70 pl-4 font-mono text-[11px] leading-relaxed text-dimmed lg:block">
-              Scroll the stack. Read the code.
-            </div>
-            <MarkerAside show="desktop" offset="1rem" className="ml-3">
-              <DoodleArrow curve="down" seed={91} rotate={-9} width={46} height={62} className="opacity-55" />
-            </MarkerAside>
-          </div>
-
-          <ScrollStack
-            useWindowScroll
-            className="-mt-10 lg:-mt-32"
-            itemDistance={150}
-            itemScale={0.032}
-            itemStackDistance={38}
-            stackPosition="16%"
-            scaleEndPosition="7%"
-            baseScale={0.82}
-            rotationAmount={0.5}
-            blurAmount={0.55}
-          >
-            {SILLO_MAGIC_STACK.map((item, index) => (
-              <ScrollStackItem key={item.title} itemClassName="group overflow-hidden rounded-[28px] border border-border-strong bg-surface shadow-[0_34px_110px_rgba(0,0,0,0.42)]">
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),transparent_34%),radial-gradient(circle_at_18%_0%,rgba(252,3,69,0.13),transparent_38%)] opacity-90" />
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_72%_18%,rgba(252,3,69,0.12),transparent_36%)]" />
-                <div className="relative grid min-h-[560px] grid-cols-1 lg:grid-cols-[40%_60%]">
-                  <div className="flex flex-col justify-between border-b border-border p-7 md:p-9 lg:border-b-0 lg:border-r lg:p-10">
-                    <div>
-                      <div className="mb-5 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.16em] text-dimmed">
-                        <span className="text-primary">{String(index + 1).padStart(2, '0')}</span>
-                        <span>{item.eyebrow}</span>
-                      </div>
-                      <h3 className="mb-5 max-w-[430px] text-3xl font-semibold leading-[0.98] tracking-[-0.055em] text-text md:text-4xl">
-                        {item.title}
-                      </h3>
-                      <p className="max-w-[390px] text-sm leading-relaxed text-muted md:text-base">
-                        {item.desc}
-                      </p>
-                      {index === 0 && (
-                        <NoteWithArrow
-                          curve="right"
-                          seed={47}
-                          show="desktop"
-                          rotate={-5}
-                          arrowRotate={-12}
-                          arrowWidth={50}
-                          arrowHeight={32}
-                          className="mt-8 opacity-85"
-                        >
-                          no wiring, just the signature
-                        </NoteWithArrow>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="relative min-w-0 bg-bg/72">
-                    <div
-                      className="pointer-events-none absolute inset-0 z-10"
-                      style={{
-                        background: `
-                          linear-gradient(to right, transparent 58%, rgba(5,5,5,0.3) 82%, rgb(5,5,5) 100%),
-                          linear-gradient(to top, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.24) 30%, transparent 62%)
-                        `,
-                      }}
-                    />
-                    <div className="relative flex items-center justify-between border-b border-border px-5 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-primary" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-border-strong" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                      </div>
-                      <span className="font-mono text-[10px] text-dimmed">{item.file}</span>
-                    </div>
-                    <div className="relative overflow-x-auto">
-                      <CodeBlock code={item.code} />
-                    </div>
-                  </div>
-                </div>
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─── Architecture Section ─── */
-
 function ArchitectureSection() {
   const [glowPosition, setGlowPosition] = useState({ x: 50, y: 50 })
 
@@ -1484,126 +1374,45 @@ function FinalCta() {
   )
 }
 
-/* ─── Footer ─── */
+/* ─── Products being built on the framework ─── */
 
-function FooterSection() {
-  const [copiedFooterCommand, setCopiedFooterCommand] = useState(false)
-
-  const copyFooterCommand = () => {
-    void navigator.clipboard.writeText('uv add sillo-framework')
-    setCopiedFooterCommand(true)
-    window.setTimeout(() => setCopiedFooterCommand(false), 1600)
-  }
-
+/**
+ * Craftman and Foreman on the home page, one section each.
+ *
+ * They were behind a tab switcher first, which made two separate products look
+ * like two views of one, and buried the second. A section each reads the way
+ * the product pages do, and each carries its own mockup.
+ *
+ * The site's rule is that nothing in Planning may be described anywhere as
+ * though it ships today: the state is on the label, the mockup says it is a
+ * mockup, and the copy stays present-tense about what the thing is rather than
+ * promising when it arrives.
+ */
+function ProductsIntro() {
   return (
-    <footer className="relative overflow-hidden border-t border-border bg-bg">
-      <div className="pointer-events-none absolute inset-0 opacity-35 bg-[radial-gradient(ellipse_48%_70%_at_100%_55%,rgba(252,3,69,0.12),transparent_68%),radial-gradient(ellipse_50%_60%_at_0%_100%,rgba(255,255,255,0.08),transparent_62%)]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-[460px] w-[520px] opacity-[0.16]"
-        style={{
-          background: 'repeating-radial-gradient(ellipse at bottom left, transparent 0 18px, rgba(255,255,255,0.55) 19px, transparent 21px)',
-          maskImage: 'linear-gradient(to top right, black, transparent 72%)',
-        }}
-      />
-
-      <button
-        type="button"
-        onClick={copyFooterCommand}
-        className="group relative block w-full border-b border-border px-8 py-20 text-left md:px-12 md:py-24"
-        aria-label="Copy install command"
-      >
-        <div className="mx-auto max-w-[1520px]">
-          <div className="font-mono text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.9] tracking-[-0.08em] text-white/10 transition-colors duration-300 group-hover:text-white/42">
-            <span className="text-white/28 group-hover:text-white/80">$</span> uv add sillo-framework
-          </div>
-          <div className="mt-10 flex items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-dimmed transition-colors group-hover:text-muted">
-            {'{ '} {copiedFooterCommand ? 'Copied' : 'Click. Copy. Build'} {' }'}
-            <Doodle
-              name={copiedFooterCommand ? 'heart' : 'smile'}
-              tone={copiedFooterCommand ? 'red' : 'muted'}
-              seed={127}
-              size={17}
-              rotate={-7}
-              show="tablet"
-              /* -my-1 so a 17px mark cannot make a 10px row any taller. */
-              className="-my-1 opacity-80"
-            />
-          </div>
-        </div>
-      </button>
-
-      <div className="relative mx-auto grid max-w-[1520px] grid-cols-1 border-b border-border px-8 md:grid-cols-[36%_64%] md:px-12">
-        <div className="border-b border-border py-16 md:border-b-0 md:border-r md:pr-16">
-          <h3 className="mb-6 text-2xl font-semibold tracking-[-0.04em] text-text">Want to stay in touch?</h3>
-          <p className="mb-9 max-w-[380px] font-mono text-sm leading-relaxed text-muted">
-            Release notes and framework updates, sent when a version ships.
+    <section className="relative border-t border-border bg-bg px-6 pt-24 pb-4 sm:px-8 md:px-12 lg:pt-32">
+      <div className="pointer-events-none absolute left-0 top-0 h-[420px] w-2/3 bg-[radial-gradient(ellipse_50%_55%_at_20%_10%,rgba(252,3,69,0.06),transparent_65%)]" />
+      <div className="relative mx-auto max-w-[1520px]">
+        <div className="max-w-[760px]">
+          <div className="mb-4 font-mono text-[11px] tracking-[0.16em] text-primary">BUILT ON THE FRAMEWORK</div>
+          <h2 className="text-3xl font-semibold tracking-[-0.05em] sm:text-4xl md:text-5xl">
+            Two products, on the same foundation.
+          </h2>
+          <p className="mt-6 text-base leading-relaxed text-muted md:text-lg">
+            Both are specified and not started, and both are ordinary Sillo applications rather than a
+            second stack — which is the point of them. The interfaces below are the design being worked
+            toward.
           </p>
-          <form className="flex max-w-[420px] overflow-hidden rounded-full border border-border-strong bg-white/10 p-1">
-            <input
-              type="email"
-              placeholder="ENTER YOUR E-MAIL"
-              className="min-w-0 flex-1 bg-transparent px-5 font-mono text-xs text-text outline-none placeholder:text-dimmed"
-            />
-            <button type="submit" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-bg transition-transform hover:scale-[1.02]">
-              Subscribe
-            </button>
-          </form>
-          <MarkerAside offset="1.1rem" className="items-center gap-2">
-            <Doodle name="tick" tone="red" seed={113} size={18} rotate={-6} className="opacity-80" />
-            <HandwrittenNote rotate={-2} size="1.25rem" className="opacity-75">
-              no spam. ever.
-            </HandwrittenNote>
-          </MarkerAside>
-        </div>
-
-        <div className="grid grid-cols-2 gap-10 py-16 md:grid-cols-4 md:pl-16">
-          {[
-            { title: 'Resources', links: [
-              { label: 'Documentation', href: DOCS },
-              { label: 'Guides', href: `${DOCS}/guides/introduction/` },
-              { label: 'Examples', href: `${DOCS}/community/` },
-              { label: 'API reference', href: `${DOCS}/reference/plugin-api/` },
-            ]},
-            { title: 'Tools', links: [
-              { label: 'Admin panel', href: `${DOCS}/guides/start/admin/` },
-              { label: 'Console', href: `${DOCS}/guides/start/console/` },
-              { label: 'Test clients', href: `${DOCS}/guides/start/testing/` },
-              { label: 'OpenAPI', href: `${DOCS}/guides/openapi/` },
-            ]},
-            { title: 'Project', links: [
-              { label: 'GitHub', href: GITHUB },
-              { label: 'Issues', href: `${GITHUB}/issues` },
-              { label: 'Discussions', href: `${GITHUB}/discussions` },
-              { label: 'Releases', href: `${GITHUB}/releases` },
-            ]},
-            { title: 'About', links: [
-              { label: 'Installation', href: `${DOCS}/guides/installation/` },
-              { label: 'Contributing', href: `${DOCS}/community/contribution-guide/` },
-              { label: 'Sillo', href: '/about' },
-              { label: 'License', href: `${GITHUB}/blob/main/LICENSE` },
-            ]},
-          ].map(group => (
-            <div key={group.title}>
-              <h5 className="mb-8 font-mono text-[10px] uppercase tracking-[0.14em] text-dimmed">{group.title}</h5>
-              <ul className="flex flex-col gap-5">
-                {group.links.map(link => (
-                  <li key={link.label}>
-                    <a href={link.href} className="text-sm font-semibold text-text/90 transition-colors hover:text-primary">{link.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
       </div>
+    </section>
+  )
+}
 
-      <div className="relative mx-auto flex max-w-[1520px] flex-col gap-4 px-8 py-8 font-mono text-[10px] uppercase tracking-[0.08em] text-dimmed md:flex-row md:items-center md:justify-between md:px-12">
-        <div>Released under the BSD 3-Clause License / Copyright &copy; {new Date().getFullYear()} Sillo</div>
-        <div className="flex gap-5">
-          <a href={DOCS} className="hover:text-text transition-colors">Docs</a>
-          <a href={`${GITHUB}/releases`} className="hover:text-text transition-colors">Releases</a>
-          <a href={GITHUB} className="hover:text-text transition-colors">GitHub</a>
-        </div>
-      </div>
-    </footer>
+function ProductSection({ product }: { product: typeof CRAFTMAN }) {
+  return (
+    <section className="relative bg-bg pb-10">
+      <ProductShowcase product={product} as="h2" action />
+    </section>
   )
 }

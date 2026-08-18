@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as CraftmanRouteImport } from './routes/craftman'
+import { Route as ForemanRouteImport } from './routes/foreman'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +24,49 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CraftmanRoute = CraftmanRouteImport.update({
+  id: '/craftman',
+  path: '/craftman',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForemanRoute = ForemanRouteImport.update({
+  id: '/foreman',
+  path: '/foreman',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/craftman': typeof CraftmanRoute
+  '/foreman': typeof ForemanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/craftman': typeof CraftmanRoute
+  '/foreman': typeof ForemanRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/craftman': typeof CraftmanRoute
+  '/foreman': typeof ForemanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/about' | '/craftman' | '/foreman'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/about' | '/craftman' | '/foreman'
+  id: '__root__' | '/' | '/about' | '/craftman' | '/foreman'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CraftmanRoute: typeof CraftmanRoute
+  ForemanRoute: typeof ForemanRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +85,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/craftman': {
+      id: '/craftman'
+      path: '/craftman'
+      fullPath: '/craftman'
+      preLoaderRoute: typeof CraftmanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/foreman': {
+      id: '/foreman'
+      path: '/foreman'
+      fullPath: '/foreman'
+      preLoaderRoute: typeof ForemanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CraftmanRoute: CraftmanRoute,
+  ForemanRoute: ForemanRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
