@@ -2,7 +2,7 @@ import { DOCS_LINKS, DOCS_URL as DOCS, GITHUB_URL as GITHUB } from './links'
 
 export const BRAND = {
   name: 'Sillo',
-  tagline: 'Python With the Pieces Already in Place.',
+  tagline: 'The Buildsmith framework. Fast, async, and built with everything you need to ship.',
   subtitle:
     'The same Python you already write, with routing, validation, the ORM, auth, the admin, queues, the scheduler, mail and WebSockets designed against each other and sharing one config model.',
   closing: 'Build the product. The pieces are already in place.',

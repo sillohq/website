@@ -13,17 +13,15 @@ import {
 import { SiteNav } from '../components/SiteNav'
 import Plasma from '../components/Plasma'
 import {
-  BrushStroke,
   Doodle,
   DoodleArrow,
   HandwrittenNote,
   MarkerAside,
-  MarkerCircle,
   MarkerUnderline,
   NoteWithArrow,
 } from '../components/marker'
 
-import { DOCS_URL as DOCS, GITHUB_URL as GITHUB } from '../data/links'
+import { DOCS_URL as DOCS } from '../data/links'
 import { SiteFooter } from '../components/SiteFooter'
 import { ProductShowcase } from '../components/ProductShowcase'
 import { CRAFTMAN, FOREMAN } from '../data/products'
@@ -268,12 +266,9 @@ function HomePage() {
       <Hero />
       <CapabilityStrip />
       <OneFramework />
-      <ArchitectureSection />
       <EnterpriseSection />
-      <ProductsIntro />
-      <ProductSection product={CRAFTMAN} />
-      <ProductSection product={FOREMAN} />
-      <FinalCta />
+      <ProductSection product={CRAFTMAN} bleed="right" />
+      <ProductSection product={FOREMAN} bleed="left" />
       <SiteFooter />
     </main>
   )
@@ -340,25 +335,26 @@ function Hero() {
             {/* Eyebrow */}
             <div className="font-mono text-[11px] text-muted tracking-[0.15em] mb-5 flex items-center gap-1.5">
               <span className="text-dimmed">&lt;</span>
-              <span>ALREADY IN PLACE</span>
+              <span>THE BUILDSMITH FRAMEWORK</span>
               <span className="text-dimmed">&gt;</span>
               <span className="text-primary">_</span>
               <span className="w-[2px] h-3.5 bg-primary cursor-blink" />
             </div>
 
-            {/* Headline — the brand tagline, verbatim. */}
+            {/* Headline */}
             <h1 className="text-text text-3xl md:text-4xl mb-7 max-w-[520px] font-medium leading-tight tracking-tight">
-              Python With the Pieces<br />
+              The Buildsmith framework.<br />
+              Python, with the{' '}
               <MarkerUnderline seed={63} weight={2.6} draw delay={0.45}>
-                Already in Place.
+                hard parts already built.
               </MarkerUnderline>
             </h1>
 
             {/* Subhead */}
             <p className="text-muted text-base leading-relaxed mb-8 max-w-[460px]">
-              The same Python you already write. The ORM, auth, admin, queues and
-              websockets arrive designed against each other, sharing one config model,
-              so the wiring between them is not your job.
+              Sillo is a fast, async Python framework for building real applications.
+              Routing, authentication, ORM, background jobs, WebSockets, admin and more
+              are built into the framework and designed to work together.
             </p>
 
             {/* CTA */}
@@ -383,13 +379,6 @@ function Hero() {
               </NoteWithArrow>
             </div>
 
-            {/* 01 / FOUNDATION */}
-            <div className="flex items-center gap-3 text-[11px] font-mono text-dimmed">
-              <span className="text-primary">01</span>
-              <span className="w-px h-3 bg-border" />
-              <span>FOUNDATION</span>
-              <Doodle name="star" tone="red" seed={44} size={13} rotate={-14} show="tablet" className="ml-1 opacity-75" />
-            </div>
           </div>
         </div>
       </div>
@@ -507,7 +496,7 @@ function CapabilityStrip() {
       />
 
       <div className="relative z-10 max-w-[1520px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 overflow-hidden rounded-2xl border border-border-strong bg-bg/92 shadow-[0_28px_100px_rgba(0,0,0,0.42)]">
+        <div className="grid grid-cols-1 md:grid-cols-3 overflow-hidden rounded-2xl border border-border-strong bg-bg/92">
           {CAPABILITIES.map((cap, i) => (
             <div
               key={cap.name}
@@ -755,49 +744,49 @@ const CAPABILITY_KEYS = [
 const CAPABILITY_DETAILS_V2: Record<string, { title: string; desc: string; file: string; icon: typeof RouteIcon; code: string }> = {
   Routing: {
     title: 'Routing',
-    desc: 'Path parameters are converted and passed directly into handler signatures.',
+    desc: 'The type on the parameter is the validation. A request that sends "abc" for {project_id:int} never reaches your handler.',
     file: 'routes.py',
     icon: RouteIcon,
     code: CODE_EXAMPLES.routing,
   },
   Authentication: {
     title: 'Authentication',
-    desc: 'JWT and session authentication via middleware, user models, and route guards.',
+    desc: 'One request.user whether the caller sent a bearer token or a session cookie, so an API client and a browser hit the same handler.',
     file: 'auth.py',
     icon: AuthIcon,
     code: CODE_EXAMPLES.auth,
   },
   Validation: {
     title: 'Validation',
-    desc: 'Use request_model to validate payloads and inject the Pydantic model into handlers.',
+    desc: 'A payload that fails request_model never reaches the handler body. The 422 and its field errors are built for you.',
     file: 'schemas.py',
     icon: ValidationIcon,
     code: CODE_EXAMPLES.validation,
   },
   'Dependency Injection': {
     title: 'Dependency Injection',
-    desc: 'Dependencies are explicit, including raw request access through Depend(get_request=True).',
+    desc: 'Everything a handler needs is named in its signature, database included. Swap get_db in a test and nothing else in the function has to know.',
     file: 'dependencies.py',
     icon: DependencyIcon,
     code: CODE_EXAMPLES.dependency,
   },
   'Record ORM': {
     title: 'Record ORM',
-    desc: 'The sillo.record layer wraps Tortoise models with setup helpers and serialization.',
+    desc: 'Models read like Tortoise because they are Tortoise, with sillo db:migrate and serialization already wired to the app lifecycle.',
     file: 'models.py',
     icon: OrmIcon,
     code: CODE_EXAMPLES.orm,
   },
   Queue: {
     title: 'Queue',
-    desc: 'Dispatchable jobs with queue names, retry counts, timeouts, delays, and workers.',
+    desc: 'Dispatch it and the request returns immediately. Retries, backoff and the timeout live on the job class, not on every call site.',
     file: 'jobs.py',
     icon: QueueIcon,
     code: CODE_EXAMPLES.queue,
   },
   Caching: {
     title: 'Caching',
-    desc: 'Configure a memory or Redis backend and cache async function results with tags.',
+    desc: 'The function runs once per TTL. Tag it once and everything in catalog invalidates together instead of one key at a time.',
     file: 'cache.py',
     icon: CacheIcon,
     code: `from sillo.cache import MemoryCache, cache, configure_cache
@@ -812,7 +801,7 @@ async def get_product(product_id: int):
   },
   Scheduling: {
     title: 'Scheduling',
-    desc: 'Register recurring async jobs with interval or cron triggers.',
+    desc: 'The cron lives in the codebase instead of a crontab on some box, so it gets reviewed, tested and deployed with everything else.',
     file: 'scheduler.py',
     icon: ScheduleIcon,
     code: `from sillo.work.scheduler.manager import SchedulerManager
@@ -995,18 +984,13 @@ function OneFramework() {
         <div className="grid grid-cols-1 lg:grid-cols-[34%_66%] gap-10 lg:gap-0 items-start">
           {/* Left */}
           <div>
-            <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4 flex items-center gap-2">
-              02 / CAPABILITIES
-              <Doodle name="sparkle" tone="red" seed={19} size={15} rotate={12} show="tablet" className="opacity-80" />
-            </div>
             <h2 className="mb-4">
-              One framework.<br />
-              One config model.
+              One framework.
             </h2>
             <p className="text-muted text-base leading-relaxed mb-10 max-w-[420px]">
-              Every capability is a first-party module with shared configuration,
-              consistent APIs, and one set of testing utilities. The pieces are
-              already in place, and already fitted to each other.
+              Routing, auth, validation, ORM, queues, caching, WebSockets and admin
+              all live inside the same framework, sharing one config model and
+              one set of testing tools.
             </p>
             <div className="space-y-1 border-l border-border/70 pl-3">
               {CAPABILITY_KEYS_V2.map((key, i) => {
@@ -1051,7 +1035,7 @@ function OneFramework() {
 
           {/* Right */}
           <div className="mt-8 lg:mt-[220px] lg:-mr-[calc((100vw-1520px)/2+3rem)]">
-            <div className="relative overflow-hidden bg-surface border border-border/70 shadow-[0_30px_90px_rgba(0,0,0,0.32)]" style={{ borderRadius: '16px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
+            <div className="relative overflow-hidden bg-surface border border-border/70" style={{ borderRadius: '16px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
               <div className="pointer-events-none absolute inset-0 z-10"
                 style={{
                   background: `
@@ -1067,8 +1051,7 @@ function OneFramework() {
                     <detail.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="font-mono text-[10px] text-dimmed tracking-[0.18em] uppercase">Live Example</span>
-                    <h3 className="mt-1 text-xl font-semibold tracking-[-0.045em] text-text">{detail.title}</h3>
+                    <h3 className="text-xl font-semibold tracking-[-0.045em] text-text">{detail.title}</h3>
                   </div>
                 </div>
                 <span className="hidden md:inline-flex px-3 py-1.5 text-[10px] text-dimmed font-mono">
@@ -1089,101 +1072,42 @@ function OneFramework() {
   )
 }
 
-function ArchitectureSection() {
-  const [glowPosition, setGlowPosition] = useState({ x: 50, y: 50 })
-
-  return (
-    <section className="border-b border-border py-20 md:py-28">
-      <div className="max-w-[1360px] mx-auto px-8 md:px-12">
-        <a
-          href={`${DOCS}/guides/installation/`}
-          onMouseMove={(event) => {
-            const rect = event.currentTarget.getBoundingClientRect()
-            setGlowPosition({
-              x: ((event.clientX - rect.left) / rect.width) * 100,
-              y: ((event.clientY - rect.top) / rect.height) * 100,
-            })
-          }}
-          className="group relative block min-h-[420px] overflow-hidden rounded-2xl bg-surface px-8 py-16 transition-all duration-300 hover:-translate-y-1 hover:bg-surface-2 hover:shadow-[0_34px_110px_rgba(0,0,0,0.4)] md:min-h-[520px] md:px-14 md:py-20"
-        >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_82%_78%_at_50%_50%,transparent_45%,rgba(5,5,5,0.58)_82%,rgb(5,5,5)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_80%_at_50%_0%,rgba(252,3,69,0.13),transparent_62%),linear-gradient(135deg,rgba(255,255,255,0.055),transparent_38%)] opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
-          <div
-            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{
-              background: `radial-gradient(circle 220px at ${glowPosition.x}% ${glowPosition.y}%, rgba(252,3,69,0.24), rgba(252,3,69,0.08) 34%, transparent 68%)`,
-            }}
-          />
-          <div className="pointer-events-none absolute -bottom-32 left-1/2 h-72 w-3/4 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl transition-all duration-500 group-hover:scale-125 group-hover:bg-primary/20" />
-          <div className="relative flex min-h-[288px] flex-col items-center justify-center text-center md:min-h-[360px]">
-            <div className="max-w-[960px]">
-              <div className="mb-5 flex items-center justify-center gap-2 font-mono text-[11px] text-primary tracking-[0.18em]">
-                04 / ONE FOUNDATION
-                <Doodle name="sparkle" tone="red" seed={61} size={14} rotate={-11} show="tablet" className="opacity-80" />
-              </div>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-semibold leading-[0.96] tracking-[-0.06em] text-text">
-                The foundation is already here, and it was designed as one thing.
-              </h2>
-            </div>
-            <MarkerCircle seed={67} weight={2.2} padX={28} padY={36} rotate={-1} className="mt-10">
-              <div className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
-                Start building
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 3.5 10.5 8 6 12.5" />
-                </svg>
-              </div>
-            </MarkerCircle>
-          </div>
-          <Doodle
-            name="squiggle"
-            seed={73}
-            size={86}
-            rotate={-6}
-            show="desktop"
-            className="pointer-events-none absolute bottom-8 right-10 opacity-25"
-          />
-        </a>
-      </div>
-    </section>
-  )
-}
-
 /* ─── Enterprise Section ─── */
 
 const ENTERPRISE_ITEMS = [
   {
     title: 'Application architecture',
-    desc: 'Modular project structure with dependency injection, middleware pipelines, and lifecycle hooks.',
+    desc: 'Dependency injection, middleware pipelines and lifecycle hooks in one project structure.',
     span: 'row-span-2',
   },
   {
     title: 'Authentication',
-    desc: 'JWT, session, and API-key backends, one contract.',
+    desc: 'JWT, sessions and API keys through one authentication system.',
   },
   {
     title: 'Background work',
-    desc: 'Durable job dispatch with retry and workers.',
+    desc: 'Background jobs with retries, backoff and workers.',
   },
   {
     title: 'Data access',
-    desc: 'Record models, migrations, transactions, and factories.',
+    desc: 'Record models, relationships, migrations, transactions and factories.',
   },
   {
     title: 'Security',
-    desc: 'CORS, CSRF, rate limiting, and Shield.',
+    desc: 'CORS, CSRF, rate limiting, signed URLs and Shield.',
   },
   {
     title: 'HTTP correctness',
-    desc: 'Full RFC 9110 Range support (single, multi-range, suffix, and 416) with ETags, conditional requests, and content negotiation as middleware.',
+    desc: 'Full RFC 9110 Range support, ETags, conditional requests and content negotiation, all as middleware.',
     span: 'row-span-2',
   },
   {
     title: 'Testing',
-    desc: 'Sync and async test clients, factories, transactions.',
+    desc: 'Sync and async clients, factories and transactional tests.',
   },
   {
     title: 'Admin panel',
-    desc: 'A model admin at /admin/ on your own user model.',
+    desc: 'A built-in admin at /admin/ on your own user models.',
   },
 ]
 
@@ -1191,12 +1115,10 @@ function EnterpriseSection() {
   return (
     <section className="border-b border-border py-20 md:py-28">
       <div className="max-w-[1520px] mx-auto px-8 md:px-12">
-        <div className="font-mono text-[11px] text-primary tracking-[0.15em] mb-4">05 / FOUNDATIONS</div>
         <h2 className="mb-12">
-          Built for the parts<br />
-          that are{' '}
+          What's{' '}
           <MarkerUnderline seed={53} tone="chalk" weight={2.2} show="tablet">
-            hard to add later.
+            built in.
           </MarkerUnderline>
         </h2>
         {/* The bento is composed for four columns. At three it fell apart —
@@ -1275,144 +1197,16 @@ function EcosystemSection() {
   )
 }
 
-/* ─── Final CTA ─── */
-
-function FinalCta() {
-  const [copiedInstall, setCopiedInstall] = useState(false)
-
-  const copyInstallCommand = () => {
-    void navigator.clipboard.writeText('uv add sillo-framework')
-    setCopiedInstall(true)
-    window.setTimeout(() => setCopiedInstall(false), 1600)
-  }
-
-  return (
-    <section className="border-b border-border py-24 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-x-0 bottom-0 h-2/3 pointer-events-none z-0"
-        style={{
-          background: 'radial-gradient(ellipse 48% 58% at 50% 100%, rgba(252,3,69,0.09), transparent 66%)',
-        }}
-      />
-      <div className="max-w-[1520px] mx-auto px-8 md:px-12 relative z-10">
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_34px_110px_rgba(0,0,0,0.38)]">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.055),transparent_38%),radial-gradient(circle_at_78%_30%,rgba(252,3,69,0.13),transparent_38%)]" />
-          <div className="relative grid grid-cols-1 lg:grid-cols-[48%_52%]">
-            <div className="relative min-h-[280px] border-b border-border lg:border-b-0 lg:border-r">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(252,3,69,0.12),transparent_38%)]" />
-              <div
-                className="pointer-events-none absolute inset-0 z-10"
-                style={{
-                  background: `
-                    linear-gradient(to right, transparent 55%, rgba(5,5,5,0.28) 82%, rgb(5,5,5) 100%),
-                    linear-gradient(to top, rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.24) 28%, transparent 62%)
-                  `,
-                }}
-              />
-              <div className="relative flex items-center justify-between border-b border-border px-5 py-3">
-                <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-primary" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-border-strong" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-border" />
-                </div>
-                <span className="font-mono text-[10px] text-dimmed">terminal</span>
-              </div>
-              <div className="relative p-8 md:p-12 font-mono">
-                <div className="flex items-center justify-between gap-4 text-base md:text-lg text-text">
-                  <span>
-                    <span className="text-primary">$</span>{' '}
-                    <MarkerUnderline seed={101} weight={2.2}>uv add sillo-framework</MarkerUnderline>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      copyInstallCommand()
-                    }}
-                    className="shrink-0 rounded-full bg-white px-4 py-2 text-xs font-semibold text-bg transition-transform hover:scale-[1.04]"
-                    aria-label="Copy install command"
-                  >
-                    {copiedInstall ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-                <MarkerAside show="tablet" offset="1.25rem" className="gap-2">
-                  <DoodleArrow curve="up" seed={103} rotate={16} width={38} height={40} className="opacity-70" />
-                  <HandwrittenNote rotate={-4} size="1.35rem" className="mt-3 opacity-90">
-                    that&rsquo;s the whole install
-                  </HandwrittenNote>
-                </MarkerAside>
-              </div>
-            </div>
-
-            <div className="p-8 md:p-14 lg:p-16">
-              <div className="mb-5 flex items-center gap-2 font-mono text-[11px] text-primary tracking-[0.15em]">
-                06 / START BUILDING
-                <Doodle name="bolt" tone="red" seed={97} size={15} rotate={9} show="tablet" className="opacity-80" />
-              </div>
-              <h2 className="text-4xl md:text-6xl font-semibold leading-[0.98] tracking-[-0.06em] mb-6">
-                <BrushStroke tone="red" seed={109} rotate={-1.4} opacity={0.92}>
-                  Build the product.
-                </BrushStroke><br />
-                The pieces are already in place.
-              </h2>
-              <p className="text-muted text-base leading-relaxed mb-9 max-w-[520px]">
-                Python 3.10+ &middot; BSD 3-Clause &middot; Open source on GitHub
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a href={`${DOCS}/guides/installation/`} className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
-                  Get started
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3l4 4-4 4"/></svg>
-                </a>
-                <a href={DOCS} className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-7 py-3.5 text-sm font-semibold text-text transition-all leading-none hover:bg-elevated hover:shadow-[0_16px_46px_rgba(0,0,0,0.24)]">
-                  Read the documentation
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─── Products being built on the framework ─── */
-
-/**
- * Craftman and Foreman on the home page, one section each.
- *
- * They were behind a tab switcher first, which made two separate products look
- * like two views of one, and buried the second. A section each reads the way
- * the product pages do, and each carries its own mockup.
- *
- * The site's rule is that nothing in Planning may be described anywhere as
- * though it ships today: the state is on the label, the mockup says it is a
- * mockup, and the copy stays present-tense about what the thing is rather than
- * promising when it arrives.
- */
-function ProductsIntro() {
-  return (
-    <section className="relative border-t border-border bg-bg px-6 pt-24 pb-4 sm:px-8 md:px-12 lg:pt-32">
-      <div className="pointer-events-none absolute left-0 top-0 h-[420px] w-2/3 bg-[radial-gradient(ellipse_50%_55%_at_20%_10%,rgba(252,3,69,0.06),transparent_65%)]" />
-      <div className="relative mx-auto max-w-[1520px]">
-        <div className="max-w-[760px]">
-          <div className="mb-4 font-mono text-[11px] tracking-[0.16em] text-primary">BUILT ON THE FRAMEWORK</div>
-          <h2 className="text-3xl font-semibold tracking-[-0.05em] sm:text-4xl md:text-5xl">
-            Two products, on the same foundation.
-          </h2>
-          <p className="mt-6 text-base leading-relaxed text-muted md:text-lg">
-            Both are specified and not started, and both are ordinary Sillo applications rather than a
-            second stack — which is the point of them. The interfaces below are the design being worked
-            toward.
-          </p>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function ProductSection({ product }: { product: typeof CRAFTMAN }) {
+function ProductSection({
+  product,
+  bleed,
+}: {
+  product: typeof CRAFTMAN
+  bleed: 'left' | 'right'
+}) {
   return (
     <section className="relative bg-bg pb-10">
-      <ProductShowcase product={product} as="h2" action />
+      <ProductShowcase product={product} as="h2" action bleed={bleed} />
     </section>
   )
 }

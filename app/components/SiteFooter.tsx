@@ -34,11 +34,11 @@ export function SiteFooter() {
       <button
         type="button"
         onClick={copyFooterCommand}
-        className="group relative block w-full border-b border-border px-8 py-20 text-left md:px-12 md:py-24"
+        className="group relative block w-full border-b border-border px-8 py-10 text-center md:px-12 md:py-12"
         aria-label="Copy install command"
       >
         <div className="mx-auto max-w-[1520px]">
-          <div className="font-mono text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.9] tracking-[-0.08em] text-white/10 transition-colors duration-300 group-hover:text-white/42">
+          <div className="whitespace-nowrap font-mono text-[clamp(1.1rem,2.4vw,1.75rem)] leading-[0.9] tracking-[-0.03em] text-white/10 transition-colors duration-300 group-hover:text-white/42">
             <span className="text-white/28 group-hover:text-white/80">$</span> uv add sillo-framework
           </div>
           <div className="mt-10 flex items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-dimmed transition-colors group-hover:text-muted">

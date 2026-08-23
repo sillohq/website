@@ -117,23 +117,9 @@ export function AppMock({
     <div
       ref={frameRef}
       onPointerDown={() => stop()}
-      className="relative overflow-hidden rounded-xl border border-border-strong bg-[#08080a] shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
+      className="relative overflow-hidden rounded-2xl border border-border-strong bg-[#08080a]"
     >
       <DemoCursor at={point} clicking={clicking} />
-      <div className="flex items-center gap-3 border-b border-border/60 bg-surface/60 px-3 py-2.5 sm:gap-4 sm:px-4">
-        <div className="hidden gap-1.5 sm:flex">
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        </div>
-        <div className="flex min-w-0 flex-1 items-center gap-2 rounded-md bg-bg/70 px-3 py-1">
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-          <span className="truncate font-mono text-[10px] text-muted sm:text-[11px]">{product.url}</span>
-        </div>
-        <span className={`shrink-0 rounded border px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] ${product.env.tone}`}>
-          {product.env.label}
-        </span>
-      </div>
 
       <div className="border-b border-border/50 bg-surface/20 lg:hidden">
         <div className="flex gap-1 overflow-x-auto px-2 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -157,8 +143,8 @@ export function AppMock({
         </div>
       </div>
 
-      <div className="lg:grid lg:grid-cols-[186px_1fr]">
-        <aside className="hidden border-r border-border/50 bg-surface/30 px-3 py-4 lg:block">
+      <div className="lg:grid lg:grid-cols-[186px_1fr] lg:h-[620px]">
+        <aside className="hidden border-r border-border/50 bg-surface/30 px-3 py-4 lg:block lg:overflow-y-auto">
           <div className="mb-6 flex items-center gap-2.5 px-2">
             <img src="/logo.svg" alt="" className="h-4 w-4 object-contain" />
             <span className="text-[13px] font-semibold tracking-[-0.03em]">{product.name}</span>
@@ -194,7 +180,7 @@ export function AppMock({
           ))}
         </aside>
 
-        <div className="min-w-0 p-4 sm:p-5">
+        <div className="min-w-0 p-4 sm:p-5 lg:overflow-y-auto">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
               <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-dimmed">{panel.crumb}</div>

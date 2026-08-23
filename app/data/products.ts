@@ -1573,9 +1573,9 @@ export const FOREMAN: Product = {
   href: '/foreman',
   url: 'localhost:8000/__sillo/foreman',
   env: { label: 'Local', tone: 'border-amber-400/30 bg-amber-400/10 text-amber-400' },
-  tagline: 'One dashboard for everything the application is doing.',
+  tagline: 'Monitor with Sillo.',
   blurb:
-    'Queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs, served by the framework and gated by the same auth as the rest of it. Atlas is embedded, so any route in the table can be called from the dashboard.',
+    'Foreman gives you one place to see what your Sillo application is doing. Monitor requests, queues, workers, schedules, queries, cache activity, outgoing calls, exceptions and logs, gated by the same auth as the rest of the app. Atlas is embedded, so any route in the table can be called from the dashboard.',
   unit: 'panels',
   seeds: { sparkle: 211, sparkleRotate: 13, arrow: 219, arrowRotate: 16 },
   groups: ['Monitor', 'Work', 'Diagnose', 'Tools'],
@@ -1589,9 +1589,9 @@ export const CRAFTMAN: Product = {
   href: '/craftman',
   url: 'api.acme.internal/__sillo/craftman',
   env: { label: 'acme', tone: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-400' },
-  tagline: 'A whole backend, from one deployment you own.',
+  tagline: 'Plan with Sillo.',
   blurb:
-    'Point it at a Postgres or MySQL database you already run, and get a generated API, authentication, realtime, storage and background tasks over it — one Sillo application, with a studio to work in. No account to open and no control plane somewhere else.',
+    'Craftman gives you a complete backend workspace for applications running on your own infrastructure. Point it at a Postgres or MySQL database you already run and manage APIs, authentication, realtime, storage and background work from one place, in a studio, not a separate control plane.',
   unit: 'surfaces',
   seeds: { sparkle: 307, sparkleRotate: -11, arrow: 311, arrowRotate: 14 },
   groups: ['Data', 'Access', 'Runtime', 'Project'],
