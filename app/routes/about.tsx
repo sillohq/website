@@ -35,7 +35,7 @@ const ABOUT_TABS = [
     label: 'Roadmap',
     eyebrow: '02 / ROADMAP',
     title: 'What we have built, and what is next.',
-    intro: 'Every subsystem, by the state it is actually in. There are no dates on this board: an item moves when the work is finished, not when a calendar says it should be.',
+    intro: 'Every subsystem, by the state it is actually in. There are no dates on this board: an item moves when the work is finished, not when a calendar says it should be. Planning is what is committed and next; Later is specified but carries no promise.',
     body: [],
   },
   {
@@ -84,66 +84,48 @@ const PHILOSOPHY_SECTIONS = [
 //   Completed  is in the released framework and has a documentation page.
 //   Testing    is written and merged, and is being proven before it is claimed.
 //   Building   has code in the tree and is not finished.
-//   Planning   is specified and not started. Nothing here may be described
-//              anywhere else on the site as though it ships today.
+//   Planning   is the 1.0 scope: specified and committed, not yet started.
+//              Nothing here may be described anywhere else on the site as
+//              though it ships today.
+//   Later      is specified and worth doing, but not committed and not
+//              scheduled. Mostly plugin territory; it stays out of core unless
+//              a strong reason pulls it in.
 //
 // An item moves left to right only. Before adding to Completed, grep for it.
 //
-// One state at a time, because the four are 40, 7, 6 and 30 items long. Side
-// by side, the only way to fit those in equal columns is to take the
+// One state at a time, because the five are ~21, 8, 6, 32 and 19 items long.
+// Side by side, the only way to fit those in equal columns is to take the
 // descriptions away from the long ones, and an item reduced to two words is
 // not worth reading. A tab gives every item the same room whichever state it
 // is in.
 const KANBAN_COLUMNS = [
   {
     title: 'Planning',
-    tag: 'Specified',
+    tag: 'v1 scope',
     dot: 'bg-sky-400',
-    meaning: 'Specified and not started. Nothing here is described anywhere else on this site as though it ships today.',
+    meaning: 'The 1.0 scope — specified and committed, not yet started. Nothing here is described anywhere else on this site as though it ships today.',
     items: [
+      ['HTTP', 'Context-handler signature', 'A single ctx argument replaces (request, response). Request and WebSocket stay as shims; the old signature is deprecated, not removed.'],
+      ['Core', 'Refactor sillo._internals', 'Every private seam becomes a documented contract or is absorbed into its owner and deleted.'],
+      ['ORM', 'sillo.record → sillo.orm', 'The ORM takes its final name, with sillo.record kept as a deprecation shim for one release cycle.'],
+      ['Security', 'One crypto and signing stack', 'Password hashing, JWT, cookie signing, storage URLs and OAuth tokens collapse into sillo.security. No subsystem signs its own bytes.'],
+      ['Mail', 'Delivery through Work', 'Mail sends through the queue: retry, backoff and dead-letter, one outbox. Sync and suppressed in development.'],
+      ['Sessions', 'Redis store', 'A Redis-backed session store built as an adapter over the cache backend, alongside the signed-cookie and file stores.'],
+      ['Admin', 'sillo-admin package', 'The admin panel moves to its own package, registered with an explicit AdminApp(app) call. It still authenticates against your user model.'],
+      ['HTTP', 'sillo.compress', 'Response-compression middleware: Brotli, zstd and gzip negotiation, a content-type allow-list, streaming-safe, SSE-exempt.'],
+      ['GraphQL', 'First-class and feature-complete', 'GraphQL shares the HTTP context, DI, the auth= gate and the ORM transaction. Subscriptions ride the existing WebSocket layer.'],
+      ['Frontend', 'Retire sillo.frontend', 'Serving a build directory folds into the static layer and the shared asset-URL pipeline, after a deprecation cycle.'],
+      ['Testing', 'Test suite (sillo[test])', 'client, async_client, ws_client, database, mailbox, queue, cache, events and clock fixtures shipped with the framework.'],
+      ['Testing', '100% test coverage', 'Line and branch coverage held at 100% in CI, with mutation score tracked on auth, sessions and security.'],
+      ['Docs', 'Complete the reference', 'Every subsystem has a page. The renames and moves are documented, with one 0.x to 1.0 migration guide.'],
       ['Plugins', 'Extension points', 'Packages that register routes, middleware, console commands and admin panels through one entry point.'],
-      ['Platform', 'Craftman', 'A layer over a Postgres or MySQL database you already run: a generated API, auth, policies, realtime, storage and background tasks, as one deployment you own.', '/craftman'],
-      ['Ops', 'Foreman', 'A web dashboard over queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs, with Atlas embedded so any route can be called from it.', '/foreman'],
-      ['Admin', 'Filters and search', 'Faceted filtering and search on any registered model, pushed into SQL rather than filtered in memory.'],
       ['Work', 'Dead letters', 'Jobs that exhaust their retries kept with their payload and trace, listable and replayable from the CLI.'],
-      ['HTTP', 'Problem details', 'RFC 9457 application/problem+json as the error representation, negotiated against Accept.'],
-      ['Cache', 'Tag invalidation', 'Entries tagged on write and evicted by tag in one call, across both the memory and Redis backends.'],
       ['Record', 'Migration autogeneration', 'Model diffs compiled into a migration, with destructive changes named before they run.'],
-      ['i18n', 'Locale negotiation', 'Message catalogues and pluralisation, selected by the Accept-Language negotiation already in the HTTP layer.'],
       ['Auth', 'Password reset and verification', 'Single-use signed tokens, rate limits and mail templates, working across all three auth backends.'],
-      ['Real-time', 'Presence channels', 'Channel membership with join and leave events, including on connections that close without a close frame.'],
-      ['Work', 'Batches and chains', 'Batches with a completion callback, and chains that pass each result forward, both surviving a worker restart.'],
-      ['Security', 'Content Security Policy', 'Per-request nonces threaded into templates and Inertia, deployable in report-only mode first.'],
-      ['Record', 'Read replicas', 'Writes to the primary and reads to a replica pool, with a sticky window after a write.'],
-      ['Admin', 'Bulk actions', 'Declarative actions with a confirmation screen, a permission gate and an activity-log entry per affected row.'],
-      ['Auth', 'Auth decorator', 'A decorator form of useAuth, so a handler declared away from its route carries its own gate and writes the same securityScheme the auth= keyword does.'],
-      ['Auth', 'Object policies', 'Per-model policies that answer whether a user may act on one specific row, from routes, templates and the admin.'],
-      ['Cache', 'Two-tier caching', 'An in-process layer in front of Redis, invalidated across workers over the event bus.'],
-      ['Work', 'Scheduler leadership', 'A leader lock, misfire policies, overlap prevention and jitter, so several workers run one schedule.'],
-      ['HTTP', 'API versioning', 'One application serving several versions from the same route table, resolved by path, header or media type, with an OpenAPI document and Sunset headers per version.'],
-      ['Frontend', 'Retiring sillo.frontend', 'FrontendApp leaves the framework after a deprecation cycle. Serving a build directory with an index fallback belongs to the static layer, or to the server in front of it.'],
-      ['Storage', 'Direct uploads', 'Signed URLs scoped by method, expiry, content type and size, so a browser uploads straight to the bucket.'],
-      ['HTTP', 'Response caching', 'RFC 9111 semantics, with Vary derived from the negotiation the response actually performed.'],
-      ['Sessions', 'Redis store', 'Sessions that survive a deploy and can be revoked, alongside the signed-cookie and file stores.'],
-      ['Ops', 'Health probes', 'Separate liveness and readiness endpoints that probe the database, Redis and the queue.'],
-      ['Events', 'Persistence and replay', 'A durable transport with per-stream sequencing, so a restarted consumer resumes where it stopped.'],
       ['Record', 'Bulk operations', 'bulk_create, bulk_update and bulk_delete with batch sizes, plus cursor iteration over a large table.'],
-      ['Auth', 'Audit log', 'Sign-ins, failures, permission denials and privilege changes recorded with actor, target and outcome.'],
-      ['Testing', 'Pytest plugin', 'client, async_client, ws_client, mailbox and queue fixtures shipped with the framework.'],
-      ['Work', 'Rate-limited tasks', 'Per-task rate and concurrency limits enforced across every worker, not per process.'],
-      ['GraphQL', 'Subscriptions', 'Subscriptions over the same channels and groups the websocket consumers use.'],
-      ['Admin', 'JSON API', 'Every panel operation available as JSON under the same permissions, for scripts and external tools.'],
-      ['Frontend', 'Deferred props', 'Inertia props resolved in a follow-up request, merged props for infinite scroll, and prefetch hints.'],
       ['Security', 'Trusted proxies', 'One place that decides which proxies may set Forwarded and X-Forwarded-For.'],
-      ['Record', 'Full-text search', 'One search scope compiled to tsvector, MATCH or FTS5 depending on the engine underneath.'],
-      ['CLI', 'Scriptable output', 'JSON output and colour control on every command, honouring NO_COLOR.'],
-      ['Observability', 'Trace continuity', 'One trace spanning the request, the job it queued, the mail that job sent and the event it emitted.'],
-      ['Auth', 'Step-up authentication', 'Routes that require recent or second-factor authentication, answering with a challenge rather than a refusal.'],
-      ['Storage', 'One filesystem contract', 'Sessions, uploads, attachments and inspector data behind a single driver.'],
-      ['Mail', 'Preview', 'Every message the application would have sent, rendered in the browser during development.'],
+      ['Ops', 'Health probes', 'Separate liveness and readiness endpoints that probe the database, Redis and the queue.'],
       ['Record', 'Locking', 'select_for_update, advisory locks and an explicit isolation-level API.'],
-      ['Record', 'Pagination integration', 'Pagination tightly integrated with Record, so cursor and page modes share one interface and link headers are derived from the same query execution.'],
-      ['Docs', 'Generated reference', 'An API reference generated from the docstrings, alongside the written guides.'],
     ],
   },
   {
@@ -159,6 +141,7 @@ const KANBAN_COLUMNS = [
       ['Performance', 'Continuous benchmarks', 'The benchmark suite run on every merge against FastAPI, Starlette, Django and Flask, with a regression failing the build.'],
       ['Frontend', 'Server-side rendering', 'Inertia pages rendered on the server, falling back to the client when it is unreachable.'],
       ['Reference', 'OpenAPI 3.1 in Atlas', 'Webhooks, callbacks and the 3.1 schema dialect, in the reference and the client.'],
+      ['Ops', 'Foreman', 'A dashboard over queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs. Ships now as sillo-vise with a subset of panels live; the rest wait on the subsystems they watch.', '/foreman'],
     ],
   },
   {
@@ -193,11 +176,13 @@ const KANBAN_COLUMNS = [
       ['Record', 'Pagination', 'Cursor and page-based pagination on the query builder.'],
       ['Record', 'Factories and seeding', 'Model factories and seeders for fixtures, tests, and demo data.'],
       ['Cache', 'Cache backends', 'Pluggable drivers, from in-memory to Redis, behind one interface.'],
+      ['Cache', 'Tag invalidation', 'Entries tagged on write and evicted by tag in one call, across both the memory and Redis backends.'],
       ['Auth', 'Auth backends', 'JWT, session, and API-key behind one contract. Setting auth= gates the route and writes its securityScheme.'],
       ['Auth', 'Permissions', 'DB-backed named permissions with group inheritance and one-call caching.'],
       ['Auth', 'OAuth2', 'Social login as two functions, with no router or response object of its own.'],
       ['Auth', 'Password hashing', 'bcrypt, argon2 and scrypt behind one interface, with a built-in scheme when none is installed.'],
       ['Admin', 'Admin panel', 'A model admin at /admin/ that authenticates against your own user model.'],
+      ['Admin', 'Filters and search', 'search_fields, list_filter and ordering on any registered model, pushed into SQL and honoured by CSV and JSON export.'],
       ['Security', 'CORS, CSRF, rate limits', 'Security headers, origin policy, token protection, and throttling as middleware.'],
       ['Sessions', 'Session stores', 'Signed-cookie and file backends behind one interface.'],
       ['Work', 'Queues and workers', 'Durable background jobs as one subsystem with the scheduler.'],
@@ -211,6 +196,33 @@ const KANBAN_COLUMNS = [
       ['CLI', 'Request inspector', 'Every request the server handled, with its timing, at /__sillo/requests.'],
       ['Testing', 'Test clients', 'Sync and async clients covering routes, auth, jobs, websockets, and streamed responses.'],
       ['Reference', 'Atlas', 'A three-pane OpenAPI reference and request client, with no runtime dependencies.'],
+    ],
+  },
+  {
+    title: 'Later',
+    tag: 'Not committed',
+    dot: 'bg-zinc-500',
+    meaning: 'Specified and worth doing, but not committed and not scheduled. Much of this is plugin territory and will live outside core unless a strong reason pulls it in.',
+    items: [
+      ['Platform', 'Craftman', 'A layer over a Postgres or MySQL database you already run: a generated API, auth, policies, realtime, storage and background tasks, as one deployment you own.', '/craftman'],
+      ['Real-time', 'Presence channels', 'Channel membership with join and leave events, including on connections that close without a close frame.'],
+      ['Work', 'Batches and chains', 'Batches with a completion callback, and chains that pass each result forward, both surviving a worker restart.'],
+      ['Record', 'Read replicas', 'Writes to the primary and reads to a replica pool, with a sticky window after a write.'],
+      ['Admin', 'Bulk actions', 'Declarative actions with a confirmation screen, a permission gate and an activity-log entry per affected row.'],
+      ['Auth', 'Auth decorator', 'A decorator form of useAuth, so a handler declared away from its route carries its own gate and writes the same securityScheme the auth= keyword does.'],
+      ['Auth', 'Object policies', 'Per-model policies that answer whether a user may act on one specific row, from routes, templates and the admin.'],
+      ['Cache', 'Two-tier caching', 'An in-process layer in front of Redis, invalidated across workers over the event bus.'],
+      ['Work', 'Scheduler leadership', 'A leader lock, misfire policies, overlap prevention and jitter, so several workers run one schedule.'],
+      ['Storage', 'Direct uploads', 'Signed URLs scoped by method, expiry, content type and size, so a browser uploads straight to the bucket.'],
+      ['Auth', 'Audit log', 'Sign-ins, failures, permission denials and privilege changes recorded with actor, target and outcome.'],
+      ['Work', 'Rate-limited tasks', 'Per-task rate and concurrency limits enforced across every worker, not per process.'],
+      ['Admin', 'JSON API', 'Every panel operation available as JSON under the same permissions, for scripts and external tools.'],
+      ['Frontend', 'Deferred props', 'Inertia props resolved in a follow-up request, merged props for infinite scroll, and prefetch hints.'],
+      ['CLI', 'Scriptable output', 'JSON output and colour control on every command, honouring NO_COLOR.'],
+      ['Observability', 'Trace continuity', 'One trace spanning the request, the job it queued, the mail that job sent and the event it emitted.'],
+      ['Auth', 'Step-up authentication', 'Routes that require recent or second-factor authentication, answering with a challenge rather than a refusal.'],
+      ['Mail', 'Preview', 'Every message the application would have sent, rendered in the browser during development.'],
+      ['Docs', 'Generated reference', 'An API reference generated from the docstrings, alongside the written guides.'],
     ],
   },
 ]

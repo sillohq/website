@@ -160,8 +160,8 @@ function CraftmanPage() {
       <section className="mx-auto max-w-[1520px] px-6 py-20 sm:px-8 md:px-12">
         <div className="flex flex-wrap items-center justify-between gap-6 border-t border-border/40 pt-10">
           <p className="max-w-[560px] text-sm leading-relaxed text-muted">
-            Craftman sits in Planning on the roadmap board, alongside everything else that is specified
-            and not started.
+            Craftman sits under Later on the roadmap board — specified, and deliberately not committed
+            while the core framework comes first.
           </p>
           <Link
             to="/about"
