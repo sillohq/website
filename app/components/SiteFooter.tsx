@@ -144,6 +144,43 @@ export function SiteFooter() {
           <a href={GITHUB} className="hover:text-text transition-colors">GitHub</a>
         </div>
       </div>
+
+      {/*
+        The wordmark that closes the docs site, on the same terms here.
+
+        Decoration, so it is hidden from assistive technology and unselectable:
+        the name is in the bottom bar already, and a screen reader announcing it
+        again at the end of every page is noise.
+      */}
+      <div
+        aria-hidden="true"
+        className="relative mx-auto max-w-[1520px] select-none overflow-hidden px-8 pt-10 md:px-12 [container-type:inline-size]"
+        style={{
+          // Fades downward rather than ending on a hard baseline. Held opaque
+          // past the middle of the letterforms so the name stays legible, and
+          // clear of the bottom edge so the cut never shows as a line.
+          WebkitMaskImage: 'linear-gradient(to bottom, #000 52%, transparent 96%)',
+          maskImage: 'linear-gradient(to bottom, #000 52%, transparent 96%)',
+        }}
+      >
+        <span
+          className="block whitespace-nowrap text-center font-bold text-text/[0.11]"
+          style={{
+            // Container query units, not vw: the word is sized against this
+            // block's own width — the 1520px measure, or the viewport minus
+            // its padding on anything narrower — so it keeps the same
+            // proportion to the footer at every width.
+            fontSize: '30cqw',
+            lineHeight: 0.78,
+            letterSpacing: '-0.055em',
+            // Half the letter-spacing, taken back off: centring counts the
+            // whole text box, including the gap after the final glyph.
+            textIndent: '-0.0275em',
+          }}
+        >
+          sillo
+        </span>
+      </div>
     </footer>
   )
 }

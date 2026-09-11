@@ -2,6 +2,7 @@ import type { MockPanel, Product } from '../components/AppMock'
 import {
   AlertIcon,
   AuthIcon,
+  BookIcon,
   BoxIcon,
   CacheIcon,
   GridIcon,
@@ -1599,4 +1600,131 @@ export const CRAFTMAN: Product = {
   initial: 'tables',
 }
 
-export const PRODUCTS = [CRAFTMAN, FOREMAN]
+const WARDER_PANELS: MockPanel[] = [
+  {
+    id: 'posts',
+    name: 'Posts',
+    group: 'Content',
+    icon: LayersIcon,
+    crumb: 'Content / Posts',
+    summary: 'A declarative resource list — every column, filter and action wired from one Resource definition.',
+    features: [
+      'Columns for relations, badges, dates and computed values, sortable where the source allows it',
+      'Search and choice filters, and date ranges with quick presets',
+      'Row actions with a confirmation prompt',
+      'Access rules per action — view, add, change and delete — including row-level checks',
+      'Same auth as the rest of the app. No separate admin login',
+    ],
+    tiles: [
+      { label: 'Resources', value: '12', tone: 'text-muted', spark: STEADY },
+      { label: 'Posts', value: '842', delta: '+18', tone: 'text-emerald-400', spark: RISING },
+      { label: 'Drafts', value: '37', tone: 'text-amber-400', spark: STEADY },
+      { label: 'Pending review', value: '4', tone: 'text-primary', spark: SPIKY },
+    ],
+    table: {
+      columns: [
+        { label: 'Title' },
+        { label: 'Author', cls: 'hidden sm:table-cell' },
+        { label: 'Status' },
+        { label: 'Published', cls: 'hidden md:table-cell' },
+      ],
+      rows: [
+        ['Shipping the v1 record layer', 'ada@acme.io', 'published', '2 days ago'],
+        ['Queue backoff, explained', 'sam@acme.io', 'published', '1 week ago'],
+        ['An OAuth walkthrough', 'ada@acme.io', 'draft', '—'],
+        ['Migrating off 0.x', 'lee@acme.io', 'in_review', '—'],
+      ],
+    },
+    aside: {
+      label: 'Access · post',
+      note: '4 rules',
+      rows: [
+        ['view', 'true', ''],
+        ['add', 'post.add', ''],
+        ['change', 'author only', ''],
+        ['delete', 'false', ''],
+      ],
+    },
+  },
+]
+
+export const WARDER: Product = {
+  id: 'warder',
+  name: 'Warder',
+  href: 'https://github.com/sillohq/warder',
+  url: 'acme.internal/admin',
+  env: { label: 'acme', tone: 'border-violet-400/30 bg-violet-400/10 text-violet-400' },
+  tagline: 'Administer with Sillo.',
+  blurb:
+    'Warder is a declarative admin for Sillo. A Resource definition gives you the list, the form, the filters and the access rules, gated by the same auth as the rest of the app rather than a second login.',
+  unit: 'resources',
+  seeds: { sparkle: 141, sparkleRotate: 9, arrow: 149, arrowRotate: -8 },
+  groups: ['Content'],
+  panels: WARDER_PANELS,
+  initial: 'posts',
+}
+
+const ATLAS_PANELS: MockPanel[] = [
+  {
+    id: 'reference',
+    name: 'Reference',
+    group: 'API',
+    icon: BookIcon,
+    crumb: 'API / Reference',
+    summary: 'The whole OpenAPI document — every scheme, every base URL, every tag — as a three-pane reference.',
+    features: [
+      'Sidebar grouped by tag, ranked search with ⌘K',
+      'Recursive schemas rendered, a dangling $ref reported instead of a blank page',
+      'A request builder seeded from the schema, with real timing, status and headers',
+      'Nine-language snippets generated from the same request the Send button uses',
+      'One script tag, 79 KB, zero runtime dependencies',
+    ],
+    tiles: [
+      { label: 'Endpoints', value: '48', tone: 'text-muted', spark: STEADY },
+      { label: 'Bundle size', value: '79 kB', tone: 'text-emerald-400', spark: FALLING },
+      { label: 'Dependencies', value: '0', tone: 'text-emerald-400', spark: STEADY },
+      { label: 'Snippet languages', value: '9', tone: 'text-primary', spark: RISING },
+    ],
+    code: {
+      label: 'Request',
+      lines: [
+        'GET /api/v1/documents/{id}',
+        'Authorization: Bearer ••••••••',
+        '',
+        '200 OK · 38ms · 12.4 kB',
+      ],
+    },
+    table: {
+      columns: [
+        { label: 'Operation' },
+        { label: 'Method', cls: 'hidden sm:table-cell' },
+        { label: 'Tag' },
+        { label: 'Auth', cls: 'hidden md:table-cell' },
+      ],
+      rows: [
+        ['Get document', 'GET', 'Documents', 'bearer'],
+        ['Create document', 'POST', 'Documents', 'bearer'],
+        ['Search workspace', 'GET', 'Search', 'bearer'],
+        ['List insights', 'GET', 'Insights', 'apiKey'],
+      ],
+    },
+  },
+]
+
+export const ATLAS: Product = {
+  id: 'atlas',
+  name: 'Atlas',
+  href: 'https://github.com/sillohq/atlas',
+  url: 'acme.internal/docs',
+  env: { label: 'acme', tone: 'border-sky-400/30 bg-sky-400/10 text-sky-400' },
+  tagline: 'Document with Sillo.',
+  blurb:
+    '@sillo/atlas is a modern OpenAPI reference and API client, one script tag, 79 KB, zero runtime dependencies. Foreman embeds it, so any route in the table can be called straight from the dashboard.',
+  unit: 'operations',
+  seeds: { sparkle: 173, sparkleRotate: -6, arrow: 181, arrowRotate: 11 },
+  groups: ['API'],
+  panels: ATLAS_PANELS,
+  initial: 'reference',
+}
+
+export const PRODUCTS = [CRAFTMAN, FOREMAN, WARDER, ATLAS]

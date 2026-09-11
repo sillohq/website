@@ -6,6 +6,21 @@
   box-sizing: border-box;
 }
 
+/*
+ * The platforms panel is a row of cards, not a row of links, and does not fit
+ * the width the bar is otherwise sized to.
+ *
+ * Deliberately not transitioned. The open animation measures the panel in a
+ * layout effect, and the cards size from `aspect-ratio` — so their height
+ * follows their width. Animating the width means measuring mid-transition, at
+ * a narrower width than the cards end up, and the bar animates to a height the
+ * content then overflows. The width snaps; the height, which is the motion you
+ * actually read, still animates.
+ */
+.card-nav-container.wide {
+  width: min(96vw, 1260px);
+}
+
 .card-nav {
   display: block;
   height: 60px;
@@ -14,13 +29,7 @@
   border-radius: 999px;
   box-shadow: 0 18px 70px rgba(0, 0, 0, 0.34);
   position: relative;
-  overflow: hidden;
-  will-change: height;
   backdrop-filter: blur(18px);
-}
-
-.card-nav.open {
-  border-radius: 24px;
 }
 
 .card-nav-top {
@@ -131,23 +140,24 @@
 /* -- the panel of link boxes ------------------------------------------ */
 
 /*
- * Positioned but not stretched to the bar: its height is its content's, which
- * is what the open animation measures while the bar is still clipped to 60px.
+ * A sheet that drops below the bar, rather than the bar stretching to hold it.
+ * Its own surface, its own shadow, and its own height — which is why nothing
+ * measures it any more.
  */
 .card-nav-panel {
   position: absolute;
-  top: 60px;
+  top: calc(100% + 10px);
   left: 0;
   right: 0;
-  padding: 0 8px 8px;
+  padding: 12px;
   z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  background-color: rgba(17, 17, 18, 0.94);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
   visibility: hidden;
-  pointer-events: none;
-}
-
-.card-nav.open .card-nav-panel {
-  visibility: visible;
-  pointer-events: auto;
+  opacity: 0;
 }
 
 .card-nav-boxes {
@@ -261,6 +271,183 @@
   opacity: 0.48;
 }
 
+/* -- the platforms panel ---------------------------------------------- */
+
+.nav-panel-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 6px 10px 16px;
+}
+
+.nav-panel-intro-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.nav-panel-intro-description {
+  margin: 4px 0 0;
+  max-width: 62ch;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-muted);
+}
+
+.nav-panel-intro-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.22s ease, color 0.22s ease;
+}
+
+.nav-panel-intro-cta:hover,
+.nav-panel-intro-cta:focus-visible {
+  border-color: var(--color-primary, #fc0345);
+  color: var(--color-primary, #fc0345);
+}
+
+.nav-platform-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/*
+ * A tall card, not a wide one. The order down it is wordmark, pitch, way in,
+ * and then the product's own surface running off the bottom edge — so the
+ * card is mostly the thing itself rather than mostly text about it.
+ */
+.nav-platform-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  aspect-ratio: 3 / 4;
+  padding: 22px 22px 0;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--color-text);
+  background:
+    radial-gradient(120% 80% at 12% 0%, rgba(var(--platform-tint), 0.14), transparent 62%),
+    rgba(255, 255, 255, 0.022);
+  transition: border-color 0.22s ease, transform 0.22s ease;
+}
+
+.nav-platform-card:hover,
+.nav-platform-card:focus-visible {
+  border-color: rgba(var(--platform-tint), 0.45);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.nav-platform-mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgb(var(--platform-tint));
+}
+
+.nav-platform-mark-glyph {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.nav-platform-wordmark {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.nav-platform-title {
+  margin-top: 16px;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.035em;
+  color: var(--color-text);
+}
+
+.nav-platform-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(var(--platform-tint));
+}
+
+.nav-platform-link-icon {
+  width: 13px;
+  height: 13px;
+  transition: transform 0.22s ease;
+}
+
+.nav-platform-card:hover .nav-platform-link-icon,
+.nav-platform-card:focus-visible .nav-platform-link-icon {
+  transform: translateX(3px);
+}
+
+/*
+ * The product's real interface, held at the width it is built for and scaled
+ * down — which is what makes it read as a screenshot of the thing rather than
+ * a diagram of it. It takes whatever height the copy leaves, runs past the
+ * right edge, and is cut by the card's own bottom border.
+ */
+.nav-platform-preview {
+  display: block;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 18px -24px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-right: none;
+  border-bottom: none;
+  border-radius: 12px 0 0 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/*
+ * Scaled up enough to overrun the frame on both axes, and floored with a
+ * min-height, so the frame is always full. Scaled to fit instead, the mock
+ * ended short of the card's bottom edge and left a band of empty card under
+ * it — the crop has to be the thing that ends the preview, not the content.
+ */
+.nav-platform-preview-scale {
+  display: block;
+  width: 1180px;
+  min-height: 780px;
+  background-color: var(--color-surface);
+  transform: scale(0.42);
+  transform-origin: top left;
+}
+
+@media (max-width: 1100px) {
+  .nav-platform-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
   .card-nav-trigger {
     padding: 8px 10px;
@@ -269,8 +456,30 @@
 }
 
 @media (max-width: 768px) {
-  .card-nav-container {
+  .card-nav-container,
+  .card-nav-container.wide {
     width: calc(100vw - 32px);
+  }
+
+  /* One column, and no preview: four tall cards stacked on a phone is a lot of
+     scrolling for a menu. The wordmark and the pitch still say what each is,
+     so the card drops its aspect ratio and becomes a short block. */
+  .nav-platform-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-platform-card {
+    aspect-ratio: auto;
+    padding: 14px 16px 16px;
+  }
+
+  .nav-platform-title {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  .nav-platform-preview {
+    display: none;
   }
 
   .card-nav-top {
@@ -333,5 +542,344 @@
 
   .nav-box-description {
     grid-area: desc;
+  }
+}
+
+/* -- the columns panel ------------------------------------------------- */
+
+/*
+ * Headed columns divided by hairlines, with the featured item given a column
+ * of its own and more room than the lists beside it.
+ */
+.nav-columns {
+  display: grid;
+  /* Tracks are set inline, from the column count. */
+  /* Cancel the panel's padding so the dividers run its full height rather
+     than stopping short at both ends. The columns carry their own inset. */
+  margin: -12px;
+}
+
+.nav-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 14px 22px 16px;
+}
+
+.nav-column + .nav-column {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-column-heading {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-primary, #fc0345);
+}
+
+.nav-column-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-column-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 -8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.nav-column-link:hover,
+.nav-column-link:focus-visible {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* The quiet list — names only, so a long one does not read as a toolbar. */
+.nav-column-link.plain {
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.nav-column-link.plain:hover,
+.nav-column-link.plain:focus-visible {
+  color: var(--color-text);
+}
+
+.nav-column-link-glyph {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--color-primary, #fc0345);
+}
+
+.nav-column-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-primary, #fc0345);
+}
+
+.nav-column-more .nav-platform-link-icon {
+  transition: transform 0.22s ease;
+}
+
+.nav-column-more:hover .nav-platform-link-icon {
+  transform: translateX(3px);
+}
+
+/* -- the featured item ------------------------------------------------- */
+
+.nav-featured {
+  display: flex;
+  gap: 16px;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.nav-featured-thumb {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 124px;
+  height: 124px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background:
+    radial-gradient(120% 100% at 20% 0%, rgba(var(--platform-tint), 0.2), transparent 62%),
+    rgba(255, 255, 255, 0.025);
+}
+
+.nav-featured-glyph {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: rgb(var(--platform-tint));
+}
+
+.nav-featured-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nav-featured-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-dimmed);
+}
+
+.nav-featured-title {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+
+.nav-featured-description {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.nav-featured-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-primary, #fc0345);
+}
+
+.nav-featured:hover .nav-platform-link-icon,
+.nav-featured:focus-visible .nav-platform-link-icon {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .nav-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-column + .nav-column {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* The thumbnail is decoration, and a phone needs the words more. */
+  .nav-featured-thumb {
+    display: none;
+  }
+}
+
+/* -- rich rows, heading links and the file cascade ---------------------- */
+
+.nav-column-heading--link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  text-decoration: none;
+}
+
+.nav-column-heading--link:hover .nav-platform-link-icon,
+.nav-column-heading--link:focus-visible .nav-platform-link-icon {
+  transform: translateX(3px);
+}
+
+.nav-column-list.rich {
+  gap: 4px;
+}
+
+/* A tiled icon, a name and a line under it — the row is the whole target, so
+   the hover lands on the block rather than the words. */
+.nav-column-rich {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 0 -10px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background-color 0.18s ease;
+}
+
+.nav-column-rich:hover,
+.nav-column-rich:focus-visible {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.nav-column-rich-tile {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background:
+    radial-gradient(120% 100% at 22% 0%, rgba(252, 3, 69, 0.22), transparent 64%),
+    rgba(255, 255, 255, 0.03);
+  color: var(--color-primary, #fc0345);
+  transition: border-color 0.18s ease;
+}
+
+.nav-column-rich:hover .nav-column-rich-tile,
+.nav-column-rich:focus-visible .nav-column-rich-tile {
+  border-color: rgba(252, 3, 69, 0.4);
+}
+
+.nav-column-rich-glyph {
+  width: 19px;
+  height: 19px;
+}
+
+.nav-column-rich-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nav-column-rich-label {
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+.nav-column-rich-description {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--color-muted);
+}
+
+/*
+ * The visual column: a cascade of file cards stepping right as they go down,
+ * running past the panel edge and cut off there. It is decoration, so it is
+ * hidden from assistive tech and takes no pointer.
+ */
+.nav-column--visual {
+  overflow: hidden;
+}
+
+.nav-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-right: -34px;
+  pointer-events: none;
+}
+
+.nav-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 11px;
+  background-color: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.nav-file:nth-child(2) { margin-left: 16px; }
+.nav-file:nth-child(3) { margin-left: 32px; }
+.nav-file:nth-child(4) { margin-left: 48px; }
+
+.nav-file-glyph {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-primary, #fc0345);
+}
+
+@media (max-width: 768px) {
+  /* Four stepped cards do not step on a phone; they just run off the side. */
+  .nav-column--visual {
+    display: none;
+  }
+}
+
+/* Holds the panel's height while the platforms grid is being fetched, so the
+   sheet does not snap taller a moment after it opens. */
+.nav-platform-fallback {
+  height: 543px;
+}
+
+@media (max-width: 768px) {
+  .nav-platform-fallback {
+    height: 0;
   }
 }

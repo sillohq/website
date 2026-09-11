@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import {
   AuthIcon,
@@ -11,7 +11,12 @@ import {
   ValidationIcon,
 } from '../components/code-icons'
 import { SiteNav } from '../components/SiteNav'
-import Plasma from '../components/Plasma'
+/*
+ * The hero's WebGL wash is decoration, and it drags `ogl` into the chunk every
+ * page loads before anything paints. Deferred, the page renders on its own
+ * gradients and the shader arrives when it arrives.
+ */
+const Plasma = lazy(() => import('../components/Plasma'))
 import {
   Doodle,
   DoodleArrow,
@@ -276,6 +281,7 @@ function Hero() {
   return (
     <section className="border-b  border-border min-h-[calc(100dvh-72px)] flex flex-col relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none z-0 opacity-70 mix-blend-screen">
+        <Suspense fallback={null}>
         <Plasma
           color="#fc0345"
           speed={0.45}
@@ -288,6 +294,7 @@ function Hero() {
           targetFps={30}
           iterations={42}
         />
+        </Suspense>
       </div>
       <div
         className="absolute inset-0 pointer-events-none z-0"
@@ -327,8 +334,7 @@ function Hero() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-text text-3xl md:text-4xl mb-7 max-w-[520px] font-medium leading-tight tracking-tight">
-              The Buildsmith framework.<br />
+            <h1 className="text-text text-3xl md:text-4xl mb-6 max-w-[480px] font-medium leading-tight tracking-tight">
               Python, with the{' '}
               <MarkerUnderline seed={63} weight={2.6} draw delay={0.45}>
                 hard parts already built.
@@ -336,10 +342,8 @@ function Hero() {
             </h1>
 
             {/* Subhead */}
-            <p className="text-muted text-base leading-relaxed mb-8 max-w-[460px]">
-              Sillo is a fast, async Python framework for building real applications.
-              Routing, authentication, ORM, background jobs, WebSockets, admin and more
-              are built into the framework and designed to work together.
+            <p className="text-muted text-base leading-relaxed mb-8 max-w-[420px]">
+              Routing, auth, ORM, background jobs and WebSockets — built in, designed to work together.
             </p>
 
             {/* CTA */}
@@ -1004,31 +1008,50 @@ function OneFramework() {
 
           {/* Right */}
           <div className="mt-8 lg:mt-[220px] lg:-mr-[calc((100vw-1520px)/2+3rem)]">
-            <div className="relative overflow-hidden bg-surface border border-border/70" style={{ borderRadius: '16px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
-              <div className="pointer-events-none absolute inset-0 z-10"
+            <div className="relative">
+              {/* Fade: right edge → bottom edge → corner blend, so the frame
+                  dissolves into the page instead of ending in a hard edge */}
+              <div
+                className="absolute inset-0 z-20 pointer-events-none"
                 style={{
                   background: `
-                    linear-gradient(to right, transparent 55%, rgba(5,5,5,0.32) 78%, rgb(5,5,5) 100%),
-                    linear-gradient(to top, rgba(5,5,5,0.84) 0%, rgba(5,5,5,0.36) 28%, transparent 62%)
+                    linear-gradient(to right, transparent 82%, rgba(5,5,5,0.5) 92%, rgb(5,5,5) 100%),
+                    linear-gradient(to top, rgb(5,5,5) 0%, rgba(5,5,5,0.55) 6%, transparent 16%, transparent 100%)
                   `,
                 }}
               />
-              <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-border-strong via-border to-transparent" />
-              <div className="relative border-b border-border/80 px-6 py-4 flex items-start justify-between gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="grid h-9 w-9 place-items-center text-primary">
-                    <detail.icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold tracking-[-0.045em] text-text">{detail.title}</h3>
+              <div
+                className="absolute bottom-0 right-0 w-[200px] h-[140px] z-20 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(ellipse 100% 100% at bottom right, rgb(5,5,5) 0%, rgba(5,5,5,0.5) 45%, transparent 72%)',
+                }}
+              />
+
+              {/* Multi-ring frame — same treatment as the hero code panel */}
+              <div className="border border-border/40 p-[6px]" style={{ borderRadius: '28px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
+                <div className="border border-border/30 p-[5px]" style={{ borderRadius: '24px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
+                  <div className="border border-border/20 p-[12px]" style={{ borderRadius: '20px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
+                    <div className="relative overflow-hidden bg-surface border border-border" style={{ borderRadius: '14px 0 0 0', borderRight: 'none', borderBottom: 'none' }}>
+                      <div className="relative border-b border-border px-6 py-4 flex items-start justify-between gap-6">
+                        <div className="flex items-center gap-4">
+                          <div className="grid h-9 w-9 place-items-center text-primary">
+                            <detail.icon className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold tracking-[-0.045em] text-text">{detail.title}</h3>
+                          </div>
+                        </div>
+                        <span className="hidden md:inline-flex px-3 py-1.5 text-[10px] text-dimmed font-mono">
+                          {detail.file}
+                        </span>
+                      </div>
+                      {/* Fixed height so switching tabs never resizes the panel */}
+                      <div key={active} className="relative code-panel-fade transition-tab min-h-[640px]">
+                        <CodeBlock code={detail.code} />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <span className="hidden md:inline-flex px-3 py-1.5 text-[10px] text-dimmed font-mono">
-                  {detail.file}
-                </span>
-              </div>
-              <div key={active} className="relative code-panel-fade transition-tab">
-                <CodeBlock code={detail.code} />
               </div>
             </div>
             <p className="text-sm text-muted leading-relaxed mt-5 max-w-[640px]">
