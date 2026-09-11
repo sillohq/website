@@ -33,48 +33,41 @@ export const Route = createFileRoute('/')({
 /* ─── Code examples ─── */
 
 const CODE_EXAMPLES: Record<string, string> = {
-  routing: `from sillo import SilloApp
-from sillo.core.http import Request, Response
+  routing: `from sillo import HttpContext, SilloApp
 
 app = SilloApp(title="Projects API")
 
 
 @app.get("/projects/{project_id:int}")
-async def show_project(
-    req: Request,
-    res: Response,
-    project_id: int,
-) -> Response:
-    return res.json({
+async def show_project(ctx: HttpContext, project_id: int):
+    return {
         "id": project_id,
         "name": "Sillo Marketing",
         "status": "active",
-    })`,
+    }`,
 
-  auth: `from sillo import SilloApp, useAuth
-from sillo.auth import JWTAuthBackend, create_jwt
-from sillo.auth.middleware import AuthenticationMiddleware
+  auth: `from sillo import HttpContext, SilloApp, json
+from sillo.auth import AuthenticationMiddleware, JWTAuthBackend
+from sillo.auth.jwt_auth import TokenForUser
 from sillo.users import User
 
 app = SilloApp()
-jwt_backend = JWTAuthBackend()
-
-app.use(
-    AuthenticationMiddleware(user_model=User, backend=jwt_backend)
-)
+app.use(AuthenticationMiddleware(
+    user_model=User,
+    backend=JWTAuthBackend(secret_key="change-me", identifier="sub"),
+))
 
 
 @app.post("/login")
-async def login(req, res):
-    form = await req.form
+async def login(ctx: HttpContext):
+    data = await ctx.json
+    user = await User.objects.get_by_email(data["email"])
+    if not user or not user.check_password(data["password"]):
+        return json({"error": "invalid credentials"}, status_code=401)
 
-    if form.get("username") == "admin":
-        token = create_jwt({"sub": "123"}, secret="my-secret-key")
-        return res.json({"token": token})
+    return TokenForUser(user, secret="change-me").token_pair()`,
 
-    return res.html("Invalid credentials", status_code=401)`,
-
-  queue: `from sillo.work.queue.job import Job
+  queue: `from sillo.work.queue import Job
 from app.mail import Mail
 from app.models import User
 
@@ -88,15 +81,14 @@ class SendWelcomeEmail(Job):
         self.user_id = user_id
 
     async def handle(self):
-        user = await User.get(self.user_id)
+        user = await User.get(id=self.user_id)
         await Mail.to(user.email).send("welcome")
 
 
-SendWelcomeEmail.dispatch_after(300, "user-42")`,
+await enqueue(SendWelcomeEmail, "user-42", delay=300)`,
 
   validation: `from pydantic import BaseModel, EmailStr
-from sillo import SilloApp
-from sillo.core.http import Request, Response
+from sillo import HttpContext, SilloApp, created
 
 app = SilloApp()
 
@@ -107,15 +99,10 @@ class Signup(BaseModel):
 
 
 @app.post("/signup", request_model=Signup)
-async def signup(
-    req: Request,
-    res: Response,
-    data: Signup,
-) -> Response:
-    return res.json({"user": data.model_dump()}, status_code=201)`,
+async def signup(ctx: HttpContext, data: Signup):
+    return created({"user": data.model_dump()})`,
 
-  dependency: `from sillo import Depend, SilloApp
-from sillo.core.http import Request, Response
+  dependency: `from sillo import Depend, HttpContext, SilloApp
 
 app = SilloApp()
 
@@ -124,24 +111,22 @@ async def get_database():
     return Database("postgres://localhost/app")
 
 
-async def get_current_user(req: Request = Depend(get_request=True)):
-    token = req.headers.get("Authorization")
+async def get_current_user(ctx: HttpContext):
+    token = ctx.headers.get("Authorization")
     return await User.from_token(token)
 
 
 @app.get("/projects")
 async def list_projects(
-    req: Request,
-    res: Response,
+    ctx: HttpContext,
     db=Depend(get_database),
     user=Depend(get_current_user),
-) -> Response:
+):
     projects = await db.projects.for_user(user.id)
-    return res.json({"projects": projects})`,
+    return {"projects": projects}`,
 
-  orm: `from sillo import SilloApp
-from sillo.record import DatabaseConfig, Model, setup_record
-from tortoise import fields
+  orm: `from sillo import HttpContext, SilloApp
+from sillo.record import DatabaseConfig, Model, fields, setup_record
 
 app = SilloApp(title="Projects API")
 setup_record(app, DatabaseConfig.sqlite("app.db"), model_modules=[__name__])
@@ -154,9 +139,9 @@ class Project(Model):
 
 
 @app.get("/projects/{project_id:int}")
-async def show_project(req, res, project_id: int):
+async def show_project(ctx: HttpContext, project_id: int):
     project = await Project.get(id=project_id)
-    return res.json({"project": project.to_dict()})`,
+    return {"project": project.to_dict()}`,
 }
 
 const CODE_TABS = [
@@ -536,28 +521,27 @@ const CAPABILITY_DETAILS: Record<string, { title: string; desc: string; code: st
   Authentication: {
     title: 'Authentication',
     desc: 'Session-based auth for web apps, token auth for APIs. Login, logout, password reset, role-based guards, and current-user resolution through a consistent interface.',
-    code: `from sillo import SilloApp, useAuth
-from sillo.auth import JWTAuthBackend, SessionAuthBackend
-from sillo.auth.middleware import AuthenticationMiddleware
+    code: `from sillo import HttpContext, SilloApp
+from sillo.auth import JWTAuthBackend, SessionAuthBackend, useAuth
 from sillo.users import User
 
 app = SilloApp(auth=[JWTAuthBackend(), SessionAuthBackend()], auth_user_model=User)
 
 
-@app.get("/dashboard")
-async def dashboard(request, response):
-    return response.json({
-        "user": request.user.email,
-        "role": request.user.role,
-    })`,
+@app.get("/dashboard", auth=useAuth())
+async def dashboard(ctx: HttpContext):
+    return {
+        "user": ctx.user.email,
+        "role": ctx.user.role,
+    }`,
   },
   Queue: {
     title: 'Queue',
     desc: 'Background job dispatch with retry, backoff, and worker processes. Queue anything from email notifications to video processing.',
-    code: `from sillo.work.queue.job import Job, Dispatchable
+    code: `from sillo.work.queue import Job
 
 
-class SendWelcomeEmail(Job, Dispatchable):
+class SendWelcomeEmail(Job):
     queue = "emails"
     tries = 3
     timeout = 30
@@ -566,17 +550,16 @@ class SendWelcomeEmail(Job, Dispatchable):
         self.user_id = user_id
 
     async def handle(self):
-        user = await User.get(self.user_id)
+        user = await User.get(id=self.user_id)
         await Mail.to(user.email).send("welcome")
 
 
-await SendWelcomeEmail.dispatch_after(300, "user-42")`,
+await enqueue(SendWelcomeEmail, "user-42", delay=300)`,
   },
   'Record ORM': {
     title: 'Record ORM',
     desc: 'Async active-record ORM with typed fields, relationships, query builder, and migration support.',
-    code: `from sillo.record import Model
-from tortoise import fields
+    code: `from sillo.record import Model, fields
 
 
 class Team(Model):
@@ -596,36 +579,34 @@ members = await team.members.filter(role="admin").order_by("name").all()`,
   },
   Mail: {
     title: 'Mail',
-    desc: 'Class-based transactional email with template rendering, queue integration, and multiple driver support.',
-    code: `from sillo.mail import Mail
+    desc: 'Transactional email over SMTP with Jinja2 templates, attachments, and a shared connection wired into the app lifecycle.',
+    code: `from sillo.mail import MailConfig, setup_mail
+
+app = SilloApp()
+mail = setup_mail(app, MailConfig.for_gmail("you@gmail.com", "app-password"))
 
 
-class WelcomeMail(Mail):
-    subject = "Welcome to Sillo"
+async def send_welcome(user):
+    return await mail.send_template_email(
+        to=user.email,
+        subject="Welcome to Sillo",
+        template_name="welcome",
+        context={"user_name": user.name},
+    )
 
-    async def build(self):
-        return self.view(
-            "mail/welcome",
-            user=self.user,
-        )
 
+async def send_invoice(invoice):
+    from sillo.mail import EmailMessage
 
-class InvoiceMail(Mail):
-    subject = "Your invoice"
-
-    async def build(self):
-        return self.view(
-            "mail/invoice",
-            invoice=self.invoice,
-        ).attach_pdf(
-            f"invoice-{self.invoice.id}.pdf"
-        )`,
+    message = EmailMessage(to=[invoice.customer_email], subject="Your invoice")
+    message.add_attachment(f"invoice-{invoice.id}.pdf", invoice.pdf_path)
+    return await mail.send_message(message)`,
   },
   'Rate limiting': {
     title: 'Rate Limiting',
     desc: 'Named limiters with per-route, per-user, or per-IP policies. Redis and in-memory backends.',
-    code: `from sillo import SilloApp
-from sillo.security.ratelimit import RateLimitMiddleware, RateLimitConfig
+    code: `from sillo import HttpContext, SilloApp, created
+from sillo.security.ratelimit import RateLimitConfig, RateLimitMiddleware
 
 app = SilloApp()
 app.use(RateLimitMiddleware(config=RateLimitConfig(
@@ -636,62 +617,58 @@ app.use(RateLimitMiddleware(config=RateLimitConfig(
 
 
 @app.get("/api/projects")
-async def list_projects(request):
+async def list_projects(ctx: HttpContext):
     return await Project.all()
 
 
-@app.post("/api/projects")
-async def create_project(request):
-    data = await request.validate(CreateProject)
-    project = await Project.create(**data)
-    return project`,
+@app.post("/api/projects", request_model=CreateProject)
+async def create_project(ctx: HttpContext, data: CreateProject):
+    project = await Project.create(**data.model_dump())
+    return created(project.to_dict())`,
   },
   Routing: {
     title: 'Routing',
     desc: 'Typed route parameters, dependency injection, middleware pipelines, and automatic request parsing.',
-    code: `from sillo import SilloApp, Depend
-from sillo.core.http import Request, Response
-
+    code: `from sillo import Depend, HttpContext, SilloApp, created, not_found
 
 app = SilloApp()
 
 
-async def get_db(request: Request = Depend(get_request=True)):
+async def get_db(ctx: HttpContext):
     return Database("postgres://localhost/app")
 
 
 @app.get("/projects/{project_id:int}")
 async def show_project(
-    request: Request,
-    response: Response,
+    ctx: HttpContext,
     project_id: int,
     db = Depend(get_db),
 ):
     project = await db.projects.find(project_id)
 
     if not project:
-        return Response.not_found()
+        return not_found()
 
-    return response.json({
+    return {
         "project": project.to_dict(),
-        "viewer": request.user.to_dict(),
-    })
+        "viewer": ctx.user.to_dict(),
+    }
 
 
 @app.post("/projects")
 async def create_project(
-    request: Request,
-    response: Response,
+    ctx: HttpContext,
     db = Depend(get_db),
 ):
-    data = await request.json()
+    data = await ctx.json
     project = await db.projects.create(**data)
-    return response.json(project.to_dict(), status_code=201)`,
+    return created(project.to_dict())`,
   },
   Caching: {
     title: 'Caching',
     desc: 'Pluggable cache backends with TTL, tags, versioning, and decorator support.',
-    code: `from sillo.cache import MemoryCache, configure_cache, cache
+    code: `from sillo import HttpContext
+from sillo.cache import MemoryCache, cache, configure_cache, get_default_backend
 
 configure_cache(MemoryCache(default_ttl=300))
 
@@ -703,13 +680,13 @@ async def get_product(product_id: int):
 
 
 @app.get("/stats")
-async def dashboard_stats(request):
+async def dashboard_stats(ctx: HttpContext):
     stats = await get_product(1)
     return {"stats": stats}
 
 
 @app.post("/refresh")
-async def refresh_cache(request):
+async def refresh_cache(ctx: HttpContext):
     backend = get_default_backend()
     await backend.delete("cache:get_product:1")
     return {"ok": True}`,
@@ -751,7 +728,7 @@ const CAPABILITY_DETAILS_V2: Record<string, { title: string; desc: string; file:
   },
   Authentication: {
     title: 'Authentication',
-    desc: 'One request.user whether the caller sent a bearer token or a session cookie, so an API client and a browser hit the same handler.',
+    desc: 'One ctx.user whether the caller sent a bearer token or a session cookie, so an API client and a browser hit the same handler.',
     file: 'auth.py',
     icon: AuthIcon,
     code: CODE_EXAMPLES.auth,
@@ -829,9 +806,9 @@ const SILLO_MAGIC_STACK = [
   {
     eyebrow: 'DEPENDENCY INJECTION',
     title: 'Ask for the pieces the handler needs.',
-    desc: 'Nested dependencies, request access, and query params stay in the signature.',
+    desc: 'Nested dependencies, context access, and query params stay in the signature.',
     file: 'dependencies.py',
-    code: `from sillo import Depend, Query, SilloApp
+    code: `from sillo import Depend, HttpContext, Query, SilloApp
 
 app = SilloApp(title="Projects")
 
@@ -844,40 +821,34 @@ async def get_database(settings=Depend(get_settings)):
     return Database(settings["database_url"])
 
 
-async def get_viewer(req=Depend(get_request=True)):
-    return req.scope["user"]
+async def get_viewer(ctx: HttpContext):
+    return ctx.user
 
 
 @app.get("/projects")
 async def list_projects(
-    request,
-    response,
+    ctx: HttpContext,
     page: int = Query(1),
     db=Depend(get_database),
     viewer=Depend(get_viewer),
 ):
     projects = await db.projects.for_user(viewer.id).page(page)
-    return response.json({"projects": projects})`,
+    return {"projects": projects}`,
   },
   {
     eyebrow: 'SECURED ROUTES',
     title: 'Put the gate on the route.',
     desc: 'One auth= gates the route on permissions and writes its securityScheme into the OpenAPI spec.',
     file: 'routes/applications.py',
-    code: `from sillo.auth import useAuth
+    code: `from sillo import HttpContext
+from sillo.auth import useAuth
 from sillo.core.routing import Route
-from sillo_inertia import Inertia
+from sillo_inertia import render
 
 
-async def applications_page(request, response):
-    inertia: Inertia = request.base_app.state["inertia"]
-    props = await applications_props(request)
-    return await inertia.render(
-        request,
-        response,
-        "Applications",
-        props,
-    )
+async def applications_page(ctx: HttpContext):
+    props = await applications_props(ctx)
+    return await render("Applications", props)
 
 
 application_routes = [
@@ -913,8 +884,8 @@ class SendReport(Job):
         await mail_service.send_report(self.user_id, report)
 
 
-SendReport.dispatch("user-42", "report-9")
-SendReport.dispatch_after(3600, "user-42", "report-10")`,
+await enqueue(SendReport, "user-42", "report-9")
+await enqueue(SendReport, "user-42", "report-10", delay=3600)`,
   },
   {
     eyebrow: 'SCHEDULER',
@@ -936,7 +907,7 @@ async def refresh_metrics():
 @scheduler.cron("0 9 * * 1-5", name="weekday-digest")
 async def weekday_digest():
     for user in await User.subscribed().all():
-        DigestJob.dispatch(user.id)`,
+        await enqueue(DigestJob, user.id)`,
   },
   {
     eyebrow: 'SILLO INERTIA',
@@ -959,13 +930,11 @@ inertia.share(shared=lazy(shared_props))
 app.state["inertia"] = inertia
 
 
-async def login_page(request, response):
-    return await inertia.render(
-        request,
-        response,
-        "Login",
-        {"demoUsers": []},
-    )`,
+from sillo_inertia import render
+
+
+async def login_page(ctx):
+    return await render("Login", {"demoUsers": []})`,
   },
 ]
 

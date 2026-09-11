@@ -17,13 +17,12 @@ export const CODE_TABS = [
     description: 'Typed routes with dependency injection and clean response handling.',
     code: `@app.get("/users/{user_id:int}")
 async def get_user(
-    request: Request,
-    response: Response,
+    ctx: HttpContext,
     user_id: int,
-    db: Database = Depend(get_db),
+    db=Depend(get_db),
 ):
     user = await db.users.find(user_id)
-    return response.json(user.to_dict())`,
+    return user.to_dict()`,
     result: 'Typed route handlers with automatic parameter injection.',
     feature: 'Dependency injection',
   },
@@ -31,13 +30,13 @@ async def get_user(
     id: 'auth',
     label: 'Authentication',
     description: 'Authenticated endpoints with guards and current user resolution.',
-    code: `@app.get("/dashboard")
-async def dashboard(request, response):
-    user = request.user
-    return response.json({
+    code: `@app.get("/dashboard", auth=useAuth())
+async def dashboard(ctx: HttpContext):
+    user = ctx.user
+    return {
         "user": user.email,
         "role": user.role,
-    })`,
+    }`,
     result: 'Declarative auth guards that compose with any route.',
     feature: 'Role-based access',
   },
@@ -45,8 +44,7 @@ async def dashboard(request, response):
     id: 'orm',
     label: 'ORM',
     description: 'Record models with typed queries and clean data access.',
-    code: `from tortoise import fields
-from sillo.record import Model
+    code: `from sillo.record import Model, fields
 
 
 class Product(Model):
@@ -68,14 +66,11 @@ products = await Product.filter(category="electronics") \\
     id: 'queues',
     label: 'Queues',
     description: 'Dispatch background jobs without infrastructure boilerplate.',
-    code: `@app.post("/orders")
-async def create_order(request, response):
-    order = await Order.create(**request.json())
-    await dispatch(InvoiceJob, {
-        "order_id": order.id,
-        "email": order.customer_email,
-    })
-    return response.json(order.to_dict(), status=201)`,
+    code: `@app.post("/orders", request_model=CreateOrder)
+async def create_order(ctx: HttpContext, body: CreateOrder):
+    order = await Order.create(**body.model_dump())
+    await enqueue(InvoiceJob, order.id, email=order.customer_email)
+    return created(order.to_dict())`,
     result: 'Fire-and-forget background processing with retry support.',
     feature: 'Async dispatch',
   },
@@ -90,14 +85,10 @@ class SignupSchema(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
 
-@app.post("/auth/signup")
-async def signup(
-    request: Request,
-    response: Response,
-    body: SignupSchema,
-):
-    user = await User.create(**body.model_dump())
-    return response.json(user.to_dict(), status=201)`,
+@app.post("/auth/signup", request_model=SignupSchema)
+async def signup(ctx: HttpContext, body: SignupSchema):
+    user = await User.objects.create_user(**body.model_dump())
+    return created(user.to_dict())`,
     result: 'Zero-boilerplate validation with Pydantic integration.',
     feature: 'Schema validation',
   },
