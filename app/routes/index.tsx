@@ -344,7 +344,7 @@ function Hero() {
 
             {/* CTA */}
             <div className="mb-9">
-              <a href={DOCS} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03] hover:shadow-[0_16px_46px_rgba(255,255,255,0.16)]">
+              <a href={DOCS} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-bg transition-all leading-none hover:scale-[1.03]">
                 Read the docs
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3l4 4-4 4"/></svg>
               </a>
@@ -976,7 +976,7 @@ function OneFramework() {
                   }`}
                 >
                   {active === key && (
-                    <span className="absolute inset-y-3 -left-3 w-px bg-primary/80 shadow-[0_0_16px_rgba(252,3,69,0.6)]" />
+                    <span className="absolute inset-y-3 -left-3 w-px bg-primary/80" />
                   )}
                   <span className={`grid h-9 w-9 shrink-0 place-items-center transition-colors ${
                     active === key
@@ -1099,8 +1099,8 @@ function EnterpriseSection() {
             <div
               key={item.title}
               className={`relative border border-border -m-px p-8 md:p-10 flex flex-col gap-3 justify-end min-h-[170px] ${
-                i === 0 ? 'md:col-span-2 lg:row-span-2 bg-elevated' : ''
-              } ${i === 5 ? 'md:col-span-2 lg:row-span-2 bg-elevated' : ''}`}
+                i === 0 ? 'md:col-span-2 lg:row-span-2' : ''
+              } ${i === 5 ? 'md:col-span-2 lg:row-span-2' : ''}`}
             >
               {i === 0 && (
                 <Doodle name="squiggle" seed={29} size={110} rotate={-4} show="desktop" className="absolute right-10 top-9 opacity-20" />
