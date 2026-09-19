@@ -22,7 +22,7 @@ export const Route = createFileRoute('/craftman')({
 // One array drives the studio mockup and the written surface list below it.
 //
 // Deliberately no stat tiles. Craftman is a tool you work in, not a dashboard
-// you watch — the numbers belong in Foreman. A panel here shows the thing it
+// you watch — the numbers belong in Vise. A panel here shows the thing it
 // edits: rows, policies, keys, files. Where a figure earns its place it sits in
 // the toolbar of the panel it describes.
 //
@@ -93,8 +93,8 @@ function CraftmanPage() {
           <p className="mt-6 text-base leading-relaxed text-muted md:text-lg">
             Each one edits something the framework already models. There are no dashboards here —
             operational detail belongs in{' '}
-            <Link to="/foreman" className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-primary">
-              Foreman
+            <Link to="/vise" className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-primary">
+              Vise
             </Link>
             , and this is the tool you build in.
           </p>

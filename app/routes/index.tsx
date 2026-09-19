@@ -29,7 +29,7 @@ import {
 import { DOCS_URL as DOCS } from '../data/links'
 import { SiteFooter } from '../components/SiteFooter'
 import { ProductShowcase } from '../components/ProductShowcase'
-import { CRAFTMAN, FOREMAN } from '../data/products'
+import { CRAFTMAN, VISE } from '../data/products'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -258,7 +258,7 @@ function HomePage() {
       <OneFramework />
       <EnterpriseSection />
       <ProductSection product={CRAFTMAN} bleed="right" />
-      <ProductSection product={FOREMAN} bleed="left" />
+      <ProductSection product={VISE} bleed="left" />
       <SiteFooter />
     </main>
   )

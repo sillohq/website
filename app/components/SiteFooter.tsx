@@ -7,7 +7,7 @@ import { DOCS_URL as DOCS, GITHUB_URL as GITHUB } from '../data/links'
  * The site footer, on every page.
  *
  * It was written inline in the home page and is shared now because the About,
- * Foreman and Craftman pages ended without one. The Products column carries the
+ * Vise and Craftman pages ended without one. The Products column carries the
  * links that used to sit in the About menu: those pages describe work that is
  * planned rather than shipped, and a top-level menu entry reads like a shipped
  * feature.
@@ -86,7 +86,7 @@ export function SiteFooter() {
             { title: 'Products', links: [
               { label: 'Sillo', href: '/', internal: true },
               { label: 'Craftman', href: '/craftman', internal: true },
-              { label: 'Foreman', href: '/foreman', internal: true },
+              { label: 'Vise', href: '/vise', internal: true },
               { label: 'Roadmap', href: '/about#ships', internal: true },
             ]},
             { title: 'Resources', links: [

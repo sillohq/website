@@ -3,14 +3,14 @@ import type { ReactElement, SVGProps } from 'react'
 import { DemoCursor, TOUR_HIT, useGuidedTour } from './DemoCursor'
 
 /**
- * The product mockup, shared by /foreman, /craftman and the home page.
+ * The product mockup, shared by /vise, /craftman and the home page.
  *
  * It was written twice — once per product page — before the home page needed a
  * third copy. The two differed only in their data, so the data moved to
  * `app/data/products.ts` and this renders whichever product it is handed.
  *
  * A panel may carry stat tiles or a toolbar, a chart, a code block, a table and
- * a side rail, in that order. Foreman leans on tiles because it is a dashboard;
+ * a side rail, in that order. Vise leans on tiles because it is a dashboard;
  * Craftman leans on toolbars because it is a tool you work in.
  */
 

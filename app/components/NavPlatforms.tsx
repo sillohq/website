@@ -1,6 +1,6 @@
 import { AppMock } from './AppMock'
 import { AuthIcon, LayersIcon, ObservabilityIcon } from './code-icons'
-import { CRAFTMAN, FOREMAN, WARDER } from '../data/products'
+import { CRAFTMAN, VISE, WARDER } from '../data/products'
 
 /**
  * The platforms grid in the nav, and the only place that reaches for the
@@ -23,9 +23,9 @@ const platforms = [
     tint: '52, 211, 153',
   },
   {
-    product: FOREMAN,
-    href: FOREMAN.href,
-    ariaLabel: 'Foreman, the application dashboard',
+    product: VISE,
+    href: VISE.href,
+    ariaLabel: 'Vise, the application dashboard',
     title: 'Full observability for everything your application is doing',
     cta: 'See the dashboard',
     icon: ObservabilityIcon,

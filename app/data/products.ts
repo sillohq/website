@@ -22,10 +22,10 @@ import {
 } from '../components/code-icons'
 
 /**
- * Foreman and Craftman, as the mockups render them.
+ * Vise and Craftman, as the mockups render them.
  *
  * This lives outside both route files because three pages draw from it now:
- * /foreman, /craftman and the home page preview. Keeping one copy is also what
+ * /vise, /craftman and the home page preview. Keeping one copy is also what
  * keeps a panel from existing in a sidebar and not in the written list.
  *
  * The vocabulary is the framework's own — TaskStatus, QueueStats, QueueHealth,
@@ -593,7 +593,7 @@ const PANELS: MockPanel[] = [
   },
 ]
 
-const FOREMAN_PANELS: MockPanel[] = [
+const VISE_PANELS: MockPanel[] = [
   {
     id: 'overview',
     name: 'Overview',
@@ -1481,7 +1481,7 @@ const CRAFTMAN_PANELS: MockPanel[] = [
       'Jobs are pending, scheduled, running, retrying, completed, failed or cancelled',
       'Retries, backoff and a dead-letter destination declared on the task',
       'Cron entries with next fire, last outcome and overlap prevention',
-      'Deep detail lives in Foreman; this is the list and the controls',
+      'Deep detail lives in Vise; this is the list and the controls',
     ],
     toolbar: ['Queues', 'Schedules', '+ Run now', '5 workers'],
     table: {
@@ -1568,19 +1568,19 @@ const CRAFTMAN_PANELS: MockPanel[] = [
 ]
 
 
-export const FOREMAN: Product = {
-  id: 'foreman',
-  name: 'Foreman',
-  href: '/foreman',
-  url: 'localhost:8000/__sillo/foreman',
+export const VISE: Product = {
+  id: 'vise',
+  name: 'Vise',
+  href: '/vise',
+  url: 'localhost:8000/__sillo/vise',
   env: { label: 'Local', tone: 'border-amber-400/30 bg-amber-400/10 text-amber-400' },
   tagline: 'Monitor with Sillo.',
   blurb:
-    'Foreman gives you one place to see what your Sillo application is doing. Monitor requests, queues, workers, schedules, queries, cache activity, outgoing calls, exceptions and logs, gated by the same auth as the rest of the app. Atlas is embedded, so any route in the table can be called from the dashboard.',
+    'Vise gives you one place to see what your Sillo application is doing. Monitor requests, queues, workers, schedules, queries, cache activity, outgoing calls, exceptions and logs, gated by the same auth as the rest of the app. Atlas is embedded, so any route in the table can be called from the dashboard.',
   unit: 'panels',
   seeds: { sparkle: 211, sparkleRotate: 13, arrow: 219, arrowRotate: 16 },
   groups: ['Monitor', 'Work', 'Diagnose', 'Tools'],
-  panels: FOREMAN_PANELS,
+  panels: VISE_PANELS,
   initial: 'queues',
 }
 
@@ -1719,7 +1719,7 @@ export const ATLAS: Product = {
   env: { label: 'acme', tone: 'border-sky-400/30 bg-sky-400/10 text-sky-400' },
   tagline: 'Document with Sillo.',
   blurb:
-    '@sillo/atlas is a modern OpenAPI reference and API client, one script tag, 79 KB, zero runtime dependencies. Foreman embeds it, so any route in the table can be called straight from the dashboard.',
+    '@sillo/atlas is a modern OpenAPI reference and API client, one script tag, 79 KB, zero runtime dependencies. Vise embeds it, so any route in the table can be called straight from the dashboard.',
   unit: 'operations',
   seeds: { sparkle: 173, sparkleRotate: -6, arrow: 181, arrowRotate: 11 },
   groups: ['API'],
@@ -1727,4 +1727,4 @@ export const ATLAS: Product = {
   initial: 'reference',
 }
 
-export const PRODUCTS = [CRAFTMAN, FOREMAN, WARDER, ATLAS]
+export const PRODUCTS = [CRAFTMAN, VISE, WARDER, ATLAS]

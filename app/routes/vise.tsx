@@ -2,18 +2,18 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { SiteNav } from '../components/SiteNav'
 import { SiteFooter } from '../components/SiteFooter'
 import { ProductShowcase } from '../components/ProductShowcase'
-import { FOREMAN } from '../data/products'
+import { VISE } from '../data/products'
 import { Doodle, DoodleArrow, HandwrittenNote, MarkerAside } from '../components/marker'
 
-export const Route = createFileRoute('/foreman')({
-  component: ForemanPage,
+export const Route = createFileRoute('/vise')({
+  component: VisePage,
   head: () => ({
     meta: [
-      { title: 'Foreman: The Sillo Operations Dashboard' },
+      { title: 'Vise: The Sillo Operations Dashboard' },
       {
         name: 'description',
         content:
-          'Foreman is the planned operations dashboard for Sillo: queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs in one web interface, with Atlas embedded as the request client.',
+          'Vise is the planned operations dashboard for Sillo: queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs in one web interface, with Atlas embedded as the request client.',
       },
     ],
   }),
@@ -39,7 +39,7 @@ const CONSTRAINTS = [
   },
   {
     title: 'The cost is a published number',
-    body: 'Foreman on and Foreman off are separate rows in the benchmark suite, next to FastAPI, Starlette, Django and Flask.',
+    body: 'Vise on and Vise off are separate rows in the benchmark suite, next to FastAPI, Starlette, Django and Flask.',
   },
   {
     title: 'One recorder, many watchers',
@@ -47,12 +47,12 @@ const CONSTRAINTS = [
   },
 ]
 
-function ForemanPage() {
+function VisePage() {
   return (
     <main className="min-h-screen bg-bg pt-24 text-text lg:pt-28">
       <SiteNav />
 
-      <ProductShowcase product={FOREMAN} />
+      <ProductShowcase product={VISE} />
 
 
       <section className="mx-auto max-w-[1520px] px-6 py-20 sm:px-8 md:px-12 lg:py-28">
@@ -68,8 +68,8 @@ function ForemanPage() {
         </div>
 
         <div className="space-y-16">
-          {FOREMAN.groups.map(group => {
-            const panels = FOREMAN.panels.filter(panel => panel.group === group)
+          {VISE.groups.map(group => {
+            const panels = VISE.panels.filter(panel => panel.group === group)
             return (
               <div key={group}>
                 <div className="mb-8 flex items-center gap-4 border-b border-border/50 pb-3">
@@ -151,7 +151,7 @@ function ForemanPage() {
       <section className="mx-auto max-w-[1520px] px-6 py-20 sm:px-8 md:px-12">
         <div className="flex flex-wrap items-center justify-between gap-6 border-t border-border/40 pt-10">
           <p className="max-w-[560px] text-sm leading-relaxed text-muted">
-            Foreman sits under Building on the roadmap board — it ships now as sillo-vise with a
+            Vise sits under Building on the roadmap board — it ships now as sillo-vise with a
             subset of panels live, and the work is not finished.
           </p>
           <Link
