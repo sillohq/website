@@ -18,7 +18,7 @@
  * actually read, still animates.
  */
 .card-nav-container.wide {
-  width: min(96vw, 1260px);
+  width: min(96vw, 1120px);
 }
 
 .card-nav {
@@ -335,8 +335,8 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  aspect-ratio: 3 / 4;
-  padding: 22px 22px 0;
+  aspect-ratio: 3 / 3.5;
+  padding: 18px 18px 0;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 16px;
   overflow: hidden;
@@ -377,8 +377,8 @@
 }
 
 .nav-platform-title {
-  margin-top: 16px;
-  font-size: 19px;
+  margin-top: 12px;
+  font-size: 16.5px;
   font-weight: 600;
   line-height: 1.28;
   letter-spacing: -0.035em;
@@ -389,8 +389,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
-  font-size: 12.5px;
+  margin-top: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: rgb(var(--platform-tint));
@@ -418,7 +418,7 @@
   position: relative;
   flex: 1;
   min-height: 0;
-  margin: 18px -24px 0 0;
+  margin: 14px -20px 0 0;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-right: none;
   border-bottom: none;
@@ -434,12 +434,27 @@
  * it — the crop has to be the thing that ends the preview, not the content.
  */
 .nav-platform-preview-scale {
-  display: block;
-  width: 1180px;
-  min-height: 780px;
+  display: flex;
+  flex-direction: column;
+  width: 1040px;
+  min-height: 860px;
   background-color: var(--color-surface);
-  transform: scale(0.42);
+  transform: scale(0.38);
   transform-origin: top left;
+}
+
+/* The mock's frame — border and all — stretches to the scaled surface's
+   full height, so the screenshot runs all the way to the card's bottom
+   edge. Without the stretch the mock stopped short of it and the surface
+   showed as a band of empty space under the screenshot. */
+.nav-platform-preview-scale > div {
+  flex: 1;
+}
+
+@media (min-width: 1024px) {
+  .nav-platform-preview-scale [class~="lg:h-[620px]"] {
+    height: 100%;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -875,7 +890,7 @@
 /* Holds the panel's height while the platforms grid is being fetched, so the
    sheet does not snap taller a moment after it opens. */
 .nav-platform-fallback {
-  height: 543px;
+  height: 520px;
 }
 
 @media (max-width: 768px) {
