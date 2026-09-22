@@ -142,10 +142,10 @@ const navItems = [
     ],
     featured: {
       heading: 'Featured',
-      eyebrow: 'In development',
+      eyebrow: 'Preview',
       title: 'Sillo 1.0 is being built in the open',
       description:
-        'Handlers take a single ctx, GraphQL and the WebSocket room layer moved into their own packages, and pip still installs 0.x.',
+        'Handlers take a single ctx, GraphQL and the WebSocket room layer moved into their own packages. The docs default to the 1.0 preview; pip still installs 0.x.',
       ctaLabel: 'Read more',
       href: GITHUB_URL,
       glyph: '1.0',
