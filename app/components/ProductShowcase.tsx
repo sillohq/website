@@ -15,7 +15,7 @@ import type { Product } from './AppMock'
  *             spent its own, so its sections carry h2 with the same type.
  *   `action`  the read-the-plan link, which a page cannot show for itself.
  *   `bleed`   which side of the screen the mockup runs off. Craftman and
- *             Foreman sit one after another on the home page, so they bleed
+ *             Vise sit one after another on the home page, so they bleed
  *             opposite edges to read as a pair rather than two copies of the
  *             same card.
  *

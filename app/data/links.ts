@@ -18,6 +18,8 @@ export const GITHUB_URL = 'https://github.com/sillohq/core'
 export const DOCS_LINKS = {
   installation: `${DOCS_URL}/guides/installation/`,
   introduction: `${DOCS_URL}/guides/introduction/`,
+  /** The packages that import into the `sillo` namespace. */
+  packages: `${DOCS_URL}/packages/`,
   apiReference: `${DOCS_URL}/reference/plugin-api/`,
   contributing: `${DOCS_URL}/community/contribution-guide/`,
 } as const

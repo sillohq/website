@@ -5,7 +5,7 @@ import type { RefObject } from 'react'
  * A pointer that works a mockup on its own, so an interface nobody can run yet
  * still shows what using it looks like.
  *
- * Shared rather than written per page: /craftman, /foreman and the home page
+ * Shared rather than written per page: /craftman, /vise and the home page
  * all drive it, and any later mockup can too.
  *
  * It does more than click the sidebar. Each panel gets a short routine — open

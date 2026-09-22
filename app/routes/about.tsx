@@ -141,7 +141,7 @@ const KANBAN_COLUMNS = [
       ['Performance', 'Continuous benchmarks', 'The benchmark suite run on every merge against FastAPI, Starlette, Django and Flask, with a regression failing the build.'],
       ['Frontend', 'Server-side rendering', 'Inertia pages rendered on the server, falling back to the client when it is unreachable.'],
       ['Reference', 'OpenAPI 3.1 in Atlas', 'Webhooks, callbacks and the 3.1 schema dialect, in the reference and the client.'],
-      ['Ops', 'Foreman', 'A dashboard over queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs. Ships now as sillo-vise with a subset of panels live; the rest wait on the subsystems they watch.', '/foreman'],
+      ['Ops', 'Vise', 'A dashboard over queues, workers, schedules, requests, queries, cache, outgoing calls, exceptions and logs. Ships now as sillo-vise with a subset of panels live; the rest wait on the subsystems they watch.', '/vise'],
     ],
   },
   {
