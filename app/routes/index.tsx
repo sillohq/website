@@ -29,6 +29,7 @@ import {
 import { DOCS_URL as DOCS } from '../data/links'
 import { SiteFooter } from '../components/SiteFooter'
 import { ProductShowcase } from '../components/ProductShowcase'
+import { AgentSection } from '../components/AgentSection'
 import { CRAFTMAN, VISE } from '../data/products'
 
 export const Route = createFileRoute('/')({
@@ -254,6 +255,7 @@ function HomePage() {
     <main className="bg-bg min-h-screen">
       <SiteNav />
       <Hero />
+      <AgentSection />
       <CapabilityStrip />
       <OneFramework />
       <EnterpriseSection />
